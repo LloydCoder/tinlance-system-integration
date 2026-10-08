@@ -2,11 +2,16 @@ name: TSIC-02 Intelligence to Opportunity
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
-    branches: [main]
-permissions: {contents: read}
-concurrency: {group: tsic-02-${{ github.ref }}, cancel-in-progress: true}
+    branches:
+      - main
+permissions:
+  contents: read
+concurrency:
+  group: tsic-02-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   intelligence-to-opportunity:
     runs-on: ubuntu-24.04
@@ -16,19 +21,34 @@ jobs:
     steps:
       - name: Checkout TSIC
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {path: tsic, persist-credentials: false}
+        with:
+          path: tsic
+          persist-credentials: false
       - name: Checkout World Intelligence
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-world-intelligence, ref: 1e3c9754e56f7baf7d852a28d24c7f2e2b467056, path: world-intelligence, persist-credentials: false}
+        with:
+          repository: LloydCoder/tinlance-world-intelligence
+          ref: 1e3c9754e56f7baf7d852a28d24c7f2e2b467056
+          path: world-intelligence
+          persist-credentials: false
       - name: Checkout TADS
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-tads, ref: be242dd29335e3e74b4b80176ea073f7b7f74d56, path: tads, persist-credentials: false}
+        with:
+          repository: LloydCoder/tinlance-tads
+          ref: be242dd29335e3e74b4b80176ea073f7b7f74d56
+          path: tads
+          persist-credentials: false
       - name: Checkout SDEA
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-sdea, ref: d189b05ab0db3044c13c461ddd8658aabde5fe03, path: sdea, persist-credentials: false}
+        with:
+          repository: LloydCoder/tinlance-sdea
+          ref: d189b05ab0db3044c13c461ddd8658aabde5fe03
+          path: sdea
+          persist-credentials: false
       - name: Setup Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
-        with: {python-version: '3.12'}
+        with:
+          python-version: '3.12'
       - name: Install World Intelligence
         run: python -m pip install -e './world-intelligence'
       - name: Install TADS
