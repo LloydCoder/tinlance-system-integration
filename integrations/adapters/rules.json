@@ -1,0 +1,1 @@
+{"schema_version":"1.0.0","rules":["adapter_must_not_own_authorization","adapter_must_propagate_identity","adapter_must_emit_trace_context","adapter_must_be_idempotent_for_retriable_operations","adapter_must_validate_contract_version","adapter_must_not_store_secrets","adapter_must_emit_audit_evidence_reference"]}
