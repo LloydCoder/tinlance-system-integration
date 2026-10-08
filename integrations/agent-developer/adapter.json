@@ -1,0 +1,28 @@
+{
+  "schema_version":"1.0.0",
+  "adapter_id":"tsic-agent-developer-reference",
+  "source_system":"tsic",
+  "target_system":"agent-developer",
+  "status":"reference-contract",
+  "authority":{
+    "integration_contracts":"tsic",
+    "developer_validation":"agent-developer",
+    "execution_authority":"agent-platform"
+  },
+  "contract_bindings":[
+    {"tsic_contract":"identity-context","tadl_surface":"developer tenant/project context","direction":"outbound"},
+    {"tsic_contract":"agent-registration","tadl_surface":"agent artifact identity and registration metadata","direction":"outbound"},
+    {"tsic_contract":"delivery-semantics","tadl_surface":"workflow/action retry declarations","direction":"outbound"},
+    {"tsic_contract":"trace-context","tadl_surface":"developer evaluation and artifact correlation","direction":"both"},
+    {"tsic_contract":"agent-interoperability-gate","tadl_surface":"agent capability/interoperability declarations","direction":"outbound"},
+    {"tsic_contract":"economic-attribution","tadl_surface":"developer artifact cost metadata","direction":"outbound"}
+  ],
+  "invariants":[
+    "tadl_never_grants_execution_authority",
+    "tadl_never_authorizes_side_effects",
+    "tadl_is_not_ecosystem_integration_authority",
+    "developer_validation_is_not_execution_authorization",
+    "platform_remains_consequential_authority",
+    "tsic_contracts_are_canonical"
+  ]
+}
