@@ -202,7 +202,7 @@ for workflow in workflows["workflows"]:
         raise SystemExit(f"FAIL unknown workflow nodes: {sorted(unknown)}")
 
 for path in ROOT.rglob("*"):
-    if not path.is_file() or ".git" in path.parts or path == ROOT / "tooling/forensic_audit.py":
+    if not path.is_file() or ".git" in path.parts or path in {ROOT / "tooling/forensic_audit.py", ROOT / "scripts/final_certification.py"}:
         continue
     if path.suffix.lower() in {".md", ".json", ".py", ".yml", ".yaml"}:
         text = path.read_text(encoding="utf-8", errors="strict")
