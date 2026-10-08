@@ -191,10 +191,15 @@ if "tadl_is_not_ecosystem_integration_authority" not in tadl_adapter["invariants
     raise SystemExit("FAIL TADL authority invariant")
 
 workflows = json.loads((ROOT / "workflows/canonical.json").read_text())
+non_system_nodes = {"outcome", "evidence", "economic-attribution", "evaluation"}
 if any(item["steps"][0] not in ids or item["steps"][-1] not in ids for item in workflows["workflows"]):
     raise SystemExit("FAIL workflow endpoint not registered")
-if {item["id"] for item in workflows["workflows"]} != {"acquisition-engineering", "transformation", "agent-development"}:
+if {item["id"] for item in workflows["workflows"]} != {"acquisition-engineering", "transformation", "agent-development", "acquisition-feedback"}:
     raise SystemExit("FAIL canonical workflow set")
+for workflow in workflows["workflows"]:
+    unknown = set(workflow["steps"]) - ids - non_system_nodes
+    if unknown:
+        raise SystemExit(f"FAIL unknown workflow nodes: {sorted(unknown)}")
 
 for path in ROOT.rglob("*"):
     if not path.is_file() or ".git" in path.parts or path == ROOT / "tooling/forensic_audit.py":
