@@ -1,1 +1,33 @@
-{"$schema":"../../schemas/canonical-architecture.schema.json","schema_version":"1.0.0","authority":"tsic","ecosystem":"tinlance","systems":[{"id":"agent-developer","layer":"agent","authority":["agent_development_surface"]},{"id":"agent-os","layer":"agent","authority":["workspace_and_environment","agent_lifecycle_orchestration"]},{"id":"agent-platform-sdk","layer":"agent","authority":["developer_surface"]},{"id":"agent-platform","layer":"agent","authority":["agent_identity","agent_authorization","agent_policy","agent_runtime","tools_and_mcp_execution","sandbox","secrets","agent_budgets","agent_evidence","agent_audit","agent_observability"]},{"id":"world-intelligence","layer":"intelligence","authority":["world_intelligence"]},{"id":"tads","layer":"acquisition","authority":["targeting_decisioning"]},{"id":"sdea","layer":"acquisition","authority":["engineering_acquisition_signals"]},{"id":"reconos","layer":"intelligence","authority":["osint_fusion"]},{"id":"fadereach","layer":"acquisition","authority":["outreach_execution"]},{"id":"fdse","layer":"delivery","authority":["engineering_delivery"]},{"id":"fde","layer":"delivery","authority":["domain_engineering"]},{"id":"transformation","layer":"delivery","authority":["portfolio_transformation"]},{"id":"fdse-toolkit","layer":"delivery","authority":["delivery_reporting"]},{"id":"fas","layer":"evidence","authority":["forensic_analysis"]},{"id":"hezqara","layer":"product","authority":["healthcare_workforce"]},{"id":"bugflow","layer":"product","authority":["application_security_testing"]},{"id":"threatfade","layer":"product","authority":["security_engineering"]},{"id":"tsic","layer":"integration","authority":["ecosystem_integration_contracts","ecosystem_registry","compatibility_policy","conformance_requirements","certification_evidence"]}],"paths":{"engineering":["world-intelligence","tads","sdea","reconos","fadereach","fdse","fde"],"transformation":["world-intelligence","tads","transformation","fdse","fde"],"agent":["agent-developer","agent-os","agent-platform-sdk","agent-platform"]}}
+{
+  "$schema":"../../schemas/canonical-architecture.schema.json",
+  "schema_version":"1.1.0","authority":"tsic","ecosystem":"tinlance",
+  "systems":[
+    {"id":"agent-developer","layer":"agent","authority":["agent_development_surface"]},
+    {"id":"agent-os","layer":"agent","authority":["workspace_and_environment","agent_lifecycle_orchestration"]},
+    {"id":"agent-platform-sdk","layer":"agent","authority":["developer_surface"]},
+    {"id":"agent-platform","layer":"agent","authority":["agent_identity","agent_authorization","agent_policy","agent_runtime","tools_and_mcp_execution","sandbox","secrets","agent_budgets","agent_evidence","agent_audit","agent_observability"]},
+    {"id":"world-intelligence","layer":"intelligence","authority":["world_intelligence"]},
+    {"id":"tads","layer":"acquisition","authority":["targeting_decisioning"]},
+    {"id":"sdea","layer":"acquisition","authority":["engineering_acquisition_signals"]},
+    {"id":"reconos","layer":"intelligence","authority":["osint_fusion"]},
+    {"id":"fadereach","layer":"acquisition","authority":["outreach_execution"]},
+    {"id":"fdse","layer":"delivery","authority":["engineering_delivery"]},
+    {"id":"fde","layer":"delivery","authority":["domain_engineering"]},
+    {"id":"transformation","layer":"delivery","authority":["portfolio_transformation"]},
+    {"id":"fdse-toolkit","layer":"delivery","authority":["delivery_reporting"]},
+    {"id":"fas","layer":"evidence","authority":["forensic_analysis"]},
+    {"id":"fas-bench","layer":"evaluation","authority":["benchmark_corpus","evaluation_harness","benchmark_reproducibility"]},
+    {"id":"hezqara","layer":"product","authority":["healthcare_workforce"]},
+    {"id":"bugflow","layer":"product","authority":["application_security_testing"]},
+    {"id":"threatfade","layer":"product","authority":["security_engineering"]},
+    {"id":"tsic","layer":"integration","authority":["ecosystem_integration_contracts","ecosystem_registry","compatibility_policy","conformance_requirements","certification_evidence"]}
+  ],
+  "paths":{
+    "engineering":["world-intelligence","tads","sdea","reconos","fadereach","fdse","fde"],
+    "transformation":["world-intelligence","tads","transformation","fdse","fde"],
+    "agent":["agent-developer","agent-os","agent-platform-sdk","agent-platform"],
+    "evaluation":["fas","fas-bench"],
+    "commercial":["tads","sdea","reconos","fadereach","agent-platform","fdse","fdse-toolkit","economic-attribution"],
+    "revenue":["world-intelligence","tads","sdea","reconos","fadereach","agent-platform","fdse","economic-attribution","evaluation"]
+  }
+}

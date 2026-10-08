@@ -1,6 +1,6 @@
 {
   "$schema": "../../schemas/authority.schema.json",
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "capabilities": [
     {
       "capability": "ecosystem_integration_contracts",
@@ -133,6 +133,18 @@
     {
       "capability": "security_engineering",
       "owner": "threatfade"
+    },
+    {
+      "capability": "benchmark_corpus",
+      "owner": "fas-bench"
+    },
+    {
+      "capability": "evaluation_harness",
+      "owner": "fas-bench"
+    },
+    {
+      "capability": "benchmark_reproducibility",
+      "owner": "fas-bench"
     }
   ]
 }

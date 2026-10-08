@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.4.0",
+  "schema_version": "1.5.0",
   "authority": "tsic",
   "adapters": [
     {
@@ -79,6 +79,12 @@
       "from": "tsic",
       "to": "agent-developer",
       "transport": "reference-contract"
+    },
+    {
+      "id": "fas-to-fas-bench-evaluation",
+      "from": "fas",
+      "to": "fas-bench",
+      "transport": "immutable-evaluation-artifact"
     }
   ]
 }

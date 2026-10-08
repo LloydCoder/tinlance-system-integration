@@ -69,6 +69,7 @@ expected_repositories = {
     "reconos": "LloydCoder/reconos-ofe",
     "fadereach": "LloydCoder/fadereach",
     "fas": "LloydCoder/fas",
+    "fas-bench": "LloydCoder/fas-bench",
     "fdse": "LloydCoder/tinlance-fdse",
     "fdse-toolkit": "LloydCoder/Tinlance-FDSE-toolkit",
     "world-intelligence": "LloydCoder/tinlance-world-intelligence",
@@ -141,7 +142,7 @@ adapters = json.loads((ROOT / "integrations/adapters/registry.json").read_text()
 adapter_ids = {item["id"] for item in adapters["adapters"]}
 if len(adapter_ids) != len(adapters["adapters"]):
     raise SystemExit("FAIL duplicate adapter IDs")
-if "tsic-to-agent-platform-reference" not in adapter_ids or "tsic-to-agent-platform-sdk-reference" not in adapter_ids or "tsic-to-agent-os-reference" not in adapter_ids or "tsic-to-agent-developer-reference" not in adapter_ids:
+if "tsic-to-agent-platform-reference" not in adapter_ids or "tsic-to-agent-platform-sdk-reference" not in adapter_ids or "tsic-to-agent-os-reference" not in adapter_ids or "tsic-to-agent-developer-reference" not in adapter_ids or "fas-to-fas-bench-evaluation" not in adapter_ids:
     raise SystemExit("FAIL Agent Platform reference adapter is not registered")
 if any(item["from"] not in ids or item["to"] not in ids for item in adapters["adapters"]):
     raise SystemExit("FAIL adapter references unregistered system")
@@ -194,7 +195,7 @@ workflows = json.loads((ROOT / "workflows/canonical.json").read_text())
 non_system_nodes = {"outcome", "evidence", "economic-attribution", "evaluation"}
 if any(item["steps"][0] not in ids or item["steps"][-1] not in ids for item in workflows["workflows"]):
     raise SystemExit("FAIL workflow endpoint not registered")
-if {item["id"] for item in workflows["workflows"]} != {"acquisition-engineering", "transformation", "agent-development", "acquisition-feedback"}:
+if {item["id"] for item in workflows["workflows"]} != {"acquisition-engineering", "transformation", "agent-development", "acquisition-feedback", "commercial-aaas", "autonomous-revenue"}:
     raise SystemExit("FAIL canonical workflow set")
 for workflow in workflows["workflows"]:
     unknown = set(workflow["steps"]) - set(ids) - non_system_nodes
