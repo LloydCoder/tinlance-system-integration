@@ -1,0 +1,28 @@
+{
+  "schema_version":"1.0.0",
+  "adapter_id":"tsic-fadereach-reference",
+  "source_system":"tsic",
+  "target_system":"fadereach",
+  "status":"reference-contract",
+  "authority":{
+    "integration_contracts":"tsic",
+    "outreach_execution":"fadereach",
+    "execution_authority":"agent-platform"
+  },
+  "contract_bindings":[
+    {"tsic_contract":"identity-context","fadereach_surface":"account/contact campaign context","direction":"inbound"},
+    {"tsic_contract":"event-envelope","fadereach_surface":"outreach/reply/meeting events","direction":"both"},
+    {"tsic_contract":"delivery-semantics","fadereach_surface":"idempotent campaign actions and webhook delivery","direction":"both"},
+    {"tsic_contract":"trace-context","fadereach_surface":"campaign/action correlation","direction":"both"},
+    {"tsic_contract":"economic-attribution","fadereach_surface":"campaign/opportunity/revenue attribution","direction":"both"}
+  ],
+  "invariants":[
+    "outreach_is_tenant_scoped",
+    "suppression_and_consent_controls_are_preserved",
+    "duplicate_actions_are_idempotent",
+    "provider_failures_are_recoverable",
+    "outreach_does_not_grant_policy_or_runtime_authority",
+    "tsic_remains_integration_authority",
+    "agent-platform_remains_execution_authority"
+  ]
+}
