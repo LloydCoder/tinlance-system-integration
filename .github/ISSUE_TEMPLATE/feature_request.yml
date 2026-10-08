@@ -1,0 +1,37 @@
+name: Feature request
+description: Propose a focused improvement to TSIC contracts, conformance, tooling, or documentation.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Explain the integration problem first. Avoid proposals that duplicate another system's authority.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What problem or integration gap does this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+      description: Describe the smallest coherent solution.
+    validations:
+      required: true
+  - type: textarea
+    id: authority
+    attributes:
+      label: Authority and boundaries
+      description: Identify the owning system and why TSIC should own the integration contract or conformance rule.
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility impact
+      description: Explain whether existing contracts, schemas, adapters, or workflows change.
+    validations:
+      required: true
