@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0.0",
+  "baseline_id": "tsic-41-autonomous-revenue-2026-10-08",
+  "authority": "tsic",
+  "invariants": [
+    "revenue_actions_are_policy_governed",
+    "outreach_is_consent_and_compliance_bounded",
+    "economic_attribution_is_end_to_end",
+    "human_approval_is_required_for_high_impact_actions",
+    "closed_loop_feedback_cannot_mutate_authority_boundaries"
+  ]
+}

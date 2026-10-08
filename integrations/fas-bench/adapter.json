@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "adapter_id": "tsic-fas-bench-certification",
+  "source_system": "fas",
+  "target_system": "fas-bench",
+  "status": "independent-evaluation",
+  "authority": {
+    "integration_contracts": "tsic",
+    "production_analysis": "fas",
+    "evaluation": "fas-bench",
+    "certification": "tsic"
+  },
+  "independence_invariants": [
+    "fas-bench_is_not_a_fas_runtime_dependency",
+    "benchmark_failure_cannot_block_fas_production_execution",
+    "benchmark_corpus_and_harness_are_evaluation_authority",
+    "production_fas_outputs_are_evaluated_without_mutating_runtime_state",
+    "certification_requires_reproducible_results"
+  ],
+  "evaluation_dimensions": [
+    "evidence_first_analysis",
+    "observation_evidence_finding_verdict_separation",
+    "provenance_integrity",
+    "t0_t5_provenance_handling",
+    "sarif_tool_result_interpretation",
+    "finding_verdict_quality",
+    "regression_resistance",
+    "benchmark_reproducibility",
+    "false_positive_behavior",
+    "false_negative_behavior",
+    "deterministic_evaluation"
+  ]
+}

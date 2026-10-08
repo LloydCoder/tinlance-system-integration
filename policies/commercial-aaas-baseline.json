@@ -1,0 +1,12 @@
+{
+  "schema_version": "1.0.0",
+  "baseline_id": "tsic-40-commercial-aaas-2026-10-08",
+  "authority": "tsic",
+  "invariants": [
+    "commercial_surface_does_not_replace_domain_authority",
+    "aaas_offers_bind_to_certified_agent_execution",
+    "pricing_and_entitlement_are_traceable",
+    "customer_tenant_context_is_preserved",
+    "delivery_evidence_is attributable_to_workflow_and_customer"
+  ]
+}

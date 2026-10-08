@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "baseline_id": "tsic-31-fas-fas-bench-2026-10-08",
+  "authority": "tsic",
+  "fas": {"repository": "LloydCoder/fas", "ref": "c3eb2fcaf7e1f02e2ad0dd61ec4c7bee3384e64e"},
+  "fas_bench": {"repository": "LloydCoder/fas-bench", "ref": "acf23e4ddb2d435290cf4d7fb09f7ac4b797c5de"},
+  "invariants": [
+    "fas_is_production_analysis_authority",
+    "fas_bench_is_independent_evaluation_authority",
+    "fas_bench_is_not_on_production_execution_path",
+    "certification_evidence_is_reproducible",
+    "provenance_is_preserved",
+    "benchmark_results_are_immutable_inputs_to_certification"
+  ]
+}

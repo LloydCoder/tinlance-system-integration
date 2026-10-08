@@ -31,3 +31,5 @@ jobs:
         run: python3 scripts/certify_interoperability.py
       - name: Acquisition system certification
         run: python3 scripts/acquisition_system_certification.py
+      - name: Serial TSIC-31-41 certification
+        run: python3 scripts/final_certification.py
