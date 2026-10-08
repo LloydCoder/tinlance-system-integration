@@ -57,7 +57,8 @@ jobs:
       - name: Agent OS integration tests
         run: python -m pytest -q agent-os/tests/integration
       - name: Platform SDK contract tests
-        run: python -m pytest -q agent-platform-sdk/tests/test_client.py agent-platform-sdk/tests/test_retry.py agent-platform-sdk/tests/test_compatibility_matrix.py
+        working-directory: agent-platform-sdk
+        run: python -m pytest -q tests/test_client.py tests/test_retry.py tests/test_compatibility_matrix.py
       - name: Start reference Platform
         working-directory: tsic
         run: python scripts/agent_system_platform_server.py > /tmp/tsic-platform-url & echo $! > /tmp/tsic-platform-pid
