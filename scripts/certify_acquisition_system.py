@@ -38,7 +38,7 @@ def main() -> None:
         raise AssertionError("TSIC registry is missing a required acquisition contract")
 
     for system_id in baseline["sequence"]:
-        reviewed = baseline["systems"][system_id]
+        reviewed = baseline["systems"][system_id.replace("-", "_")]
         system = systems.get(system_id)
         if system is None:
             raise AssertionError(f"missing manifest system: {system_id}")
