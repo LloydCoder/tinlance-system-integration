@@ -1,6 +1,6 @@
 {
   "$schema": "../schemas/ecosystem-manifest.schema.json",
-  "schema_version": "1.0.0",
+  "schema_version": "1.1.0",
   "ecosystem": {
     "id": "tinlance",
     "name": "Tinlance Ecosystem",
@@ -12,6 +12,7 @@
       "id": "tsic",
       "name": "Tinlance System Integration & Conformance",
       "repository": "LloydCoder/tinlance-system-integration",
+      "governance_role": "ecosystem_integration_authority",
       "authority": [
         "ecosystem_integration_contracts",
         "ecosystem_registry",
@@ -24,6 +25,7 @@
       "id": "agent-platform",
       "name": "Tinlance Agent Platform",
       "repository": "LloydCoder/tinlance-agent-platform",
+      "governance_role": "execution_authority",
       "authority": [
         "identity",
         "authorization",
@@ -43,6 +45,7 @@
       "id": "agent-platform-sdk",
       "name": "Tinlance Agent Platform SDK",
       "repository": "LloydCoder/tinlance-agent-platform-sdk",
+      "governance_role": "developer_client_surface",
       "authority": [
         "developer_sdk_surface"
       ]
@@ -51,6 +54,7 @@
       "id": "agent-os",
       "name": "Tinlance Agent OS",
       "repository": "LloydCoder/tinlance-agent-os",
+      "governance_role": "operating_environment_authority",
       "authority": [
         "workspace",
         "environment",
@@ -63,8 +67,9 @@
     },
     {
       "id": "agent-developer",
-      "name": "Tinlance Agent Developer",
-      "repository": null,
+      "name": "Tinlance Agent Developer Layer (TADL)",
+      "repository": "LloydCoder/tinlance-agent-developer",
+      "governance_role": "developer_validation_consumer",
       "authority": [
         "agent_development_surface"
       ]
@@ -72,7 +77,8 @@
     {
       "id": "tads",
       "name": "Tinlance Acquisition System",
-      "repository": null,
+      "repository": "LloydCoder/tinlance-tads",
+      "governance_role": "acquisition_decisioning_authority",
       "authority": [
         "acquisition_targeting"
       ]
@@ -81,6 +87,7 @@
       "id": "sdea",
       "name": "Signal-Driven Engineering Acquisition",
       "repository": "LloydCoder/tinlance-sdea",
+      "governance_role": "engineering_acquisition_authority",
       "authority": [
         "engineering_acquisition_signals"
       ]
@@ -89,6 +96,7 @@
       "id": "reconos",
       "name": "ReconOS",
       "repository": "LloydCoder/reconos-ofe",
+      "governance_role": "intelligence_enrichment_authority",
       "authority": [
         "osint_fusion"
       ]
@@ -97,6 +105,7 @@
       "id": "fadereach",
       "name": "FadeReach",
       "repository": "LloydCoder/fadereach",
+      "governance_role": "outreach_execution_authority",
       "authority": [
         "outreach_execution"
       ]
@@ -105,6 +114,7 @@
       "id": "fas",
       "name": "Forensic Analysis System",
       "repository": "LloydCoder/fas",
+      "governance_role": "evidence_analysis_authority",
       "authority": [
         "evidence_first_analysis"
       ]
@@ -113,6 +123,7 @@
       "id": "fdse",
       "name": "Tinlance FDSE",
       "repository": "LloydCoder/tinlance-fdse",
+      "governance_role": "delivery_orchestration_authority",
       "authority": [
         "engineering_delivery"
       ]
@@ -121,6 +132,7 @@
       "id": "fde",
       "name": "Tinlance FDE",
       "repository": null,
+      "governance_role": "domain_delivery_model",
       "authority": [
         "domain_engineering"
       ]
@@ -129,6 +141,7 @@
       "id": "transformation",
       "name": "Tinlance Transformation",
       "repository": null,
+      "governance_role": "transformation_delivery_model",
       "authority": [
         "portfolio_transformation",
         "replication"
@@ -138,6 +151,7 @@
       "id": "fdse-toolkit",
       "name": "Tinlance FDSE Toolkit",
       "repository": "LloydCoder/Tinlance-FDSE-toolkit",
+      "governance_role": "delivery_reporting_authority",
       "authority": [
         "delivery_reporting"
       ]
@@ -146,6 +160,7 @@
       "id": "world-intelligence",
       "name": "Tinlance World Intelligence",
       "repository": "LloydCoder/tinlance-world-intelligence",
+      "governance_role": "world_intelligence_authority",
       "authority": [
         "world_intelligence"
       ]
@@ -154,6 +169,7 @@
       "id": "hezqara",
       "name": "Hezqara",
       "repository": "LloydCoder/hezqara",
+      "governance_role": "domain_product_authority",
       "authority": [
         "healthcare_governed_ai_workforce"
       ]
@@ -162,6 +178,7 @@
       "id": "bugflow",
       "name": "BugFlow",
       "repository": "LloydCoder/bugflow-elite",
+      "governance_role": "domain_product_authority",
       "authority": [
         "application_security_testing"
       ]
@@ -169,7 +186,8 @@
     {
       "id": "threatfade",
       "name": "ThreatFade",
-      "repository": null,
+      "repository": "LloydCoder/tinlance-threatfade",
+      "governance_role": "domain_security_authority",
       "authority": [
         "threat_detection_response"
       ]
