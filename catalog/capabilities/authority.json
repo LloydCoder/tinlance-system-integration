@@ -145,6 +145,10 @@
     {
       "capability": "benchmark_reproducibility",
       "owner": "fas-bench"
+    },
+    {
+      "capability": "economic_attribution",
+      "owner": "economic-attribution"
     }
   ]
 }
