@@ -135,6 +135,11 @@
         "events",
         "artifacts"
       ]
-    }
+    },
+    {"id":"agent-developer","system":"agent-developer","protocols":["https","events"]},
+    {"id":"agent-platform-sdk","system":"agent-platform-sdk","protocols":["https","events"]},
+    {"id":"fde-mastery","system":"fde-mastery","protocols":["https","events"]},
+    {"id":"threatfade-web","system":"threatfade-web","protocols":["https","events"]},
+    {"id":"tinlance-com","system":"tinlance-com","protocols":["https","events"]}
   ]
 }
