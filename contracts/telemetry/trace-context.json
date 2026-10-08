@@ -1,0 +1,1 @@
+{"schema_version":"1.0.0","standards":["W3C Trace Context","OpenTelemetry"],"required":["trace_id","span_id","traceparent"],"optional":["tracestate","baggage"],"rules":{"preserve_trace_across_system_boundaries":true,"never_log_secrets":true}}

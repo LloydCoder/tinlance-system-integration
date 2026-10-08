@@ -1,0 +1,1 @@
+{"schema_version":"1.0.0","delivery":{"outbox_required_for_durable_publish":true,"inbox_required_for_idempotent_consume":true,"deduplication_key":"event.id","retry":{"exponential_backoff":true,"bounded":true},"dead_letter":true,"replay":true},"ordering":{"default":"not_guaranteed","explicit_ordering_key_required":true}}
