@@ -77,7 +77,12 @@ jobs:
             --data '{"tenant_id":"tenant-tsic","subject_id":"subject-tsic","operation":"health","payload":{}}'
       - name: Execute cross-repository vertical slice
         working-directory: tsic
-        run: python scripts/certify_agent_system_e2e.py
+        run: |
+          set +e
+          python scripts/certify_agent_system_e2e.py 2>&1 | tee /tmp/tsic-agent-e2e.log
+          rc=${PIPESTATUS[0]}
+          echo "TSIC_AGENT_E2E_RC=${rc}"
+          exit ${rc}
       - name: Post-phase forensic audit
         working-directory: tsic
         run: python scripts/forensic_audit_phase1.py
