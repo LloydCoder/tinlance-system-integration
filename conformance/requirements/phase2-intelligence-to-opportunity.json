@@ -1,0 +1,51 @@
+{
+  "phase": "TSIC-02",
+  "title": "World Intelligence → TADS → SDEA",
+  "requirements": [
+    {
+      "id": "TSIC-02-001",
+      "severity": "critical",
+      "statement": "World Intelligence produces immutable source/artifact/observation/provenance lineage."
+    },
+    {
+      "id": "TSIC-02-002",
+      "severity": "critical",
+      "statement": "TADS consumes validated evidence and detects signals without treating signals as purchase predictions."
+    },
+    {
+      "id": "TSIC-02-003",
+      "severity": "critical",
+      "statement": "TADS opportunity scoring preserves evidence identifiers and explicit uncertainty."
+    },
+    {
+      "id": "TSIC-02-004",
+      "severity": "critical",
+      "statement": "SDEA consumes signal identifiers and creates a demand hypothesis with explicit confidence and rationale."
+    },
+    {
+      "id": "TSIC-02-005",
+      "severity": "critical",
+      "statement": "Capability need and opportunity retain evidence lineage back to the original observation/artifact."
+    },
+    {
+      "id": "TSIC-02-006",
+      "severity": "critical",
+      "statement": "SDEA recommendations remain advisory and cannot authorize consequential execution."
+    },
+    {
+      "id": "TSIC-02-007",
+      "severity": "critical",
+      "statement": "Untrusted external content is treated as data and never as executable instruction."
+    },
+    {
+      "id": "TSIC-02-008",
+      "severity": "high",
+      "statement": "Cross-repository execution is performed against pinned reviewed revisions."
+    },
+    {
+      "id": "TSIC-02-009",
+      "severity": "high",
+      "statement": "Post-phase forensic audit verifies implementation, authority boundaries, lineage and CI."
+    }
+  ]
+}
