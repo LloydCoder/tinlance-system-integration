@@ -1,0 +1,28 @@
+{
+  "schema_version":"1.0.0",
+  "adapter_id":"tsic-fas-reference",
+  "source_system":"tsic",
+  "target_system":"fas",
+  "status":"reference-contract",
+  "authority":{
+    "integration_contracts":"tsic",
+    "evidence_analysis":"fas",
+    "execution_authority":"agent-platform"
+  },
+  "contract_bindings":[
+    {"tsic_contract":"identity-context","fas_surface":"tenant/analysis context","direction":"inbound"},
+    {"tsic_contract":"event-envelope","fas_surface":"observation/evidence/finding analysis events","direction":"both"},
+    {"tsic_contract":"delivery-semantics","fas_surface":"replayable evidence analysis","direction":"both"},
+    {"tsic_contract":"trace-context","fas_surface":"analysis correlation","direction":"both"},
+    {"tsic_contract":"economic-attribution","fas_surface":"analysis cost attribution","direction":"inbound"}
+  ],
+  "invariants":[
+    "observation_is_not_evidence",
+    "evidence_is_not_finding",
+    "finding_is_not_verdict",
+    "provenance_is_preserved",
+    "analysis_does_not_grant_execution_authority",
+    "tsic_remains_integration_authority",
+    "agent-platform-remains-execution-authority"
+  ]
+}
