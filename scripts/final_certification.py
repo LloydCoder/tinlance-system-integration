@@ -8,7 +8,7 @@ PHASE_SCRIPTS=[
 "scripts/certify_phase0.py",
 "tooling/validate_phase0.py","tooling/run_reference_workflow.py","tooling/recovery_cert.py",
 "tooling/ecosystem_lock.py","tooling/forensic_audit.py","tooling/security_scan.py",
-"scripts/certify_acquisition_system.py","scripts/certify_engineering_route.py","scripts/certify_transformation_route.py",
+"scripts/certify_acquisition_system.py","scripts/forensic_audit_phase1.py","scripts/certify_engineering_route.py","scripts/certify_transformation_route.py",
 "scripts/certify_delivery_evidence.py","scripts/certify_fas.py","scripts/certify_fas_bench.py",
 "scripts/certify_threatfade.py","scripts/certify_bugflow.py","scripts/certify_hezqara.py",
 "scripts/certify_economic_attribution.py","scripts/certify_closed_loop.py","scripts/certify_observability.py",
