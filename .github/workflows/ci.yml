@@ -1,21 +1,18 @@
 name: TSIC CI
-
 on:
   push:
-    branches: [main, "phase-0/**"]
+    branches: [main, "phase-0/**", "integration/**"]
   pull_request:
     branches: [main]
-
 permissions:
   contents: read
-
 jobs:
-  phase0:
+  conformance:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: Validate Phase 0
+      - name: Validate TSIC conformance
         run: python3 tooling/validate_phase0.py
       - name: Security baseline
         run: python3 tooling/security_scan.py
