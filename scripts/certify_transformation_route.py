@@ -44,8 +44,14 @@ def main() -> None:
         raise AssertionError("FDSE execution boundary drifted")
     if "evidence_and_outcomes_are_preserved" not in invariants:
         raise AssertionError("delivery evidence/outcome boundary drifted")
-    if "economic_attribution_carries_route" not in baseline["invariants"]:
-        raise AssertionError("transformation economics must retain route attribution")
+    required_baseline_invariants = {
+        "delivery_route_is_explicit",
+        "transformation_route_is_distinct_from_engineering",
+        "portfolio_transformation_semantics_are_preserved",
+        "economic_attribution_carries_route",
+    }
+    if not required_baseline_invariants <= set(baseline["invariants"]):
+        raise AssertionError("transformation baseline invariants drifted")
 
     print("PASS TSIC-28 Transformation route certification")
 
