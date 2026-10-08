@@ -1,0 +1,1 @@
+{"schema_version":"1.0.0","authority":"agent-platform","requester":"agent-orchestrator","decision_inputs":["task_policy","risk_class","model_capability","data_classification","budget","availability"],"decision_outputs":["model_id","provider","route","policy_version"],"rules":{"no_local_unregistered_router":true,"route_must_be_recorded":true,"budget_enforced_by_platform":true}}
