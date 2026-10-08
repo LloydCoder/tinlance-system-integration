@@ -4,11 +4,12 @@
 from __future__ import annotations
 
 import json
-from urllib.error import HTTPError\nfrom urllib.request import Request, urlopen
+from pathlib import Path
+from urllib.request import Request, urlopen
 
-ROOT = "https://raw.githubusercontent.com"
+ROOT = Path(__file__).parents[1]
 TSIC_REVISION = "4c5b7d70c937ca8227ba8a9ebfe0d69b3e5c2bf8"
-BASELINE_PATH = "policies/acquisition-system-baseline.json"
+BASELINE_PATH = ROOT / "policies/acquisition-system-baseline.json"
 
 ADAPTER_REVISIONS = {
     "world-intelligence": "109d9bebd9d34cc1c920202c57958c7f0155c7ac",
@@ -27,7 +28,9 @@ SYSTEM_REPOSITORIES = {
 }
 
 
-def fetch_text(url: str) -> str:
+def fetch_reviewed_file(repository: str, revision: str, path: str) -> str:
+    owner, name = repository.split("/", 1)
+    url = f"https://github.com/{owner}/{name}/raw/{revision}/{path}"
     request = Request(url, headers={"Accept": "text/plain", "User-Agent": "tinlance-tsic-certifier"})
     with urlopen(request, timeout=20) as response:
         if response.status != 200:
@@ -35,12 +38,8 @@ def fetch_text(url: str) -> str:
         return response.read().decode("utf-8")
 
 
-def fetch_json(url: str) -> dict:
-    return json.loads(fetch_text(url))
-
-
 def main() -> None:
-    baseline = json.loads((__import__("pathlib").Path(__file__).parents[1] / BASELINE_PATH).read_text(encoding="utf-8"))
+    baseline = json.loads(BASELINE_PATH.read_text(encoding="utf-8"))
     assert baseline["authority"] == "tsic"
     assert baseline["sequence"] == list(SYSTEM_REPOSITORIES)
     assert baseline["tsic"]["ref"] == TSIC_REVISION
@@ -59,24 +58,27 @@ def main() -> None:
     assert feedback["rule"] == "feedback_is_learning_input_not_execution_authority"
 
     for system_id, repository in SYSTEM_REPOSITORIES.items():
-        assert baseline["systems"][system_id.replace("-", "_")]["repository"] == repository
-        reviewed_ref = baseline["systems"][system_id.replace("-", "_")]["ref"]
+        system = baseline["systems"][system_id.replace("-", "_")]
+        assert system["repository"] == repository
+        reviewed_ref = system["ref"]
         assert reviewed_ref and len(reviewed_ref) == 40
 
-        # Verify the reviewed repository revision is reachable and contains its
-        # executable TSIC conformance gate.
-        script_url = f"{ROOT}/{repository}/{reviewed_ref}/scripts/tsic_conformance.py"
-        script = fetch_text(script_url)
-        assert "TSIC_REVISION" in script
+        try:
+            conformance = fetch_reviewed_file(repository, reviewed_ref, "scripts/tsic_conformance.py")
+        except Exception as exc:
+            raise RuntimeError(
+                f"{system_id}: unable to fetch reviewed conformance gate "
+                f"{repository}@{reviewed_ref}: {exc}"
+            ) from exc
+
         expected_adapter_revision = ADAPTER_REVISIONS[system_id]
-        assert expected_adapter_revision in script, (
+        assert "TSIC_REVISION" in conformance
+        assert expected_adapter_revision in conformance, (
             f"{system_id}: conformance gate is not pinned to {expected_adapter_revision}"
         )
 
-        adapter = fetch_json(
-            f"{ROOT}/LloydCoder/tinlance-system-integration/{TSIC_REVISION}"
-            f"/integrations/{system_id}/adapter.json"
-        )
+        adapter_path = ROOT / "integrations" / system_id / "adapter.json"
+        adapter = json.loads(adapter_path.read_text(encoding="utf-8"))
         assert adapter["source_system"] == "tsic"
         assert adapter["target_system"] == system_id
         assert adapter["status"] == "reference-contract"
