@@ -1,0 +1,46 @@
+name: Bug report
+description: Report a reproducible defect in TSIC validation, contracts, tooling, or documentation.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a reproducible defect. Do not include credentials, customer data, PHI, or vulnerability details.
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      description: Provide the release, branch, or commit SHA.
+      placeholder: "0.1.0 or f7f242e..."
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: Command or workflow
+      description: Provide the exact command, CI step, or file involved.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Give the smallest deterministic reproduction.
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Python version, GitHub Actions runner, and other relevant context.
