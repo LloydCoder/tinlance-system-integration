@@ -67,6 +67,14 @@ jobs:
         run: for i in $(seq 1 30); do test -s /tmp/tsic-platform-url && break; sleep 1; done; test -s /tmp/tsic-platform-url
       - name: Export reference Platform endpoint
         run: echo "TSIC_PLATFORM_URL=$(cat /tmp/tsic-platform-url)" >> "$GITHUB_ENV"
+      - name: Probe reference Platform authentication
+        run: |
+          curl --fail-with-body -sS -X POST "$(cat /tmp/tsic-platform-url)" \
+            -H 'Authorization: Bearer tsic-reference-token' \
+            -H 'Content-Type: application/json' \
+            -H 'X-Tinlance-API-Version: 1.1' \
+            -H 'X-Request-ID: tsic-health-probe' \
+            --data '{"tenant_id":"tenant-tsic","subject_id":"subject-tsic","operation":"health","payload":{}}'
       - name: Execute cross-repository vertical slice
         working-directory: tsic
         run: python scripts/certify_agent_system_e2e.py
