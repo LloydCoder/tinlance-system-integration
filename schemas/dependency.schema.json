@@ -1,0 +1,6 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://tinlance.com/schemas/dependency.schema.json",
+  "type":"object","required":["schema_version","dependencies"],
+  "properties":{"schema_version":{"type":"string"},"dependencies":{"type":"array","items":{"type":"object","required":["from","to","relationship"],"properties":{"from":{"type":"string"},"to":{"type":"string"},"relationship":{"type":"string"}},"additionalProperties":false}}}
+}

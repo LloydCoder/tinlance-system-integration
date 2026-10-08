@@ -1,0 +1,32 @@
+{
+  "$schema":"../../schemas/authority.schema.json",
+  "schema_version":"1.0.0",
+  "capabilities":[
+    {"capability":"ecosystem_integration_contracts","owner":"tsic"},
+    {"capability":"ecosystem_registry","owner":"tsic"},
+    {"capability":"compatibility_policy","owner":"tsic"},
+    {"capability":"conformance_requirements","owner":"tsic"},
+    {"capability":"certification_evidence","owner":"tsic"},
+    {"capability":"agent_identity","owner":"agent-platform"},
+    {"capability":"agent_authorization","owner":"agent-platform"},
+    {"capability":"agent_policy","owner":"agent-platform"},
+    {"capability":"agent_runtime","owner":"agent-platform"},
+    {"capability":"tools_and_mcp_execution","owner":"agent-platform"},
+    {"capability":"sandbox","owner":"agent-platform"},
+    {"capability":"secrets","owner":"agent-platform"},
+    {"capability":"agent_budgets","owner":"agent-platform"},
+    {"capability":"agent_evidence","owner":"agent-platform"},
+    {"capability":"agent_audit","owner":"agent-platform"},
+    {"capability":"agent_observability","owner":"agent-platform"},
+    {"capability":"workspace_and_environment","owner":"agent-os"},
+    {"capability":"agent_lifecycle_orchestration","owner":"agent-os"},
+    {"capability":"agent_development_surface","owner":"agent-developer"},
+    {"capability":"engineering_acquisition_signals","owner":"sdea"},
+    {"capability":"osint_fusion","owner":"reconos"},
+    {"capability":"outreach_execution","owner":"fadereach"},
+    {"capability":"engineering_delivery","owner":"fdse"},
+    {"capability":"domain_engineering","owner":"fde"},
+    {"capability":"portfolio_transformation","owner":"transformation"},
+    {"capability":"world_intelligence","owner":"world-intelligence"}
+  ]
+}

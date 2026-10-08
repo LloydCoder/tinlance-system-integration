@@ -1,0 +1,11 @@
+{
+  "$schema":"../../schemas/conformance.schema.json","schema_version":"1.0.0",
+  "requirements":[
+    {"id":"TSIC-P0-001","category":"registry","statement":"Every registered system has a unique canonical ID.","mandatory":true},
+    {"id":"TSIC-P0-002","category":"authority","statement":"Every governed capability has exactly one authoritative owner.","mandatory":true},
+    {"id":"TSIC-P0-003","category":"contracts","statement":"Normative integration contracts are versioned.","mandatory":true},
+    {"id":"TSIC-P0-004","category":"security","statement":"No production secrets or regulated data are committed to TSIC.","mandatory":true},
+    {"id":"TSIC-P0-005","category":"documentation","statement":"Architecture and governance boundaries are documented.","mandatory":true},
+    {"id":"TSIC-P0-006","category":"validation","statement":"Phase 0 validation is deterministic and runnable locally and in CI.","mandatory":true}
+  ]
+}

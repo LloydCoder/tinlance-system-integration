@@ -1,0 +1,6 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://tinlance.com/schemas/authority.schema.json",
+  "type":"object","required":["schema_version","capabilities"],
+  "properties":{"schema_version":{"type":"string"},"capabilities":{"type":"array","items":{"type":"object","required":["capability","owner"],"properties":{"capability":{"type":"string"},"owner":{"type":"string"}},"additionalProperties":false}}}
+}

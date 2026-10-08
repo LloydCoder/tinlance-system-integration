@@ -1,0 +1,24 @@
+{
+  "$schema":"../schemas/ecosystem-manifest.schema.json",
+  "schema_version":"1.0.0",
+  "ecosystem":{"id":"tinlance","name":"Tinlance Ecosystem","integration_authority":"tsic","integration_repository":"LloydCoder/tinlance-system-integration"},
+  "systems":[
+    {"id":"agent-platform","name":"Tinlance Agent Platform","repository":"LloydCoder/tinlance-agent-platform","authority":["identity","authorization","policy","runtime","tools","mcp","sandbox","secrets","budgets","evidence","audit","observability"]},
+    {"id":"agent-platform-sdk","name":"Tinlance Agent Platform SDK","repository":"LloydCoder/tinlance-agent-platform-sdk","authority":["developer_sdk_surface"]},
+    {"id":"agent-os","name":"Tinlance Agent OS","repository":"LloydCoder/tinlance-agent-os","authority":["workspace","environment","lifecycle","orchestration","ux","builder","fleet"]},
+    {"id":"agent-developer","name":"Tinlance Agent Developer","repository":null,"authority":["agent_development_surface"]},
+    {"id":"tads","name":"Tinlance Acquisition System","repository":null,"authority":["acquisition_targeting"]},
+    {"id":"sdea","name":"Signal-Driven Engineering Acquisition","repository":"LloydCoder/tinlance-sdea","authority":["engineering_acquisition_signals"]},
+    {"id":"reconos","name":"ReconOS","repository":"LloydCoder/reconos-ofe","authority":["osint_fusion"]},
+    {"id":"fadereach","name":"FadeReach","repository":"LloydCoder/fadereach","authority":["outreach_execution"]},
+    {"id":"fas","name":"Forensic Analysis System","repository":"LloydCoder/fas","authority":["evidence_first_analysis"]},
+    {"id":"fdse","name":"Tinlance FDSE","repository":"LloydCoder/tinlance-fdse","authority":["engineering_delivery"]},
+    {"id":"fde","name":"Tinlance FDE","repository":null,"authority":["domain_engineering"]},
+    {"id":"transformation","name":"Tinlance Transformation","repository":null,"authority":["portfolio_transformation","replication"]},
+    {"id":"fdse-toolkit","name":"Tinlance FDSE Toolkit","repository":"LloydCoder/Tinlance-FDSE-toolkit","authority":["delivery_reporting"]},
+    {"id":"world-intelligence","name":"Tinlance World Intelligence","repository":"LloydCoder/tinlance-world-intelligence","authority":["world_intelligence"]},
+    {"id":"hezqara","name":"Hezqara","repository":"LloydCoder/hezqara","authority":["healthcare_governed_ai_workforce"]},
+    {"id":"bugflow","name":"BugFlow","repository":"LloydCoder/bugflow-elite","authority":["application_security_testing"]},
+    {"id":"threatfade","name":"ThreatFade","repository":null,"authority":["threat_detection_response"]}
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://tinlance.com/schemas/ecosystem-manifest.schema.json",
+  "type":"object","required":["schema_version","ecosystem","systems"],
+  "properties":{"schema_version":{"type":"string"},"ecosystem":{"type":"object","required":["id","integration_authority","integration_repository"]},"systems":{"type":"array","items":{"$ref":"#/$defs/system"}}},
+  "$defs":{"system":{"type":"object","required":["id","name","authority"],"properties":{"id":{"type":"string","pattern":"^[a-z0-9][a-z0-9-]*$"},"name":{"type":"string"},"repository":{"type":["string","null"]},"authority":{"type":"array","items":{"type":"string"}}},"additionalProperties":false}}
+}
