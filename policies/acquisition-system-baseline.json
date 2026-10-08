@@ -1,16 +1,48 @@
 {
-  "baseline_id":"tsic-25-acquisition-system-2026-10-08",
-  "authority":"tsic",
-  "systems":{
-    "world-intelligence":{"repository":"LloydCoder/tinlance-world-intelligence","ref":"665487b48217fbcb2f389cfe03fb7be1bc551f1d"},
-    "tads":{"repository":"LloydCoder/tinlance-tads","ref":"4f10bc68d68d5a730e90fccb2a45cf7564c6b0ff"},
-    "sdea":{"repository":"LloydCoder/tinlance-sdea","ref":"49c92081131054e92494bd952894004991b81a80"},
-    "reconos":{"repository":"LloydCoder/reconos-ofe","ref":"54352df3dfe33b2593ab06be469a973763958be7"},
-    "fadereach":{"repository":"LloydCoder/fadereach","ref":"7d293466bc073fe30445c154aaf50c9fa695141e"}
+  "schema_version": "1.0.0",
+  "baseline_id": "tsic-25-acquisition-system-2026-10-08",
+  "authority": "tsic",
+  "tsic": {
+    "repository": "LloydCoder/tinlance-system-integration",
+    "ref": "72c3664d7917bf9f8adb071713719589ff159972"
   },
-  "sequence":["world-intelligence","tads","sdea","reconos","fadereach"],
-  "required_adapters":["world-intelligence","tads","sdea","reconos","fadereach"],
-  "invariants":[
+  "systems": {
+    "world_intelligence": {
+      "repository": "LloydCoder/tinlance-world-intelligence",
+      "ref": "1e3c9754e56f7baf7d852a28d24c7f2e2b467056"
+    },
+    "tads": {
+      "repository": "LloydCoder/tinlance-tads",
+      "ref": "001ab8b60d454788a8b46a6cae2adca4359510b2"
+    },
+    "sdea": {
+      "repository": "LloydCoder/tinlance-sdea",
+      "ref": "47e7aa9b5d380261fe774c2d2b67be00e4be3c8e"
+    },
+    "reconos": {
+      "repository": "LloydCoder/reconos-ofe",
+      "ref": "503f620714dbe6d5a60ce6bec808e84b6a1c7a0a"
+    },
+    "fadereach": {
+      "repository": "LloydCoder/fadereach",
+      "ref": "294064e5e20cde0c1844e9d9852ac12d4e17dc1c"
+    }
+  },
+  "sequence": [
+    "world-intelligence",
+    "tads",
+    "sdea",
+    "reconos",
+    "fadereach"
+  ],
+  "required_adapters": [
+    "world-intelligence",
+    "tads",
+    "sdea",
+    "reconos",
+    "fadereach"
+  ],
+  "invariants": [
     "signal_provenance_preserved",
     "targeting_decisioning_remains_tads_authority",
     "engineering_acquisition_remains_sdea_authority",
