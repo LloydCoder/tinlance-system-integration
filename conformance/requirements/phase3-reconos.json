@@ -1,0 +1,51 @@
+{
+  "phase": "TSIC-03",
+  "title": "ReconOS Integration",
+  "requirements": [
+    {
+      "id": "TSIC-03-001",
+      "severity": "critical",
+      "statement": "ReconOS receives a qualified upstream opportunity context before enrichment."
+    },
+    {
+      "id": "TSIC-03-002",
+      "severity": "critical",
+      "statement": "Tenant, trace, opportunity and evidence references survive the enrichment boundary."
+    },
+    {
+      "id": "TSIC-03-003",
+      "severity": "critical",
+      "statement": "External OSINT content is untrusted data and cannot become an agent instruction."
+    },
+    {
+      "id": "TSIC-03-004",
+      "severity": "critical",
+      "statement": "ReconOS resolves and deduplicates entities deterministically."
+    },
+    {
+      "id": "TSIC-03-005",
+      "severity": "critical",
+      "statement": "Confidence and provenance are retained on enriched entities."
+    },
+    {
+      "id": "TSIC-03-006",
+      "severity": "critical",
+      "statement": "ReconOS enrichment cannot authorize consequential execution."
+    },
+    {
+      "id": "TSIC-03-007",
+      "severity": "high",
+      "statement": "Repeated enrichment of the same canonical entity is idempotent/deduplicated."
+    },
+    {
+      "id": "TSIC-03-008",
+      "severity": "high",
+      "statement": "Cross-repository certification executes against a pinned reviewed ReconOS revision."
+    },
+    {
+      "id": "TSIC-03-009",
+      "severity": "high",
+      "statement": "Post-phase forensic audit verifies implementation, lineage, authority and CI."
+    }
+  ]
+}
