@@ -1,0 +1,1 @@
+{"schema_version":"1.0.0","protocols":{"mcp":{"allowed":true,"authorization_authority":"agent-platform"},"a2a":{"allowed":true,"authorization_authority":"agent-platform"}},"rules":{"capability_discovery_required":true,"identity_propagation_required":true,"policy_check_required":true,"audit_required":true}}
