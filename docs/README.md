@@ -36,6 +36,7 @@ This index organizes the repository using a practical Diátaxis model while pres
 - [Event and trace fabric](contracts/event-and-trace-fabric.md)
 - [Service and contract registry](architecture/service-contract-registry.md)
 - [Production system-of-systems certification](certification/production-system-of-systems.md)
+- [TSIC-18–38 certification record](certification/TSIC-18-38-certification-record.md)
 - [2026 standards baseline](standards/2026-baseline.md)
 - [Compatibility](../compatibility/README.md)
 - [Conformance requirements](../conformance/README.md)

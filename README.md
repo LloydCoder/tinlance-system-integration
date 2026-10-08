@@ -135,7 +135,7 @@ python3 tooling/security_scan.py
 | Canonical E2E workflows | Implemented |
 | Failure/replay/recovery certification | Implemented |
 | Forensic certification | Implemented |
-| Cross-repository runtime adoption | Next integration program |
+| Cross-repository contract adoption | Certified through TSIC-37 interoperability |
 
 ## Documentation
 
@@ -151,6 +151,7 @@ Start with:
 - [Failure and recovery certification](docs/operations/failure-recovery-certification.md)
 - [Production system-of-systems certification](docs/certification/production-system-of-systems.md)
 - [2026 standards baseline](docs/standards/2026-baseline.md)
+- [TSIC-18–38 certification record](docs/certification/TSIC-18-38-certification-record.md)
 
 For AI-assisted repository discovery, see [llms.txt](llms.txt).
 
