@@ -40,9 +40,11 @@
     "agent-platform-remains-execution-authority"
   ],
   "execution_gate": {
-    "workflow": ".github/workflows/reconos-acquisition.yml",
-    "certifier": "scripts/certify_reconos_acquisition.py",
-    "forensic_audit": "scripts/forensic_audit_phase3.py",
-    "requires_cross_repository_execution": true
+    "tsic_contract_workflow": ".github/workflows/reconos-acquisition.yml",
+    "source_owned_workflow": "LloydCoder/reconos-ofe/.github/workflows/tsic-integration-e2e.yml",
+    "source_owned_certifier": "LloydCoder/reconos-ofe/scripts/tsic_acquisition_e2e.py",
+    "source_owned_forensic_audit": "LloydCoder/reconos-ofe/scripts/tsic_forensic_audit.py",
+    "tsic_forensic_audit": "scripts/forensic_audit_phase3.py",
+    "requires_cross_repository_contract_execution": true
   }
 }
