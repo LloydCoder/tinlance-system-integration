@@ -68,7 +68,7 @@ jobs:
                   ["git", "-C", str(target), "checkout", "--quiet", item["ref"]],
                   check=True,
               )
-          tsic_target = Path("/tmp/tinlance-tsic-baseline")
+          tsic_target = Path("/tmp/tinlance-tsic")
           subprocess.run(
               ["git", "clone", "--quiet", f"https://github.com/{baseline['tsic']['repository']}.git", str(tsic_target)],
               check=True,
