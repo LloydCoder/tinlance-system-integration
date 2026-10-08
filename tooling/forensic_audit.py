@@ -31,7 +31,7 @@ required = [
     "integrations/agent-developer/adapter.json",
     "workflows/canonical.json",
     "reliability/failure-matrix.json",
-    "policies/ecosystem-lock.json",
+    "policies/ecosystem-lock.json", "policies/agent-system-baseline.json",
 ]
 
 missing = [p for p in required if not (ROOT / p).is_file()]
@@ -40,7 +40,7 @@ if missing:
 
 markers = [
     f"conformance/requirements/phase{i}.json" for i in range(1, 11)
-] + ["conformance/requirements/phase11.json", "conformance/requirements/phase12.json", "conformance/requirements/phase13.json", "conformance/requirements/phase14.json", "conformance/requirements/phase15.json"]
+] + ["conformance/requirements/phase11.json", "conformance/requirements/phase12.json", "conformance/requirements/phase13.json", "conformance/requirements/phase14.json", "conformance/requirements/phase15.json", "conformance/requirements/phase16.json"]
 missing = [p for p in markers if not (ROOT / p).is_file()]
 if missing:
     raise SystemExit("FAIL missing conformance phases: " + ",".join(missing))
