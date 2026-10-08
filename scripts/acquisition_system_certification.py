@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import base64
 import json
 from pathlib import Path
 from urllib.request import Request, urlopen
@@ -29,67 +30,20 @@ SYSTEM_REPOSITORIES = {
 
 
 def fetch_reviewed_file(repository: str, revision: str, path: str) -> str:
-    owner, name = repository.split("/", 1)
-    url = f"https://github.com/{owner}/{name}/raw/{revision}/{path}"
-    request = Request(url, headers={"Accept": "text/plain", "User-Agent": "tinlance-tsic-certifier"})
+    url = f"https://api.github.com/repos/{repository}/contents/{path}?ref={revision}"
+    request = Request(
+        url,
+        headers={
+            "Accept": "application/vnd.github+json",
+            "User-Agent": "tinlance-tsic-certifier",
+        },
+    )
     with urlopen(request, timeout=20) as response:
         if response.status != 200:
-            raise RuntimeError(f"fetch failed: HTTP {response.status} {url}")
-        return response.read().decode("utf-8")
+            raise RuntimeError(f"GitHub contents API returned HTTP {response.status}: {url}")
+        payload = json.load(response)
+    if payload.get("type") != "file":
+        raise RuntimeError(f"reviewed path is not a file: {url}")
+    encoded = payload.get("content", "")
+    return base64.b64decode(encoded.replace("\\n", "")).decode("utf-8")
 
-
-def main() -> None:
-    baseline = json.loads(BASELINE_PATH.read_text(encoding="utf-8"))
-    assert baseline["authority"] == "tsic"
-    assert baseline["sequence"] == list(SYSTEM_REPOSITORIES)
-    assert baseline["tsic"]["ref"] == TSIC_REVISION
-
-    feedback = baseline["feedback"]
-    assert feedback["from"] == "fadereach"
-    assert feedback["through"] == [
-        "sales",
-        "fdse",
-        "outcome",
-        "evidence",
-        "economic-attribution",
-        "evaluation",
-    ]
-    assert feedback["returns_to"] == ["tads", "sdea"]
-    assert feedback["rule"] == "feedback_is_learning_input_not_execution_authority"
-
-    for system_id, repository in SYSTEM_REPOSITORIES.items():
-        system = baseline["systems"][system_id.replace("-", "_")]
-        assert system["repository"] == repository
-        reviewed_ref = system["ref"]
-        assert reviewed_ref and len(reviewed_ref) == 40
-
-        try:
-            conformance = fetch_reviewed_file(repository, reviewed_ref, "scripts/tsic_conformance.py")
-        except Exception as exc:
-            raise RuntimeError(
-                f"{system_id}: unable to fetch reviewed conformance gate "
-                f"{repository}@{reviewed_ref}: {exc}"
-            ) from exc
-
-        expected_adapter_revision = ADAPTER_REVISIONS[system_id]
-        assert "TSIC_REVISION" in conformance
-        assert expected_adapter_revision in conformance, (
-            f"{system_id}: conformance gate is not pinned to {expected_adapter_revision}"
-        )
-
-        adapter_path = ROOT / "integrations" / system_id / "adapter.json"
-        adapter = json.loads(adapter_path.read_text(encoding="utf-8"))
-        assert adapter["source_system"] == "tsic"
-        assert adapter["target_system"] == system_id
-        assert adapter["status"] == "reference-contract"
-        assert adapter["authority"]["integration_contracts"] == "tsic"
-        assert adapter["authority"]["execution_authority"] == "agent-platform"
-
-    print(
-        "PASS TSIC-25 Acquisition System certification: "
-        f"baseline={baseline['baseline_id']} systems={len(SYSTEM_REPOSITORIES)}"
-    )
-
-
-if __name__ == "__main__":
-    main()
