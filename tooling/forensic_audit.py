@@ -26,6 +26,7 @@ required = [
     "contracts/economics/attribution.json",
     "integrations/adapters/registry.json",
     "integrations/agent-platform/adapter.json",
+    "integrations/agent-platform-sdk/adapter.json",
     "workflows/canonical.json",
     "reliability/failure-matrix.json",
     "policies/ecosystem-lock.json",
@@ -37,7 +38,7 @@ if missing:
 
 markers = [
     f"conformance/requirements/phase{i}.json" for i in range(1, 11)
-] + ["conformance/requirements/phase11.json", "conformance/requirements/phase12.json"]
+] + ["conformance/requirements/phase11.json", "conformance/requirements/phase12.json", "conformance/requirements/phase13.json"]
 missing = [p for p in markers if not (ROOT / p).is_file()]
 if missing:
     raise SystemExit("FAIL missing conformance phases: " + ",".join(missing))
@@ -138,12 +139,13 @@ adapters = json.loads((ROOT / "integrations/adapters/registry.json").read_text()
 adapter_ids = {item["id"] for item in adapters["adapters"]}
 if len(adapter_ids) != len(adapters["adapters"]):
     raise SystemExit("FAIL duplicate adapter IDs")
-if "tsic-to-agent-platform-reference" not in adapter_ids:
+if "tsic-to-agent-platform-reference" not in adapter_ids or "tsic-to-agent-platform-sdk-reference" not in adapter_ids:
     raise SystemExit("FAIL Agent Platform reference adapter is not registered")
 if any(item["from"] not in ids or item["to"] not in ids for item in adapters["adapters"]):
     raise SystemExit("FAIL adapter references unregistered system")
 
 adapter = json.loads((ROOT / "integrations/agent-platform/adapter.json").read_text())
+sdk_adapter = json.loads((ROOT / "integrations/agent-platform-sdk/adapter.json").read_text())
 if adapter["adapter_id"] != "tsic-agent-platform-reference":
     raise SystemExit("FAIL invalid Agent Platform adapter identity")
 if adapter["source_system"] != "tsic" or adapter["target_system"] != "agent-platform":
@@ -156,6 +158,15 @@ if {item["tsic_contract"] for item in adapter["contract_bindings"]} != required_
     raise SystemExit("FAIL incomplete Agent Platform contract binding set")
 if "adapter_never_grants_authority" not in adapter["invariants"]:
     raise SystemExit("FAIL Agent Platform adapter authority invariant")
+if sdk_adapter["adapter_id"] != "tsic-agent-platform-sdk-reference":
+    raise SystemExit("FAIL invalid Platform SDK adapter identity")
+if sdk_adapter["source_system"] != "tsic" or sdk_adapter["target_system"] != "agent-platform-sdk":
+    raise SystemExit("FAIL invalid Platform SDK adapter endpoints")
+sdk_required = {"identity-context", "agent-registration", "delivery-semantics", "trace-context", "agent-interoperability-gate", "economic-attribution"}
+if {item["tsic_contract"] for item in sdk_adapter["contract_bindings"]} != sdk_required:
+    raise SystemExit("FAIL incomplete Platform SDK contract binding set")
+if "sdk_never_grants_execution_authority" not in sdk_adapter["invariants"]:
+    raise SystemExit("FAIL Platform SDK authority invariant")
 
 workflows = json.loads((ROOT / "workflows/canonical.json").read_text())
 if any(item["steps"][0] not in ids or item["steps"][-1] not in ids for item in workflows["workflows"]):
@@ -182,4 +193,4 @@ for command in [
     if result.returncode:
         raise SystemExit("FAIL " + command[-1] + ": " + result.stderr.strip())
 
-print(f"PASS TSIC-18.1 reference adapter audit: {len(ids)} systems, {len(adapters['adapters'])} adapters, {len(json_files)} JSON files")
+print(f"PASS TSIC-18.3 reference adapter audit: {len(ids)} systems, {len(adapters['adapters'])} adapters, {len(json_files)} JSON files")
