@@ -10,6 +10,7 @@ This index organizes the repository using a practical Diátaxis model while pres
 ## How-to guides
 
 - [Phase 0 runbook](operations/phase0-runbook.md)
+- [P0 ecosystem reconciliation](operations/p0-ecosystem-reconciliation.md)
 - [Failure and recovery certification](operations/failure-recovery-certification.md)
 - [Adapter fabric](integrations/adapter-fabric.md)
 - [Ecosystem lock](governance/ecosystem-lock.md)
@@ -20,6 +21,7 @@ This index organizes the repository using a practical Diátaxis model while pres
 - [Canonical system model](architecture/canonical-system-model.md)
 - [Authority model](architecture/authority-model.md)
 - [Authority reconciliation](architecture/authority-reconciliation.md)
+- [Ecosystem conformance authority](architecture/decision-records/ADR-0003-ecosystem-conformance-authority.md)
 - [Identity and agent registration](architecture/identity-and-agent-registration.md)
 - [Integration topology](architecture/integration-topology.md)
 - [Trust boundaries](architecture/trust-boundaries.md)
