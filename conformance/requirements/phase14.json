@@ -1,0 +1,12 @@
+{
+  "phase":"TSIC-18.4",
+  "title":"Agent OS reference adapter and ecosystem contract gate",
+  "requirements":[
+    {"id":"TSIC-18.4-001","category":"registry","statement":"Agent OS reference adapter is registered in the canonical TSIC adapter registry.","mandatory":true},
+    {"id":"TSIC-18.4-002","category":"authority","statement":"Agent OS owns workspace, environment, lifecycle, orchestration, UX, builder, and fleet concerns without becoming the execution authority.","mandatory":true},
+    {"id":"TSIC-18.4-003","category":"identity","statement":"Agent OS preserves tenant and execution context across workspace and workflow boundaries.","mandatory":true},
+    {"id":"TSIC-18.4-004","category":"delivery","statement":"Workflow retries preserve idempotency metadata and never bypass Platform authorization.","mandatory":true},
+    {"id":"TSIC-18.4-005","category":"telemetry","statement":"Agent OS preserves trace and correlation context across lifecycle transitions.","mandatory":true},
+    {"id":"TSIC-18.4-006","category":"verification","statement":"The OS CI gate validates the immutable TSIC adapter contract.","mandatory":true}
+  ]
+}
