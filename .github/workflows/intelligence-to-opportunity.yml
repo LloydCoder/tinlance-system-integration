@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: LloydCoder/tinlance-world-intelligence
-          ref: 1e3c9754e56f7baf7d852a28d24c7f2e2b467056
+          ref: 30b939031081220dee17a44fde1f5c6f887e254f
           path: world-intelligence
           persist-credentials: false
       - name: Checkout TADS
