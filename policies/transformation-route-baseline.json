@@ -1,0 +1,18 @@
+{
+  "schema_version":"1.0.0",
+  "baseline_id":"tsic-28-transformation-route-2026-10-08",
+  "authority":"tsic",
+  "fdse":{"repository":"LloydCoder/tinlance-fdse","ref":"26147caea7475c583012b353979e2e780c51dbe3"},
+  "route":"transformation",
+  "invariants":[
+    "delivery_route_is_explicit",
+    "transformation_route_is_distinct_from_engineering",
+    "portfolio_transformation_semantics_are_preserved",
+    "fdse_owns_delivery_orchestration",
+    "fdse_does_not_grant_platform_execution_authority",
+    "evidence_and_outcomes_are_preserved",
+    "economic_attribution_carries_route",
+    "tsic_remains_integration_authority",
+    "agent-platform-remains-execution-authority"
+  ]
+}
