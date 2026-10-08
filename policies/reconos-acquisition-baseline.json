@@ -1,0 +1,48 @@
+{
+  "schema_version": "2.0.0",
+  "baseline_id": "tsic-03-reconos-acquisition-2026-10-08",
+  "authority": "tsic",
+  "upstream": [
+    "world-intelligence",
+    "tads",
+    "sdea"
+  ],
+  "target": "reconos",
+  "repository": {
+    "name": "LloydCoder/reconos-ofe",
+    "ref": "4b95e18f21ac7d5b820267f5f09780aa450606ae"
+  },
+  "handoff_lineage": [
+    "tenant_id",
+    "source_id",
+    "artifact_id",
+    "observation_id",
+    "evidence_id",
+    "signal_id",
+    "opportunity_id",
+    "trace_id",
+    "reconos_entity_id",
+    "confidence"
+  ],
+  "authority_boundaries": {
+    "reconos": "OSINT collection/enrichment/entity resolution/confidence/provenance",
+    "tsic": "integration contracts/conformance",
+    "agent_platform": "consequential execution"
+  },
+  "invariants": [
+    "upstream_opportunity_is_required",
+    "external_data_is_untrusted",
+    "provenance_and_confidence_are_preserved",
+    "tenant_context_is_immutable",
+    "enrichment_is_not_authorization",
+    "replay_is_idempotent_or_deduplicated",
+    "tsic_remains_integration_authority",
+    "agent-platform-remains-execution-authority"
+  ],
+  "execution_gate": {
+    "workflow": ".github/workflows/reconos-acquisition.yml",
+    "certifier": "scripts/certify_reconos_acquisition.py",
+    "forensic_audit": "scripts/forensic_audit_phase3.py",
+    "requires_cross_repository_execution": true
+  }
+}
