@@ -32,6 +32,29 @@ for x in auth["capabilities"]:
     if old and old!=x["owner"]: raise SystemExit("FAIL conflicting authority: "+x["capability"])
     owners[x["capability"]]=x["owner"]
 if any(x["owner"] not in ids for x in auth["capabilities"]): raise SystemExit("FAIL unregistered authority owner")
+canon=json.loads((ROOT/"catalog/architecture/canonical.json").read_text())
+canon_ids={x["id"] for x in canon["systems"]}
+if canon_ids != set(ids): raise SystemExit("FAIL canonical architecture differs from ecosystem manifest")
+auth_caps={x["capability"] for x in auth["capabilities"]}
+for s in canon["systems"]:
+    for cap in s["authority"]:
+        if cap not in auth_caps: raise SystemExit("FAIL canonical authority not registered: "+cap)
+services=json.loads((ROOT/"catalog/services/registry.json").read_text())
+service_ids={x["id"] for x in services["services"]}
+if len(service_ids)!=len(services["services"]): raise SystemExit("FAIL duplicate service IDs")
+if any(x["system"] not in ids for x in services["services"]): raise SystemExit("FAIL service references unregistered system")
+contracts=json.loads((ROOT/"catalog/contracts/registry.json").read_text())
+contract_ids={x["id"] for x in contracts["contracts"]}
+required_contracts={"identity-context","agent-registration","event-envelope","delivery-semantics","trace-context","model-routing-authority","agent-interoperability-gate","economic-attribution","adapter-rules","failure-matrix","ecosystem-lock","canonical-workflows"}
+if not required_contracts <= contract_ids: raise SystemExit("FAIL incomplete contract registry")
+deps=json.loads((ROOT/"catalog/dependencies/graph.json").read_text())
+if any(e["from"] not in ids or e["to"] not in ids for e in deps["edges"]): raise SystemExit("FAIL dependency references unregistered system")
+adapters=json.loads((ROOT/"integrations/adapters/registry.json").read_text())
+adapter_ids={x["id"] for x in adapters["adapters"]}
+if len(adapter_ids)!=len(adapters["adapters"]): raise SystemExit("FAIL duplicate adapter IDs")
+if any(x["from"] not in ids or x["to"] not in ids for x in adapters["adapters"]): raise SystemExit("FAIL adapter references unregistered system")
+wf=json.loads((ROOT/"workflows/canonical.json").read_text())
+if any(x["steps"][0] not in ids or x["steps"][-1] not in ids for x in wf["workflows"]): raise SystemExit("FAIL workflow endpoint not registered")
 wf=json.loads((ROOT/"workflows/canonical.json").read_text())
 expected={"acquisition-engineering","transformation","agent-development"}
 if {x["id"] for x in wf["workflows"]}!=expected: raise SystemExit("FAIL canonical workflow set")
