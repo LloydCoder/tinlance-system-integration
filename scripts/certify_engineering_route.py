@@ -41,7 +41,7 @@ def main() -> None:
         "fdse_does_not_grant_platform_execution_authority",
         "evidence_and_outcomes_are_preserved",
         "tsic_remains_integration_authority",
-        "agent-platform_remains-execution-authority",
+        "agent-platform_remains_execution_authority",
     }
     missing_invariants = required_invariants - set(adapter["invariants"])
     if missing_invariants:
