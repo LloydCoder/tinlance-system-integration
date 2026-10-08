@@ -35,17 +35,22 @@ def main() -> None:
     if {item["tsic_contract"] for item in adapter["contract_bindings"]} != required:
         raise AssertionError("FDSE contract bindings drifted")
 
-    required_invariants = {"delivery_route_is_explicit","engineering_route_is_distinct_from_transformation","economic_attribution_carries_route"}
-    if "delivery_route_is_explicit" not in adapter["invariants"]:
-        raise AssertionError("delivery route invariant drift")
-    if "engineering_and_transformation_are_distinct_routes" not in adapter["invariants"]:
-        raise AssertionError("engineering/transformation distinction missing")
-    if "delivery_route_is_explicit" not in adapter["invariants"]:
-        raise AssertionError("delivery route is not explicit")
-    if "engineering_and_transformation_are_distinct_routes" not in adapter["invariants"]:
-        raise AssertionError("engineering/transformation distinction missing")
-    if "fdse_does_not_grant_platform_execution_authority" not in adapter["invariants"]:
-        raise AssertionError("FDSE execution boundary drifted")
+    required_invariants = {
+        "delivery_route_is_explicit",
+        "engineering_and_transformation_are_distinct_routes",
+        "fdse_does_not_grant_platform_execution_authority",
+        "evidence_and_outcomes_are_preserved",
+        "tsic_remains_integration_authority",
+        "agent-platform_remains_execution_authority",
+    }
+    missing_invariants = required_invariants - set(adapter["invariants"])
+    if missing_invariants:
+        raise AssertionError(
+            f"engineering route adapter authority invariants drifted: "
+            f"missing={sorted(missing_invariants)} actual={sorted(adapter['invariants'])}"
+        )
+    if "economic_attribution_carries_route" not in baseline["invariants"]:
+        raise AssertionError("engineering route baseline lost economic attribution")
 
     print("PASS TSIC-27 Engineering route certification")
 
