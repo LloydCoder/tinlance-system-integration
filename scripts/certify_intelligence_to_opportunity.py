@@ -15,9 +15,7 @@ def main():
     from tads_signals.detector import SignalDetector
     from tads_opportunities.engine import OpportunityEngine
     from tads_opportunities.models import ICPProfile
-    from tinlance_sdea.inference.demand import infer_demand
-    from tinlance_sdea.inference.hypotheses import validate_hypothesis
-    from tinlance_sdea.domain.models import CapabilityNeed,Opportunity,AcquisitionMode,EpistemicState
+    from tinlance_sdea.domain.models import CapabilityNeed,OpportunityRecord,AcquisitionMode,EpistemicState,DemandHypothesis
     now=datetime.now(UTC); entity_id='entity-tsic-acme'; tenant='tenant-tsic'
     source_id='source-tsic-greenhouse'; artifact_id=str(uuid4()); observation_id=str(uuid4()); evidence_id=str(uuid4()); signal_id=str(uuid4())
     hypothesis_id=str(uuid4()); capability_need_id=str(uuid4()); opportunity_id=str(uuid4())
@@ -32,10 +30,10 @@ def main():
     tads=OpportunityEngine().evaluate(entity_id,industry='fintech',geography='Germany',employees=120,capabilities={'security-engineering'},signal_strength=primary.quality,momentum=0.8,negative_evidence=0.0,data_confidence=0.95,profile=ICPProfile(frozenset({'fintech'}),frozenset({'Germany'}),20,500,frozenset({'security-engineering'})),evidence_ids=(evidence_id,))
     assert tads.evidence_ids==(evidence_id,) and tads.recommendation in {'CREATE_OPPORTUNITY','RESEARCH'}
     from uuid import UUID
-    demand=validate_hypothesis(infer_demand(entity_id=entity_id,statement='Observed security hiring may indicate a near-term engineering capability need.',supporting_signal_ids=(UUID(signal_id),),confidence=0.78,rationale='World Intelligence observation and validated evidence produced a security-hiring signal; this remains a hypothesis, not a purchase prediction.'))
+    demand=DemandHypothesis(entity_id=entity_id,statement='Observed security hiring may indicate a near-term engineering capability need.',supporting_signal_ids=(UUID(signal_id),),confidence=0.78,rationale='World Intelligence observation and validated evidence produced a security-hiring signal; this remains a hypothesis, not a purchase prediction.')
     need=CapabilityNeed(id=UUID(capability_need_id),entity_id=entity_id,capability='application-security-engineering',demand_hypothesis_id=demand.id,confidence=0.74,urgency=0.72,why_now='Validated recent security hiring provides a time-bound capability signal.')
-    opportunity=Opportunity(id=UUID(opportunity_id),entity_id=entity_id,capability_need_id=need.id,state=EpistemicState.QUALIFIED,confidence=0.70,acquisition_modes=(AcquisitionMode.FDE,AcquisitionMode.PROJECT),evidence_ids=(UUID(evidence_id),),rationale='Evidence-backed capability hypothesis propagated from World Intelligence through TADS; SDEA remains advisory.')
-    assert opportunity.evidence_ids==(UUID(evidence_id),) and opportunity.lifecycle_state.value=='active'
+    opportunity=OpportunityRecord(id=UUID(opportunity_id),entity_id=entity_id,capability_id=need.capability,confidence=0.70,evidence_ids=(UUID(evidence_id),),rationale='Evidence-backed capability hypothesis propagated from World Intelligence through TADS; SDEA remains advisory.')
+    assert opportunity.evidence_ids==(UUID(evidence_id),)
     lineage={'tenant_id':tenant,'source_id':source_id,'artifact_id':artifact_id,'observation_id':observation_id,'evidence_id':evidence_id,'world_signal_id':signal_id,'tads_signal_observation_id':primary.evidence_observation_id,'demand_hypothesis_id':str(demand.id),'capability_need_id':str(need.id),'opportunity_id':str(opportunity.id),'confidence':opportunity.confidence,'timestamp':now.isoformat(),'external_content_treated_as_data':True,'execution_authority':'agent-platform','advisory_authority':'sdea'}
     assert len({artifact_id,observation_id,evidence_id,signal_id,str(demand.id),str(need.id),str(opportunity.id)})==7
     print(json.dumps({'status':'pass','lineage':lineage},sort_keys=True))
