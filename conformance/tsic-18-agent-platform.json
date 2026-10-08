@@ -1,0 +1,25 @@
+{
+  "$schema": "../schemas/tsic-18-conformance.schema.json",
+  "phase": "TSIC-18.1",
+  "system": "agent-platform",
+  "status": "contracted",
+  "authority_rule": "Agent Platform remains the sole governed execution and authority plane.",
+  "required": [
+    "authenticated principal binding",
+    "tenant binding",
+    "registered capability enforcement",
+    "version negotiation",
+    "W3C trace-context propagation",
+    "request/correlation identity",
+    "idempotency for consequential operations",
+    "authoritative evidence reference",
+    "economic attribution fields",
+    "fail-closed authorization"
+  ],
+  "negative_cases": [
+    "unsupported API version",
+    "principal/tenant mismatch",
+    "idempotency payload conflict",
+    "non-HTTPS production transport"
+  ]
+}

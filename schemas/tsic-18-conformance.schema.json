@@ -1,0 +1,16 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://tinlance.com/schemas/tsic/tsic-18-conformance/v1",
+  "title":"TSIC-18 Cross-Repository Conformance",
+  "type":"object",
+  "additionalProperties":false,
+  "required":["phase","system","status","authority_rule","required","negative_cases"],
+  "properties":{
+    "phase":{"type":"string"},
+    "system":{"type":"string"},
+    "status":{"enum":["declared","contracted","verified","certified","drifted"]},
+    "authority_rule":{"type":"string","minLength":1},
+    "required":{"type":"array","uniqueItems":true,"items":{"type":"string"},"minItems":1},
+    "negative_cases":{"type":"array","uniqueItems":true,"items":{"type":"string"},"minItems":1}
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tinlance.com/schemas/tsic/agent-platform-reference-adapter/v1",
+  "title": "TSIC Agent Platform Reference Adapter",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "system_id", "authority", "protocol", "required_headers", "invariants"],
+  "properties": {
+    "schema_version": {"const": "agent-platform-reference-adapter/v1"},
+    "system_id": {"const": "agent-platform"},
+    "authority": {"const": "Agent Platform remains the sole governed execution authority"},
+    "protocol": {"type": "object", "additionalProperties": false, "required": ["method", "path", "api_version"], "properties": {
+      "method": {"const": "POST"},
+      "path": {"const": "/v1/agent-platform"},
+      "api_version": {"type": "string", "minLength": 1}
+    }},
+    "required_headers": {"type": "array", "uniqueItems": true, "items": {"type": "string"}, "minItems": 4},
+    "invariants": {"type": "array", "uniqueItems": true, "items": {"type": "string"}, "minItems": 8}
+  }
+}
