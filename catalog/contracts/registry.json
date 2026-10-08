@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0.0",
+  "schema_version": "2.0.0",
   "authority": "tsic",
   "compatibility_policy": "semver",
   "contracts": [
@@ -62,6 +62,21 @@
       "id": "canonical-workflows",
       "version": "1.0.0",
       "kind": "workflow"
+    },
+    {
+      "id": "ecosystem-manifest",
+      "version": "2.0.0",
+      "kind": "registry"
+    },
+    {
+      "id": "dependency-graph",
+      "version": "2.0.0",
+      "kind": "dependency"
+    },
+    {
+      "id": "tsic-phase-registry",
+      "version": "1.0.0",
+      "kind": "certification"
     }
   ]
 }
