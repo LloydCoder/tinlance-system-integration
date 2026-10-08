@@ -5,6 +5,7 @@ import json,re,subprocess,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 PHASE_SCRIPTS=[
+"scripts/certify_phase0.py",
 "tooling/validate_phase0.py","tooling/run_reference_workflow.py","tooling/recovery_cert.py",
 "tooling/ecosystem_lock.py","tooling/forensic_audit.py","tooling/security_scan.py",
 "scripts/certify_acquisition_system.py","scripts/certify_engineering_route.py","scripts/certify_transformation_route.py",
