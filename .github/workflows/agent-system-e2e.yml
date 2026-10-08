@@ -18,6 +18,7 @@ jobs:
       TSIC_PLATFORM_TOKEN: tsic-reference-token
       TSIC_PLATFORM_TENANT: tenant-tsic
       TSIC_PLATFORM_SUBJECT: subject-tsic
+      TSIC_PLATFORM_APPROVER_TOKEN: approver-tsic-token
     steps:
       - name: Checkout TSIC
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
