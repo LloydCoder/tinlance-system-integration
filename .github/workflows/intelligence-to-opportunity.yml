@@ -1,0 +1,51 @@
+name: TSIC-02 Intelligence to Opportunity
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+permissions: {contents: read}
+concurrency: {group: tsic-02-${{ github.ref }}, cancel-in-progress: true}
+jobs:
+  intelligence-to-opportunity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      PYTHONPATH: ${{ github.workspace }}/world-intelligence:${{ github.workspace }}/tads/src:${{ github.workspace }}/sdea/src
+    steps:
+      - name: Checkout TSIC
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {path: tsic, persist-credentials: false}
+      - name: Checkout World Intelligence
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {repository: LloydCoder/tinlance-world-intelligence, ref: 1e3c9754e56f7baf7d852a28d24c7f2e2b467056, path: world-intelligence, persist-credentials: false}
+      - name: Checkout TADS
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {repository: LloydCoder/tinlance-tads, ref: be242dd29335e3e74b4b80176ea073f7b7f74d56, path: tads, persist-credentials: false}
+      - name: Checkout SDEA
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {repository: LloydCoder/tinlance-sdea, ref: d189b05ab0db3044c13c461ddd8658aabde5fe03, path: sdea, persist-credentials: false}
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with: {python-version: '3.12'}
+      - name: Install World Intelligence
+        run: python -m pip install -e './world-intelligence'
+      - name: Install TADS
+        run: python -m pip install -e './tads'
+      - name: Install SDEA
+        run: python -m pip install -e './sdea'
+      - name: World Intelligence contract tests
+        working-directory: world-intelligence
+        run: python -m pytest -q tests/contract tests/integration/test_runtime.py tests/unit/test_api.py
+      - name: TADS integration contract tests
+        working-directory: tads
+        run: python -m pytest -q tests/test_contracts.py tests/test_domain_contracts.py tests/test_m9_m10_integrations.py tests/test_m11_feedback.py
+      - name: SDEA integration and forensic tests
+        working-directory: sdea
+        run: python -m pytest -q tests/test_contracts_integrations.py tests/test_forensic_invariants.py tests/test_opportunity_acquisition.py tests/test_signal_intelligence.py tests/test_outcomes_evaluation.py
+      - name: Execute cross-repository Intelligence to Opportunity vertical slice
+        working-directory: tsic
+        run: python scripts/certify_intelligence_to_opportunity.py
+      - name: Post-phase forensic audit
+        working-directory: tsic
+        run: python scripts/forensic_audit_phase2.py
