@@ -1,46 +1,63 @@
 {
   "$schema": "../../schemas/canonical-architecture.schema.json",
-  "schema_version": "1.1.0",
+  "schema_version": "2.0.0",
   "authority": "tsic",
   "ecosystem": "tinlance",
   "systems": [
     {
-      "id": "agent-developer",
-      "layer": "agent",
+      "id": "tsic",
+      "layer": "integration",
       "authority": [
-        "agent_development_surface"
-      ]
-    },
-    {
-      "id": "agent-os",
-      "layer": "agent",
-      "authority": [
-        "workspace_and_environment",
-        "agent_lifecycle_orchestration"
-      ]
-    },
-    {
-      "id": "agent-platform-sdk",
-      "layer": "agent",
-      "authority": [
-        "developer_surface"
+        "ecosystem_integration_contracts",
+        "ecosystem_registry",
+        "compatibility_policy",
+        "conformance_requirements",
+        "certification_evidence"
       ]
     },
     {
       "id": "agent-platform",
       "layer": "agent",
       "authority": [
-        "agent_identity",
-        "agent_authorization",
-        "agent_policy",
-        "agent_runtime",
-        "tools_and_mcp_execution",
+        "identity",
+        "authorization",
+        "policy",
+        "runtime",
+        "tools",
+        "mcp",
         "sandbox",
         "secrets",
-        "agent_budgets",
-        "agent_evidence",
-        "agent_audit",
-        "agent_observability"
+        "budgets",
+        "evidence",
+        "audit",
+        "observability"
+      ]
+    },
+    {
+      "id": "agent-platform-sdk",
+      "layer": "agent",
+      "authority": [
+        "developer_sdk_surface"
+      ]
+    },
+    {
+      "id": "agent-os",
+      "layer": "agent",
+      "authority": [
+        "workspace",
+        "environment",
+        "lifecycle",
+        "orchestration",
+        "ux",
+        "builder",
+        "fleet"
+      ]
+    },
+    {
+      "id": "agent-developer",
+      "layer": "agent",
+      "authority": [
+        "agent_development_surface"
       ]
     },
     {
@@ -54,7 +71,7 @@
       "id": "tads",
       "layer": "acquisition",
       "authority": [
-        "targeting_decisioning"
+        "acquisition_targeting"
       ]
     },
     {
@@ -79,10 +96,37 @@
       ]
     },
     {
+      "id": "fas",
+      "layer": "evidence",
+      "authority": [
+        "evidence_first_analysis"
+      ]
+    },
+    {
+      "id": "fas-bench",
+      "layer": "evaluation",
+      "authority": [
+        "benchmark_corpus",
+        "evaluation_harness",
+        "regression_evaluation",
+        "reproducibility_evidence"
+      ]
+    },
+    {
       "id": "fdse",
       "layer": "delivery",
       "authority": [
-        "engineering_delivery"
+        "engineering_delivery",
+        "transformation_delivery"
+      ]
+    },
+    {
+      "id": "fde-mastery",
+      "layer": "delivery",
+      "authority": [
+        "fde_methodology",
+        "domain_execution",
+        "engagement_delivery"
       ]
     },
     {
@@ -96,7 +140,8 @@
       "id": "transformation",
       "layer": "delivery",
       "authority": [
-        "portfolio_transformation"
+        "portfolio_transformation",
+        "replication"
       ]
     },
     {
@@ -107,33 +152,20 @@
       ]
     },
     {
-      "id": "fas",
-      "layer": "evidence",
-      "authority": [
-        "forensic_analysis"
-      ]
-    },
-    {
-      "id": "economic-attribution",
-      "layer": "economics",
-      "authority": [
-        "economic_attribution"
-      ]
-    },
-    {
-      "id": "fas-bench",
-      "layer": "evaluation",
-      "authority": [
-        "benchmark_corpus",
-        "evaluation_harness",
-        "benchmark_reproducibility"
-      ]
-    },
-    {
-      "id": "hezqara",
+      "id": "threatfade",
       "layer": "product",
       "authority": [
-        "healthcare_workforce"
+        "threat_detection_response"
+      ]
+    },
+    {
+      "id": "threatfade-web",
+      "layer": "product",
+      "authority": [
+        "product_presentation",
+        "analyst_workflow",
+        "research_surface",
+        "commercial_workflow"
       ]
     },
     {
@@ -144,21 +176,27 @@
       ]
     },
     {
-      "id": "threatfade",
+      "id": "hezqara",
       "layer": "product",
       "authority": [
-        "security_engineering"
+        "healthcare_governed_ai_workforce"
       ]
     },
     {
-      "id": "tsic",
-      "layer": "integration",
+      "id": "economic-attribution",
+      "layer": "economics",
       "authority": [
-        "ecosystem_integration_contracts",
-        "ecosystem_registry",
-        "compatibility_policy",
-        "conformance_requirements",
-        "certification_evidence"
+        "economic_attribution"
+      ]
+    },
+    {
+      "id": "tinlance-com",
+      "layer": "commercial",
+      "authority": [
+        "commercial_offers",
+        "aaas_catalog",
+        "buyer_experience",
+        "entitlement_presentation"
       ]
     }
   ],
@@ -170,14 +208,14 @@
       "reconos",
       "fadereach",
       "fdse",
-      "fde"
+      "fde-mastery"
     ],
     "transformation": [
       "world-intelligence",
       "tads",
       "transformation",
       "fdse",
-      "fde"
+      "fde-mastery"
     ],
     "agent": [
       "agent-developer",
@@ -189,7 +227,18 @@
       "fas",
       "fas-bench"
     ],
+    "security": [
+      "threatfade",
+      "threatfade-web",
+      "fas"
+    ],
+    "delivery": [
+      "fdse",
+      "fde-mastery",
+      "fdse-toolkit"
+    ],
     "commercial": [
+      "tinlance-com",
       "tads",
       "sdea",
       "reconos",
@@ -205,10 +254,11 @@
       "sdea",
       "reconos",
       "fadereach",
+      "fadereach",
       "agent-platform",
       "fdse",
       "economic-attribution",
-      "evaluation"
+      "fas-bench"
     ]
   }
 }
