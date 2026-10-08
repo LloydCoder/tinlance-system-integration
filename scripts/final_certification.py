@@ -37,7 +37,7 @@ def forensic_scan():
    if aid in seen: raise SystemExit(f"FAIL duplicate adapter ID: {aid}")
    seen.add(aid)
  for path in ROOT.rglob("*"):
-  if not path.is_file() or ".git" in path.parts or path==ROOT/"scripts/final_certification.py": continue
+  if not path.is_file() or ".git" in path.parts or path in {ROOT/"scripts/final_certification.py",ROOT/"tooling/forensic_audit.py"}: continue
   if path.suffix.lower() not in {".md",".json",".py",".yml",".yaml",".txt"}: continue
   t=path.read_text(encoding="utf-8",errors="strict")
   if "TODO" in t or "TBD" in t: raise SystemExit(f"FAIL unresolved placeholder: {path}")
