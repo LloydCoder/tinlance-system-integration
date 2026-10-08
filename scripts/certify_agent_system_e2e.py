@@ -36,7 +36,8 @@ def main():
         assert service.cancel(run_cancel.run_id).state=='cancelled'
         task_exec=service.create_task(workspace.workspace_id,session.session_id,agent_id,'perform supervised security scan')
         run_exec=service.dispatch(task_exec); assert run_exec.state=='running'
-        approval=sdk.approvals.request(run_exec.run_id,'security.scan','repo:tsic','governed security scan')
+        execution_intent={'agent_id':agent_id,'run_id':str(run_exec.run_id),'capability_id':'security.scan','capability_version':'1','tool_name':'security.scan','tool_version':'1','action':'scan','resource':'repo:tsic','risk':'medium','reversibility':'reversible','data_class':'internal','blast_radius':'single','requested_timeout_seconds':30.0,'requested_tool_calls':1,'evidence_required':True,'contract_version':'governed-execution.v1'}
+        approval=sdk.approvals.request(run_exec.run_id,'security.scan','repo:tsic','governed security scan',execution_intent=execution_intent)
         assert approval.approval_id
         decision=approver.approvals.decide(approval.approval_id,True)
         assert decision.state
