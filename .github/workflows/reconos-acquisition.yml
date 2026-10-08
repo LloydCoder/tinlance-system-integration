@@ -1,0 +1,47 @@
+name: TSIC-03 ReconOS Acquisition
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+permissions:
+  contents: read
+concurrency:
+  group: tsic-03-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  reconos-acquisition:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout TSIC
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          path: tsic
+          persist-credentials: false
+      - name: Checkout ReconOS
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: LloydCoder/reconos-ofe
+          ref: 4b95e18f21ac7d5b820267f5f09780aa450606ae
+          path: reconos
+          persist-credentials: false
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.12'
+      - name: Install ReconOS
+        working-directory: reconos
+        run: python -m pip install -r requirements.txt
+      - name: ReconOS unit and integration tests
+        working-directory: reconos
+        run: python -m pytest -q tests
+      - name: Execute ReconOS acquisition vertical slice
+        working-directory: tsic
+        run: python scripts/certify_reconos_acquisition.py
+      - name: Post-phase forensic audit
+        working-directory: tsic
+        run: python scripts/forensic_audit_phase3.py
