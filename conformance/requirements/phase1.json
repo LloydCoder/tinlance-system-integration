@@ -1,1 +1,51 @@
-{"phase":"TSIC-01-02","title":"Canonical architecture and authority reconciliation","requirements":[{"id":"TSIC-01-001","severity":"critical","statement":"All canonical systems are registered."},{"id":"TSIC-01-002","severity":"critical","statement":"Each capability has one authoritative owner."},{"id":"TSIC-01-003","severity":"critical","statement":"Agent Platform remains execution authority."},{"id":"TSIC-01-004","severity":"critical","statement":"TSIC has no runtime or authorization authority."},{"id":"TSIC-01-005","severity":"high","statement":"Engineering and Transformation paths are distinct."}]}
+{
+  "phase": "TSIC-01",
+  "title": "Tinlance Agent System E2E",
+  "requirements": [
+    {
+      "id": "TSIC-01-001",
+      "severity": "critical",
+      "statement": "Agent Developer validates a governed agent artifact before execution."
+    },
+    {
+      "id": "TSIC-01-002",
+      "severity": "critical",
+      "statement": "Agent OS composes workspace, session, task and lifecycle state without becoming an authorization authority."
+    },
+    {
+      "id": "TSIC-01-003",
+      "severity": "critical",
+      "statement": "Platform SDK preserves tenant, principal, API version, trace and idempotency context."
+    },
+    {
+      "id": "TSIC-01-004",
+      "severity": "critical",
+      "statement": "Agent Platform authorizes the request and remains the sole consequential execution authority."
+    },
+    {
+      "id": "TSIC-01-005",
+      "severity": "critical",
+      "statement": "A real cross-repository HTTP vertical slice executes through Platform and returns evidence/audit references."
+    },
+    {
+      "id": "TSIC-01-006",
+      "severity": "critical",
+      "statement": "Approval is requested at the Platform boundary for the governed operation."
+    },
+    {
+      "id": "TSIC-01-007",
+      "severity": "critical",
+      "statement": "Cancellation, evidence retrieval and event retrieval are exercised in the same causal run."
+    },
+    {
+      "id": "TSIC-01-008",
+      "severity": "high",
+      "statement": "The E2E workflow checks out exact upstream commits and does not rely on skipped live tests."
+    },
+    {
+      "id": "TSIC-01-009",
+      "severity": "high",
+      "statement": "A post-phase forensic audit verifies the implementation and CI gate."
+    }
+  ]
+}
