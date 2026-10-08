@@ -23,7 +23,7 @@
       ],
       "certification_gate": "agent_system_e2e",
       "entry_condition": "previous_phase_green",
-      "status": "planned"
+      "status": "completed"
     },
     {
       "id": "TSIC-02",
@@ -35,7 +35,7 @@
       ],
       "certification_gate": "intelligence_to_opportunity",
       "entry_condition": "previous_phase_green",
-      "status": "planned"
+      "status": "in_progress"
     },
     {
       "id": "TSIC-03",
