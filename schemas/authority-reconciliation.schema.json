@@ -1,0 +1,1 @@
+{"$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","required":["schema_version","authority","rules","non_ownership"],"properties":{"authority":{"const":"tsic"},"rules":{"type":"array","minItems":1},"non_ownership":{"type":"array"}}}
