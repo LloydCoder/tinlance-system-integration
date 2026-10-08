@@ -1,0 +1,20 @@
+{
+  "apiVersion": "tadl.tinlance.com/v1",
+  "kind": "Agent",
+  "metadata": {
+    "name": "tsic-governed-reference",
+    "version": "1.0.0"
+  },
+  "spec": {
+    "skills": [],
+    "capabilities": {
+      "allow": [
+        "repository.read",
+        "security.scan"
+      ],
+      "deny": [
+        "admin.grant"
+      ]
+    }
+  }
+}
