@@ -40,12 +40,13 @@ def main() -> None:
         "engineering_and_transformation_are_distinct_routes",
         "fdse_does_not_grant_platform_execution_authority",
         "evidence_and_outcomes_are_preserved",
-        "economic_attribution_carries_route",
         "tsic_remains_integration_authority",
         "agent-platform_remains-execution-authority",
     }
     if not required_invariants <= set(adapter["invariants"]):
-        raise AssertionError("engineering route authority invariants drifted")
+        raise AssertionError("engineering route adapter authority invariants drifted")
+    if "economic_attribution_carries_route" not in baseline["invariants"]:
+        raise AssertionError("engineering route baseline lost economic attribution")
 
     print("PASS TSIC-27 Engineering route certification")
 
