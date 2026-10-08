@@ -16,7 +16,7 @@ def main():
     from tinlance_agent_os.transport import HttpPlatformTransport, PlatformRequestContext, StaticAccessTokenProvider
     from tinlance_agent_os.daemon_service import LocalOSService
     from tinlance_agent_os.store import StateStore
-    sdk=AgentPlatform(base_url=BASE,bearer_token=os.environ['TSIC_PLATFORM_TOKEN'],tenant_id=os.environ['TSIC_PLATFORM_TENANT'],subject_id=os.environ['TSIC_PLATFORM_SUBJECT'],**{'allow_'+'insecure_'+'http': True})
+    sdk=AgentPlatform(base_url=BASE.split('/v1/')[0],bearer_token=os.environ['TSIC_PLATFORM_TOKEN'],tenant_id=os.environ['TSIC_PLATFORM_TENANT'],subject_id=os.environ['TSIC_PLATFORM_SUBJECT'],**{'allow_'+'insecure_'+'http': True})
     assert sdk.health().ready is True
     agents=sdk.agents.list(); assert agents
     agent_id=agents[0].agent_id
