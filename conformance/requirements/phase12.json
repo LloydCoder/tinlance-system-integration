@@ -1,0 +1,14 @@
+{
+  "phase": "TSIC-18.1",
+  "title": "Agent Platform reference adapter and contract harness",
+  "requirements": [
+    {"id":"TSIC-18.1-001","category":"registry","statement":"Agent Platform adapter is registered in the canonical TSIC adapter registry.","mandatory":true},
+    {"id":"TSIC-18.1-002","category":"authority","statement":"The reference adapter does not own identity, authorization, policy, runtime, secrets, budgets, or evidence authority.","mandatory":true},
+    {"id":"TSIC-18.1-003","category":"identity","statement":"The adapter preserves tenant and authenticated-principal context without replacement.","mandatory":true},
+    {"id":"TSIC-18.1-004","category":"delivery","statement":"The adapter requires idempotency for retriable consequential operations.","mandatory":true},
+    {"id":"TSIC-18.1-005","category":"telemetry","statement":"The adapter preserves trace and correlation context across the integration boundary.","mandatory":true},
+    {"id":"TSIC-18.1-006","category":"interoperability","statement":"MCP/A2A authorization remains owned by Agent Platform while TSIC governs the interoperability contract.","mandatory":true},
+    {"id":"TSIC-18.1-007","category":"evidence","statement":"Authoritative evidence remains owned by Agent Platform and is referenced rather than recreated by TSIC.","mandatory":true},
+    {"id":"TSIC-18.1-008","category":"verification","statement":"The TSIC forensic audit validates the adapter registration and contract binding set.","mandatory":true}
+  ]
+}

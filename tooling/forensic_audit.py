@@ -25,6 +25,7 @@ required = [
     "contracts/agents/interoperability-gate.json",
     "contracts/economics/attribution.json",
     "integrations/adapters/registry.json",
+    "integrations/agent-platform/adapter.json",
     "workflows/canonical.json",
     "reliability/failure-matrix.json",
     "policies/ecosystem-lock.json",
@@ -36,7 +37,7 @@ if missing:
 
 markers = [
     f"conformance/requirements/phase{i}.json" for i in range(1, 11)
-] + ["conformance/requirements/phase11.json"]
+] + ["conformance/requirements/phase11.json", "conformance/requirements/phase12.json"]
 missing = [p for p in markers if not (ROOT / p).is_file()]
 if missing:
     raise SystemExit("FAIL missing conformance phases: " + ",".join(missing))
@@ -75,17 +76,16 @@ expected_repositories = {
 for system_id, repository in expected_repositories.items():
     actual = next((item.get("repository") for item in systems if item["id"] == system_id), None)
     if actual != repository:
-        raise SystemExit(
-            f"FAIL stale repository mapping for {system_id}: {actual!r} != {repository!r}"
-        )
+        raise SystemExit(f"FAIL stale repository mapping for {system_id}: {actual!r} != {repository!r}")
 
 roles = {item["id"]: item.get("governance_role") for item in systems}
-if roles.get("tsic") != "ecosystem_integration_authority":
-    raise SystemExit("FAIL TSIC governance role")
-if roles.get("agent-developer") != "developer_validation_consumer":
-    raise SystemExit("FAIL TADL governance role")
-if roles.get("agent-platform") != "execution_authority":
-    raise SystemExit("FAIL Agent Platform governance role")
+for system_id, expected in {
+    "tsic": "ecosystem_integration_authority",
+    "agent-developer": "developer_validation_consumer",
+    "agent-platform": "execution_authority",
+}.items():
+    if roles.get(system_id) != expected:
+        raise SystemExit(f"FAIL governance role for {system_id}")
 
 authority = json.loads((ROOT / "catalog/capabilities/authority.json").read_text())
 owners = {}
@@ -97,26 +97,20 @@ for item in authority["capabilities"]:
 if any(item["owner"] not in ids for item in authority["capabilities"]):
     raise SystemExit("FAIL unregistered authority owner")
 
-reconciliation = json.loads(
-    (ROOT / "catalog/authority/reconciliation.json").read_text()
-)
+reconciliation = json.loads((ROOT / "catalog/authority/reconciliation.json").read_text())
 rule_ids = {item["id"] for item in reconciliation["rules"]}
-required_rules = {"AUTH-007", "AUTH-008", "AUTH-009", "AUTH-010"}
-if not required_rules <= rule_ids:
+if not {"AUTH-007", "AUTH-008", "AUTH-009", "AUTH-010"} <= rule_ids:
     raise SystemExit("FAIL authority reconciliation is missing P0 governance rules")
 
 canonical = json.loads((ROOT / "catalog/architecture/canonical.json").read_text())
-canonical_ids = {item["id"] for item in canonical["systems"]}
-if canonical_ids != set(ids):
+if {item["id"] for item in canonical["systems"]} != set(ids):
     raise SystemExit("FAIL canonical architecture differs from ecosystem manifest")
 
 authority_caps = {item["capability"] for item in authority["capabilities"]}
 for system in canonical["systems"]:
     for capability in system["authority"]:
         if capability not in authority_caps:
-            raise SystemExit(
-                "FAIL canonical authority not registered: " + capability
-            )
+            raise SystemExit("FAIL canonical authority not registered: " + capability)
 
 services = json.loads((ROOT / "catalog/services/registry.json").read_text())
 service_ids = {item["id"] for item in services["services"]}
@@ -128,61 +122,55 @@ if any(item["system"] not in ids for item in services["services"]):
 contracts = json.loads((ROOT / "catalog/contracts/registry.json").read_text())
 contract_ids = {item["id"] for item in contracts["contracts"]}
 required_contracts = {
-    "identity-context",
-    "agent-registration",
-    "event-envelope",
-    "delivery-semantics",
-    "trace-context",
-    "model-routing-authority",
-    "agent-interoperability-gate",
-    "economic-attribution",
-    "adapter-rules",
-    "failure-matrix",
-    "ecosystem-lock",
+    "identity-context", "agent-registration", "event-envelope", "delivery-semantics",
+    "trace-context", "model-routing-authority", "agent-interoperability-gate",
+    "economic-attribution", "adapter-rules", "failure-matrix", "ecosystem-lock",
     "canonical-workflows",
 }
 if not required_contracts <= contract_ids:
     raise SystemExit("FAIL incomplete contract registry")
 
 dependencies = json.loads((ROOT / "catalog/dependencies/graph.json").read_text())
-if any(
-    edge["from"] not in ids or edge["to"] not in ids
-    for edge in dependencies["edges"]
-):
+if any(edge["from"] not in ids or edge["to"] not in ids for edge in dependencies["edges"]):
     raise SystemExit("FAIL dependency references unregistered system")
 
 adapters = json.loads((ROOT / "integrations/adapters/registry.json").read_text())
 adapter_ids = {item["id"] for item in adapters["adapters"]}
 if len(adapter_ids) != len(adapters["adapters"]):
     raise SystemExit("FAIL duplicate adapter IDs")
-if any(
-    item["from"] not in ids or item["to"] not in ids
-    for item in adapters["adapters"]
-):
+if "tsic-to-agent-platform-reference" not in adapter_ids:
+    raise SystemExit("FAIL Agent Platform reference adapter is not registered")
+if any(item["from"] not in ids or item["to"] not in ids for item in adapters["adapters"]):
     raise SystemExit("FAIL adapter references unregistered system")
 
+adapter = json.loads((ROOT / "integrations/agent-platform/adapter.json").read_text())
+if adapter["adapter_id"] != "tsic-agent-platform-reference":
+    raise SystemExit("FAIL invalid Agent Platform adapter identity")
+if adapter["source_system"] != "tsic" or adapter["target_system"] != "agent-platform":
+    raise SystemExit("FAIL invalid Agent Platform adapter endpoints")
+required_bindings = {
+    "identity-context", "agent-registration", "event-envelope", "delivery-semantics",
+    "trace-context", "agent-interoperability-gate", "economic-attribution",
+}
+if {item["tsic_contract"] for item in adapter["contract_bindings"]} != required_bindings:
+    raise SystemExit("FAIL incomplete Agent Platform contract binding set")
+if "adapter_never_grants_authority" not in adapter["invariants"]:
+    raise SystemExit("FAIL Agent Platform adapter authority invariant")
+
 workflows = json.loads((ROOT / "workflows/canonical.json").read_text())
-if any(
-    item["steps"][0] not in ids or item["steps"][-1] not in ids
-    for item in workflows["workflows"]
-):
+if any(item["steps"][0] not in ids or item["steps"][-1] not in ids for item in workflows["workflows"]):
     raise SystemExit("FAIL workflow endpoint not registered")
-expected_workflows = {"acquisition-engineering", "transformation", "agent-development"}
-if {item["id"] for item in workflows["workflows"]} != expected_workflows:
+if {item["id"] for item in workflows["workflows"]} != {"acquisition-engineering", "transformation", "agent-development"}:
     raise SystemExit("FAIL canonical workflow set")
 
 for path in ROOT.rglob("*"):
-    if not path.is_file() or ".git" in path.parts:
-        continue
-    if path == ROOT / "tooling/forensic_audit.py":
+    if not path.is_file() or ".git" in path.parts or path == ROOT / "tooling/forensic_audit.py":
         continue
     if path.suffix.lower() in {".md", ".json", ".py", ".yml", ".yaml"}:
         text = path.read_text(encoding="utf-8", errors="strict")
         if "TODO" in text or "TBD" in text:
             raise SystemExit(f"FAIL unresolved placeholder in {path}")
-        if re.search(
-            r"-----BEGIN (?:RSA|OPENSSH|EC|DSA|PRIVATE) KEY-----", text
-        ):
+        if re.search(r"-----BEGIN (?:RSA|OPENSSH|EC|DSA|PRIVATE) KEY-----", text):
             raise SystemExit(f"FAIL private key marker in {path}")
 
 for command in [
@@ -192,12 +180,6 @@ for command in [
 ]:
     result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True)
     if result.returncode:
-        raise SystemExit(
-            "FAIL " + command[-1] + ": " + result.stderr.strip()
-        )
+        raise SystemExit("FAIL " + command[-1] + ": " + result.stderr.strip())
 
-print(
-    f"PASS TSIC-18 P0 forensic audit: {len(ids)} systems, "
-    f"{len(owners)} capabilities, {len(json_files)} JSON files, "
-    "repository mappings and authority governance reconciled"
-)
+print(f"PASS TSIC-18.1 reference adapter audit: {len(ids)} systems, {len(adapters['adapters'])} adapters, {len(json_files)} JSON files")
