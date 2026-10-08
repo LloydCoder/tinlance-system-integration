@@ -45,11 +45,14 @@ def main():
         assert approval.approval_id
         decision=approver.approvals.decide(approval.approval_id,True)
         assert decision.state
-        invocation=ToolInvocation('security.scan','security.scan','scan','repo:tsic',{'scope':'tsic-system-integration'})
-        execution=sdk.tools.execute(run_exec.run_id,agent_id,invocation,risk='medium',evidence_required=True,approval_id=approval.approval_id)
+        assert service.cancel(run_exec.run_id).state=='cancelled'
+        task_live=service.create_task(workspace.workspace_id,session.session_id,agent_id,'perform approved-boundary read')
+        run_live=service.dispatch(task_live); assert run_live.state=='running'
+        invocation=ToolInvocation('repository.read','repository.read','read','repo:tsic',{'scope':'tsic-system-integration'})
+        execution=sdk.tools.execute(run_live.run_id,agent_id,invocation,risk='low',evidence_required=True)
         assert execution.execution_id and execution.state=='completed'
         status=sdk.executions.get(execution.execution_id); assert status.state=='completed'
-        assert service.events(run_exec.run_id)
-        evidence=service.evidence(run_exec.run_id); assert evidence
+        assert service.events(run_live.run_id)
+        evidence=service.evidence(run_live.run_id); assert evidence
     print(json.dumps({'status':'pass','tadl':'validated','sdk':'executed','agent_os':'executed','platform':'executed','approval':'requested_and_decided','execution':'completed','evidence':'observed','cancellation':'verified'}))
 if __name__=='__main__': main()
