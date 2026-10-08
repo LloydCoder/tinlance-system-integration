@@ -47,7 +47,7 @@ def main() -> None:
     if missing_invariants:
         raise AssertionError(
             f"engineering route adapter authority invariants drifted: "
-            f"missing={sorted(missing_invariants)} actual={sorted(adapter["invariants"])}"
+            f"missing={sorted(missing_invariants)} actual={sorted(adapter['invariants'])}"
         )
     if "economic_attribution_carries_route" not in baseline["invariants"]:
         raise AssertionError("engineering route baseline lost economic attribution")
