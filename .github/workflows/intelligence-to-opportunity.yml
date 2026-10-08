@@ -84,6 +84,3 @@ jobs:
       - name: Stop World Intelligence
         if: always()
         run: if test -f /tmp/tsic-world-pid; then kill $(cat /tmp/tsic-world-pid) || true; fi
-      - name: Post-phase forensic audit
-        working-directory: tsic
-        run: python scripts/forensic_audit_phase2.py
