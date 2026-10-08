@@ -1,10 +1,13 @@
 {
-  "schema_version":"1.0.0",
-  "baseline_id":"tsic-27-engineering-route-2026-10-08",
-  "authority":"tsic",
-  "fdse":{"repository":"LloydCoder/tinlance-fdse","ref":"26147caea7475c583012b353979e2e780c51dbe3"},
-  "route":"engineering",
-  "invariants":[
+  "schema_version": "1.0.0",
+  "baseline_id": "tsic-27-engineering-route-2026-10-08-r2",
+  "authority": "tsic",
+  "fdse": {
+    "repository": "LloydCoder/tinlance-fdse",
+    "ref": "e1f213c918ba712666e4dd8a5db418caad0b060f"
+  },
+  "route": "engineering",
+  "invariants": [
     "delivery_route_is_explicit",
     "engineering_route_is_distinct_from_transformation",
     "fdse_owns_delivery_orchestration",
