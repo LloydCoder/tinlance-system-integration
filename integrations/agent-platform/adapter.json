@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "adapter_id": "tsic-agent-platform-reference",
+  "source_system": "tsic",
+  "target_system": "agent-platform",
+  "status": "reference-contract",
+  "authority": {
+    "identity": "agent-platform",
+    "authorization": "agent-platform",
+    "policy": "agent-platform",
+    "runtime": "agent-platform",
+    "evidence": "agent-platform",
+    "integration_contracts": "tsic"
+  },
+  "contract_bindings": [
+    {"tsic_contract": "identity-context", "platform_surface": "RequestContext/Principal", "direction": "inbound"},
+    {"tsic_contract": "agent-registration", "platform_surface": "agent registry", "direction": "inbound"},
+    {"tsic_contract": "event-envelope", "platform_surface": "events/outbox", "direction": "outbound"},
+    {"tsic_contract": "delivery-semantics", "platform_surface": "idempotent consequential operations", "direction": "both"},
+    {"tsic_contract": "trace-context", "platform_surface": "observability trace metadata", "direction": "both"},
+    {"tsic_contract": "agent-interoperability-gate", "platform_surface": "MCP/A2A authority gate", "direction": "both"},
+    {"tsic_contract": "economic-attribution", "platform_surface": "execution/cost attribution metadata", "direction": "outbound"}
+  ],
+  "invariants": [
+    "adapter_never_grants_authority",
+    "tenant_context_is_immutable",
+    "authenticated_principal_remains_platform_authoritative",
+    "consequential_operations_are_idempotent",
+    "trace_context_is_preserved",
+    "authoritative_evidence_remains_platform_owned"
+  ]
+}
