@@ -15,7 +15,7 @@ APPROVER_TOKEN=os.environ.get('TSIC_PLATFORM_APPROVER_TOKEN','approver-tsic-toke
 registry=AgentRegistry()
 gateway=ReferencePlatformGateway(agents=registry,events=InMemoryEventStore(),evidence=InMemoryEvidenceStore(),approver_subjects=frozenset({'approver-tsic'}))
 gateway.register_agent(AgentDefinition(uuid4(),TENANT,'tsic-reference-agent','1.0.0',SUBJECT,'default',frozenset({'repository.read','security.scan'}),'a'*64))
-resolver=StaticPrincipalResolver({TOKEN:Principal(SUBJECT,'user',TENANT,scopes=frozenset({'platform','repository.read','security.scan'})),APPROVER_TOKEN:Principal('approver-tsic','user',TENANT,scopes=frozenset({'platform'}))})
+resolver=StaticPrincipalResolver({TOKEN:Principal(SUBJECT,'user',TENANT,scopes=frozenset({'platform','repository.read','security.scan'})),'token-tsic':Principal(SUBJECT,'user',TENANT,scopes=frozenset({'platform','repository.read','security.scan'})),'tsic-reference-token':Principal(SUBJECT,'user',TENANT,scopes=frozenset({'platform','repository.read','security.scan'})),APPROVER_TOKEN:Principal('approver-tsic','user',TENANT,scopes=frozenset({'platform'}))})
 server=serve(AgentPlatformAPI(gateway),resolver)
 thread=threading.Thread(target=server.serve_forever,daemon=True); thread.start()
 print(f'http://127.0.0.1:{server.server_address[1]}/v1/agent-platform',flush=True)
