@@ -1,0 +1,66 @@
+{
+  "schema_version": "2.0.0",
+  "baseline_id": "tsic-02-intelligence-to-opportunity-2026-10-08",
+  "authority": "tsic",
+  "sequence": [
+    "world-intelligence",
+    "tads",
+    "sdea"
+  ],
+  "repositories": {
+    "world-intelligence": {
+      "repository": "LloydCoder/tinlance-world-intelligence",
+      "ref": "1e3c9754e56f7baf7d852a28d24c7f2e2b467056"
+    },
+    "tads": {
+      "repository": "LloydCoder/tinlance-tads",
+      "ref": "be242dd29335e3e74b4b80176ea073f7b7f74d56"
+    },
+    "sdea": {
+      "repository": "LloydCoder/tinlance-sdea",
+      "ref": "d189b05ab0db3044c13c461ddd8658aabde5fe03"
+    }
+  },
+  "lineage": [
+    "tenant_id",
+    "source_id",
+    "artifact_id",
+    "observation_id",
+    "evidence_id",
+    "world_signal_id",
+    "demand_hypothesis_id",
+    "capability_need_id",
+    "opportunity_id",
+    "confidence",
+    "timestamp",
+    "schema_version",
+    "producer_version",
+    "correlation_id"
+  ],
+  "authority_boundaries": {
+    "world_intelligence": "world-state and provenance",
+    "tads": "target-account signal/opportunity scoring",
+    "sdea": "advisory demand/capability/opportunity inference",
+    "tsic": "integration contracts and conformance",
+    "agent_platform": "consequential execution"
+  },
+  "invariants": [
+    "external_content_is_untrusted_data",
+    "observation_is_not_evidence",
+    "evidence_is_not_intelligence",
+    "intelligence_is_not_authority",
+    "signal_is_not_purchase_prediction",
+    "sdea_is_advisory",
+    "recommendation_is_not_action",
+    "evidence_lineage_is_preserved",
+    "tenant_context_is_immutable",
+    "replay_is_deterministic",
+    "agent-platform-remains-execution-authority"
+  ],
+  "execution_gate": {
+    "workflow": ".github/workflows/intelligence-to-opportunity.yml",
+    "certifier": "scripts/certify_intelligence_to_opportunity.py",
+    "forensic_audit": "scripts/forensic_audit_phase2.py",
+    "requires_cross_repository_execution": true
+  }
+}
