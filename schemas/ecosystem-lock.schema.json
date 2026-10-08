@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tinlance.com/schemas/ecosystem-lock.schema.json",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "authority",
+    "deny",
+    "change_control",
+    "release_invariants"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "authority": {
+      "const": "tsic"
+    },
+    "deny": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "change_control": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "release_invariants": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}
