@@ -1,5 +1,6 @@
 name: TSIC-02 Intelligence to Opportunity
 on:
+  workflow_dispatch:
   push:
     branches: [main]
   pull_request:
