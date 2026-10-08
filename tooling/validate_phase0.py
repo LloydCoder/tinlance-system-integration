@@ -25,4 +25,5 @@ def gate(marker, paths):
         miss=[p for p in paths if not (ROOT/p).is_file()]
         if miss: raise SystemExit(f"FAIL {marker}: missing "+", ".join(miss))
 gate("conformance/requirements/phase1.json",["catalog/architecture/canonical.json","catalog/authority/reconciliation.json","schemas/canonical-architecture.schema.json","schemas/authority-reconciliation.schema.json","docs/architecture/canonical-system-model.md","docs/architecture/authority-reconciliation.md"])
+gate("conformance/requirements/phase2.json",["contracts/common/identity-context.json","contracts/agents/registration.json","schemas/identity-context.schema.json","schemas/agent-registration.schema.json","docs/architecture/identity-and-agent-registration.md"])
 print(f"PASS TSIC gates: foundation + architecture/authority; systems={len(ids)} capabilities={len(seen)}")

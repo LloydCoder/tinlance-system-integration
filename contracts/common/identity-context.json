@@ -1,0 +1,1 @@
+{"schema_version":"1.0.0","required":["tenant_id","organization_id","workspace_id","actor_id","execution_id","trace_id","correlation_id"],"optional":["agent_id","service_id","causation_id"],"rules":{"tenant_immutable":true,"downstream_must_not_replace_context":true,"authorization_authority":"agent-platform"}}

@@ -1,0 +1,1 @@
+{"schema_version":"1.0.0","required":["agent_id","agent_version","owner","capabilities","risk_class","lifecycle_state"],"risk_classes":["low","moderate","high","critical"],"lifecycle_states":["draft","registered","active","suspended","retired"],"authority":"agent-platform"}
