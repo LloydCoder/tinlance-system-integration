@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0.0",
+  "baseline_id": "tsic-19-agent-system-2026-10-08",
+  "tsic": {
+    "repository": "LloydCoder/tinlance-system-integration",
+    "ref": "40f13e83d270888a31e9801aa9de1d6d5c55af71"
+  },
+  "repositories": {
+    "developer": {
+      "repository": "LloydCoder/tinlance-agent-developer",
+      "ref": "4fac75ba9f14d438d045b877685b2695b4da2c5b"
+    },
+    "os": {
+      "repository": "LloydCoder/tinlance-agent-os",
+      "ref": "d87426c73517dc88b0c26178831d618e49406708"
+    },
+    "platform_sdk": {
+      "repository": "LloydCoder/tinlance-agent-platform-sdk",
+      "ref": "25b68bed44287b477532f1359c80959c1c3635e7"
+    },
+    "platform": {
+      "repository": "LloydCoder/tinlance-agent-platform",
+      "ref": "816931338e742d123c8500c352c1bf74bf83cb1d"
+    }
+  },
+  "invariants": [
+    "Agent Platform remains the sole consequential execution authority",
+    "Agent OS owns workspace lifecycle and orchestration",
+    "Platform SDK remains a developer client surface",
+    "TADL remains a developer validation consumer",
+    "TSIC owns ecosystem integration contracts and certification"
+  ]
+}
