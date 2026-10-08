@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tinlance.com/schemas/dependency-graph.schema.json",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "authority",
+    "nodes",
+    "edges"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string"
+    },
+    "authority": {
+      "const": "tsic"
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "system",
+          "contract_version",
+          "ci_gate"
+        ],
+        "properties": {
+          "system": {
+            "type": "string"
+          },
+          "contract_version": {
+            "type": "string"
+          },
+          "ci_gate": {
+            "type": "string",
+            "pattern": "^TSIC-[0-9]{2}$"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "from",
+          "to",
+          "reason"
+        ],
+        "properties": {
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
