@@ -27,3 +27,7 @@ jobs:
         run: python3 tooling/security_scan.py
       - name: Economic attribution certification
         run: python3 scripts/certify_economic_attribution.py
+      - name: Interoperability certification
+        run: python3 scripts/certify_interoperability.py
+      - name: Economic attribution certification
+        run: python3 scripts/certify_economic_attribution.py
