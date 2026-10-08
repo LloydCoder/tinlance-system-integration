@@ -40,7 +40,7 @@ def fetch_json(url: str) -> dict:
 
 
 def main() -> None:
-    baseline = fetch_json(f"{ROOT}/LloydCoder/tinlance-system-integration/{TSIC_REVISION}/{BASELINE_PATH}")
+    baseline = json.loads((__import__("pathlib").Path(__file__).parents[1] / BASELINE_PATH).read_text(encoding="utf-8"))
     assert baseline["authority"] == "tsic"
     assert baseline["sequence"] == list(SYSTEM_REPOSITORIES)
     assert baseline["tsic"]["ref"] == TSIC_REVISION
