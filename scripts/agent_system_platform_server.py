@@ -9,12 +9,21 @@ from tinlance_agent_platform_api.http import serve
 from tinlance_agent_platform_contracts import AgentDefinition, Principal
 from tinlance_agent_platform_events import InMemoryEventStore
 from tinlance_agent_platform_evidence import InMemoryEvidenceStore
-import threading, time, os
+import threading, time, os, sys
 TENANT='tenant-tsic'; SUBJECT='subject-tsic'; TOKEN=os.environ.get('TSIC_PLATFORM_TOKEN','token-tsic')
 APPROVER_TOKEN=os.environ.get('TSIC_PLATFORM_APPROVER_TOKEN','approver-tsic-token'); PORT=18765
 registry=AgentRegistry()
 gateway=ReferencePlatformGateway(agents=registry,events=InMemoryEventStore(),evidence=InMemoryEvidenceStore(),approver_subjects=frozenset({'approver-tsic'}))
 gateway.register_agent(AgentDefinition(uuid4(),TENANT,'tsic-reference-agent','1.0.0',SUBJECT,'default',frozenset({'repository.read','security.scan'}),'a'*64))
+class DiagnosticGateway(ReferencePlatformGateway):
+    def handle(self, request):
+        try:
+            return super().handle(request)
+        except Exception as exc:
+            print(f'gateway_error={type(exc).__name__}:{exc}',file=sys.stderr,flush=True)
+            raise
+
+gateway.__class__=DiagnosticGateway
 resolver=StaticPrincipalResolver({TOKEN:Principal(SUBJECT,'user',TENANT,scopes=frozenset({'platform','repository.read','security.scan'})),'token-tsic':Principal(SUBJECT,'user',TENANT,scopes=frozenset({'platform','repository.read','security.scan'})),'tsic-reference-token':Principal(SUBJECT,'user',TENANT,scopes=frozenset({'platform','repository.read','security.scan'})),APPROVER_TOKEN:Principal('approver-tsic','user',TENANT,scopes=frozenset({'platform'}))})
 server=serve(AgentPlatformAPI(gateway),resolver)
 thread=threading.Thread(target=server.serve_forever,daemon=True); thread.start()
