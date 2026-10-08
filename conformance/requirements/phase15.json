@@ -1,0 +1,11 @@
+{
+  "phase":"TSIC-18.5",
+  "title":"TADL reference adapter and conformance-authority reconciliation",
+  "requirements":[
+    {"id":"TSIC-18.5-001","category":"registry","statement":"TADL reference adapter is registered in the canonical TSIC adapter registry.","mandatory":true},
+    {"id":"TSIC-18.5-002","category":"authority","statement":"TADL remains a developer validation consumer and cannot grant execution authority or redefine ecosystem contracts.","mandatory":true},
+    {"id":"TSIC-18.5-003","category":"identity","statement":"TADL preserves developer tenant/project and artifact identity metadata.","mandatory":true},
+    {"id":"TSIC-18.5-004","category":"interoperability","statement":"TADL consumes TSIC interoperability requirements while Platform retains execution authorization.","mandatory":true},
+    {"id":"TSIC-18.5-005","category":"verification","statement":"TADL CI validates the immutable TSIC adapter and canonical governance boundary.","mandatory":true}
+  ]
+}
