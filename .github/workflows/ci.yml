@@ -15,6 +15,8 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - name: TSIC-00 authority lock certification
+        run: python3 scripts/certify_phase0.py
       - name: Validate TSIC conformance
         run: python3 tooling/validate_phase0.py
       - name: Reference E2E workflow
