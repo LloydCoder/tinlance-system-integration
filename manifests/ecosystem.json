@@ -1,217 +1,35 @@
 {
-  "$schema": "../schemas/ecosystem-manifest.schema.json",
-  "schema_version": "1.2.0",
-  "ecosystem": {
-    "id": "tinlance",
-    "name": "Tinlance Ecosystem",
-    "integration_authority": "tsic",
-    "integration_repository": "LloydCoder/tinlance-system-integration"
+  "$schema":"../schemas/ecosystem-manifest.schema.json",
+  "schema_version":"2.0.0",
+  "ecosystem":{
+    "id":"tinlance",
+    "name":"Tinlance Ecosystem",
+    "integration_authority":"tsic",
+    "integration_repository":"LloydCoder/tinlance-system-integration"
   },
-  "systems": [
-    {
-      "id": "tsic",
-      "name": "Tinlance System Integration & Conformance",
-      "repository": "LloydCoder/tinlance-system-integration",
-      "governance_role": "ecosystem_integration_authority",
-      "authority": [
-        "ecosystem_integration_contracts",
-        "ecosystem_registry",
-        "compatibility_policy",
-        "conformance_requirements",
-        "certification_evidence"
-      ]
-    },
-    {
-      "id": "agent-platform",
-      "name": "Tinlance Agent Platform",
-      "repository": "LloydCoder/tinlance-agent-platform",
-      "governance_role": "execution_authority",
-      "authority": [
-        "identity",
-        "authorization",
-        "policy",
-        "runtime",
-        "tools",
-        "mcp",
-        "sandbox",
-        "secrets",
-        "budgets",
-        "evidence",
-        "audit",
-        "observability"
-      ]
-    },
-    {
-      "id": "agent-platform-sdk",
-      "name": "Tinlance Agent Platform SDK",
-      "repository": "LloydCoder/tinlance-agent-platform-sdk",
-      "governance_role": "developer_client_surface",
-      "authority": [
-        "developer_sdk_surface"
-      ]
-    },
-    {
-      "id": "agent-os",
-      "name": "Tinlance Agent OS",
-      "repository": "LloydCoder/tinlance-agent-os",
-      "governance_role": "operating_environment_authority",
-      "authority": [
-        "workspace",
-        "environment",
-        "lifecycle",
-        "orchestration",
-        "ux",
-        "builder",
-        "fleet"
-      ]
-    },
-    {
-      "id": "agent-developer",
-      "name": "Tinlance Agent Developer Layer (TADL)",
-      "repository": "LloydCoder/tinlance-agent-developer",
-      "governance_role": "developer_validation_consumer",
-      "authority": [
-        "agent_development_surface"
-      ]
-    },
-    {
-      "id": "tads",
-      "name": "Tinlance Acquisition System",
-      "repository": "LloydCoder/tinlance-tads",
-      "governance_role": "acquisition_decisioning_authority",
-      "authority": [
-        "acquisition_targeting"
-      ]
-    },
-    {
-      "id": "sdea",
-      "name": "Signal-Driven Engineering Acquisition",
-      "repository": "LloydCoder/tinlance-sdea",
-      "governance_role": "engineering_acquisition_authority",
-      "authority": [
-        "engineering_acquisition_signals"
-      ]
-    },
-    {
-      "id": "reconos",
-      "name": "ReconOS",
-      "repository": "LloydCoder/reconos-ofe",
-      "governance_role": "intelligence_enrichment_authority",
-      "authority": [
-        "osint_fusion"
-      ]
-    },
-    {
-      "id": "fadereach",
-      "name": "FadeReach",
-      "repository": "LloydCoder/fadereach",
-      "governance_role": "outreach_execution_authority",
-      "authority": [
-        "outreach_execution"
-      ]
-    },
-    {
-      "id": "fas",
-      "name": "Forensic Analysis System",
-      "repository": "LloydCoder/fas",
-      "governance_role": "evidence_analysis_authority",
-      "authority": [
-        "evidence_first_analysis"
-      ]
-    },
-    {
-      "id": "fas-bench",
-      "name": "FAS-Bench",
-      "repository": "LloydCoder/fas-bench",
-      "governance_role": "independent_evaluation_authority",
-      "authority": [
-        "benchmark_corpus",
-        "evaluation_harness",
-        "regression_evaluation",
-        "reproducibility_evidence"
-      ]
-    },
-    {
-      "id": "fdse",
-      "name": "Tinlance FDSE",
-      "repository": "LloydCoder/tinlance-fdse",
-      "governance_role": "delivery_orchestration_authority",
-      "authority": [
-        "engineering_delivery"
-      ]
-    },
-    {
-      "id": "fde",
-      "name": "Tinlance FDE",
-      "repository": null,
-      "governance_role": "domain_delivery_model",
-      "authority": [
-        "domain_engineering"
-      ]
-    },
-    {
-      "id": "transformation",
-      "name": "Tinlance Transformation",
-      "repository": null,
-      "governance_role": "transformation_delivery_model",
-      "authority": [
-        "portfolio_transformation",
-        "replication"
-      ]
-    },
-    {
-      "id": "economic-attribution",
-      "name": "Tinlance Economic Attribution",
-      "repository": null,
-      "governance_role": "economic_attribution_authority",
-      "authority": [
-        "economic_attribution"
-      ]
-    },
-    {
-      "id": "fdse-toolkit",
-      "name": "Tinlance FDSE Toolkit",
-      "repository": "LloydCoder/Tinlance-FDSE-toolkit",
-      "governance_role": "delivery_reporting_authority",
-      "authority": [
-        "delivery_reporting"
-      ]
-    },
-    {
-      "id": "world-intelligence",
-      "name": "Tinlance World Intelligence",
-      "repository": "LloydCoder/tinlance-world-intelligence",
-      "governance_role": "world_intelligence_authority",
-      "authority": [
-        "world_intelligence"
-      ]
-    },
-    {
-      "id": "hezqara",
-      "name": "Hezqara",
-      "repository": "LloydCoder/hezqara",
-      "governance_role": "domain_product_authority",
-      "authority": [
-        "healthcare_governed_ai_workforce"
-      ]
-    },
-    {
-      "id": "bugflow",
-      "name": "BugFlow",
-      "repository": "LloydCoder/bugflow-elite",
-      "governance_role": "domain_product_authority",
-      "authority": [
-        "application_security_testing"
-      ]
-    },
-    {
-      "id": "threatfade",
-      "name": "ThreatFade",
-      "repository": "LloydCoder/tinlance-threatfade",
-      "governance_role": "domain_security_authority",
-      "authority": [
-        "threat_detection_response"
-      ]
-    }
+  "systems":[
+    {"id":"tsic","name":"Tinlance System Integration & Conformance","repository":"LloydCoder/tinlance-system-integration","governance_role":"ecosystem_integration_authority","authority":["ecosystem_integration_contracts","ecosystem_registry","compatibility_policy","conformance_requirements","certification_evidence"]},
+    {"id":"agent-platform","name":"Tinlance Agent Platform","repository":"LloydCoder/tinlance-agent-platform","governance_role":"execution_authority","authority":["identity","authorization","policy","runtime","tools","mcp","sandbox","secrets","budgets","evidence","audit","observability"]},
+    {"id":"agent-platform-sdk","name":"Tinlance Agent Platform SDK","repository":"LloydCoder/tinlance-agent-platform-sdk","governance_role":"developer_client_surface","authority":["developer_sdk_surface"]},
+    {"id":"agent-os","name":"Tinlance Agent OS","repository":"LloydCoder/tinlance-agent-os","governance_role":"operating_environment_authority","authority":["workspace","environment","lifecycle","orchestration","ux","builder","fleet"]},
+    {"id":"agent-developer","name":"Tinlance Agent Developer Layer","repository":"LloydCoder/tinlance-agent-developer","governance_role":"developer_validation_consumer","authority":["agent_development_surface"]},
+    {"id":"world-intelligence","name":"Tinlance World Intelligence","repository":"LloydCoder/tinlance-world-intelligence","governance_role":"world_intelligence_authority","authority":["world_intelligence"]},
+    {"id":"tads","name":"Tinlance Acquisition System","repository":"LloydCoder/tinlance-tads","governance_role":"acquisition_decisioning_authority","authority":["acquisition_targeting"]},
+    {"id":"sdea","name":"Signal-Driven Engineering Acquisition","repository":"LloydCoder/tinlance-sdea","governance_role":"engineering_acquisition_authority","authority":["engineering_acquisition_signals"]},
+    {"id":"reconos","name":"ReconOS","repository":"LloydCoder/reconos-ofe","governance_role":"intelligence_enrichment_authority","authority":["osint_fusion"]},
+    {"id":"fadereach","name":"FadeReach","repository":"LloydCoder/fadereach","governance_role":"outreach_execution_authority","authority":["outreach_execution"]},
+    {"id":"fas","name":"Forensic Analysis System","repository":"LloydCoder/fas","governance_role":"evidence_analysis_authority","authority":["evidence_first_analysis"]},
+    {"id":"fas-bench","name":"FAS-Bench","repository":"LloydCoder/fas-bench","governance_role":"independent_evaluation_authority","authority":["benchmark_corpus","evaluation_harness","regression_evaluation","reproducibility_evidence"]},
+    {"id":"fdse","name":"Tinlance FDSE","repository":"LloydCoder/tinlance-fdse","governance_role":"delivery_orchestration_authority","authority":["engineering_delivery","transformation_delivery"]},
+    {"id":"fde-mastery","name":"Tinlance FDE Mastery","repository":"LloydCoder/fde-mastery","governance_role":"domain_delivery_authority","authority":["fde_methodology","domain_execution","engagement_delivery"]},
+    {"id":"fde","name":"Tinlance FDE","repository":null,"governance_role":"domain_delivery_model","authority":["domain_engineering"]},
+    {"id":"transformation","name":"Tinlance Transformation","repository":null,"governance_role":"transformation_delivery_model","authority":["portfolio_transformation","replication"]},
+    {"id":"fdse-toolkit","name":"Tinlance FDSE Toolkit","repository":"LloydCoder/Tinlance-FDSE-toolkit","governance_role":"delivery_reporting_authority","authority":["delivery_reporting"]},
+    {"id":"threatfade","name":"ThreatFade Engine","repository":"LloydCoder/tinlance-threatfade","governance_role":"domain_security_authority","authority":["threat_detection_response"]},
+    {"id":"threatfade-web","name":"ThreatFade Web","repository":"LloydCoder/tinlance-threatfade-web","governance_role":"product_analyst_commercial_authority","authority":["product_presentation","analyst_workflow","research_surface","commercial_workflow"]},
+    {"id":"bugflow","name":"BugFlow","repository":"LloydCoder/bugflow-elite","governance_role":"domain_product_authority","authority":["application_security_testing"]},
+    {"id":"hezqara","name":"Hezqara","repository":"LloydCoder/hezqara","governance_role":"domain_product_authority","authority":["healthcare_governed_ai_workforce"]},
+    {"id":"economic-attribution","name":"Tinlance Economic Attribution","repository":null,"governance_role":"economic_attribution_authority","authority":["economic_attribution"]},
+    {"id":"tinlance-com","name":"Tinlance.com Commercial & AaaS Surface","repository":"LloydCoder/Tinlance","governance_role":"commercial_surface_authority","authority":["commercial_offers","aaas_catalog","buyer_experience","entitlement_presentation"]}
   ]
 }
