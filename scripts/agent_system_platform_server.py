@@ -8,8 +8,8 @@ from tinlance_agent_platform_api.http import serve
 from tinlance_agent_platform_contracts import AgentDefinition, Principal
 from tinlance_agent_platform_events import InMemoryEventStore
 from tinlance_agent_platform_evidence import InMemoryEvidenceStore
-import threading, time
-TENANT='tenant-tsic'; SUBJECT='subject-tsic'; TOKEN='token-tsic'; PORT=18765
+import threading, time, os
+TENANT='tenant-tsic'; SUBJECT='subject-tsic'; TOKEN=os.environ.get('TSIC_PLATFORM_TOKEN','token-tsic'); PORT=18765
 registry=AgentRegistry()
 gateway=ReferencePlatformGateway(agents=registry,events=InMemoryEventStore(),evidence=InMemoryEvidenceStore())
 gateway.register_agent(AgentDefinition(uuid4(),TENANT,'tsic-reference-agent','1.0.0',SUBJECT,'default',frozenset({'repository.read','security.scan'}),'a'*64))
