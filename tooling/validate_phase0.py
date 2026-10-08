@@ -30,4 +30,5 @@ gate("conformance/requirements/phase3.json",["contracts/events/envelope.json","c
 gate("conformance/requirements/phase4.json",["catalog/services/registry.json","catalog/contracts/registry.json","catalog/dependencies/graph.json","docs/architecture/service-contract-registry.md"])
 gate("conformance/requirements/phase5.json",["contracts/models/routing-authority.json","contracts/agents/interoperability-gate.json","docs/architecture/model-and-agent-interoperability.md"])
 gate("conformance/requirements/phase6.json",["integrations/adapters/registry.json","integrations/adapters/rules.json","docs/integrations/adapter-fabric.md"])
-print(f"PASS TSIC gates through TSIC-11; systems={len(ids)} capabilities={len(seen)}")
+gate("conformance/requirements/phase7.json",["contracts/economics/attribution.json","catalog/economics/cost-centers.json","docs/economics/attribution-spine.md"])
+print(f"PASS TSIC gates through TSIC-12; systems={len(ids)} capabilities={len(seen)}")
