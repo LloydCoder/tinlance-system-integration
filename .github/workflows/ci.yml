@@ -18,5 +18,7 @@ jobs:
         run: python3 tooling/run_reference_workflow.py
       - name: Recovery certification
         run: python3 tooling/recovery_cert.py
+      - name: Forensic audit
+        run: python3 tooling/forensic_audit.py
       - name: Security baseline
         run: python3 tooling/security_scan.py
