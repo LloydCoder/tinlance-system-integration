@@ -16,7 +16,7 @@ gateway.register_agent(AgentDefinition(uuid4(),TENANT,'tsic-reference-agent','1.
 resolver=StaticPrincipalResolver({TOKEN:Principal(SUBJECT,'user',TENANT,scopes=frozenset({'platform'}))})
 server=serve(AgentPlatformAPI(gateway),resolver)
 thread=threading.Thread(target=server.serve_forever,daemon=True); thread.start()
-print(f'http://127.0.0.1:{PORT}/v1/agent-platform',flush=True)
+print(f'http://127.0.0.1:{server.server_address[1]}/v1/agent-platform',flush=True)
 try:
     while True: time.sleep(1)
 except KeyboardInterrupt: pass
