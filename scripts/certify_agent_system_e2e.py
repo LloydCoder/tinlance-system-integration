@@ -14,7 +14,8 @@ def main():
     sys.path.insert(0,str(ROOT/'../agent-os/src')); sys.path.insert(0,str(ROOT/'../agent-platform-sdk/src'))
     from tinlance_agent_platform_sdk import AgentPlatform
     from tinlance_agent_platform_sdk.tools import ToolInvocation
-    from tinlance_agent_platform_contracts import DataClass, ExecutionRequest, Reversibility, RiskTier
+    from tinlance_agent_platform_contracts import DataClass, Reversibility, RiskTier
+    from tinlance_agent_platform_execution import ExecutionRequest
     from tinlance_agent_os.platform_adapter import AgentPlatformAdapter
     from tinlance_agent_os.transport import HttpPlatformTransport, PlatformRequestContext, StaticAccessTokenProvider
     from tinlance_agent_os.daemon_service import LocalOSService
