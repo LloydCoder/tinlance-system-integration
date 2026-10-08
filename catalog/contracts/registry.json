@@ -1,1 +1,67 @@
-{"schema_version":"1.0.0","authority":"tsic","compatibility_policy":"semver","contracts":[{"id":"identity-context","version":"1.0.0","kind":"schema"},{"id":"agent-registration","version":"1.0.0","kind":"schema"},{"id":"event-envelope","version":"1.0.0","kind":"event"},{"id":"delivery-semantics","version":"1.0.0","kind":"delivery"},{"id":"trace-context","version":"1.0.0","kind":"telemetry"}]}
+{
+  "schema_version": "1.0.0",
+  "authority": "tsic",
+  "compatibility_policy": "semver",
+  "contracts": [
+    {
+      "id": "identity-context",
+      "version": "1.0.0",
+      "kind": "schema"
+    },
+    {
+      "id": "agent-registration",
+      "version": "1.0.0",
+      "kind": "schema"
+    },
+    {
+      "id": "event-envelope",
+      "version": "1.0.0",
+      "kind": "event"
+    },
+    {
+      "id": "delivery-semantics",
+      "version": "1.0.0",
+      "kind": "delivery"
+    },
+    {
+      "id": "trace-context",
+      "version": "1.0.0",
+      "kind": "telemetry"
+    },
+    {
+      "id": "model-routing-authority",
+      "version": "1.0.0",
+      "kind": "policy"
+    },
+    {
+      "id": "agent-interoperability-gate",
+      "version": "1.0.0",
+      "kind": "agent"
+    },
+    {
+      "id": "economic-attribution",
+      "version": "1.0.0",
+      "kind": "economics"
+    },
+    {
+      "id": "adapter-rules",
+      "version": "1.0.0",
+      "kind": "integration"
+    },
+    {
+      "id": "failure-matrix",
+      "version": "1.0.0",
+      "kind": "reliability"
+    },
+    {
+      "id": "ecosystem-lock",
+      "version": "1.0.0",
+      "kind": "governance"
+    },
+    {
+      "id": "canonical-workflows",
+      "version": "1.0.0",
+      "kind": "workflow"
+    }
+  ]
+}
