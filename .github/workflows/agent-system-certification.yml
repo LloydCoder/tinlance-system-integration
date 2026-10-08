@@ -91,13 +91,13 @@ jobs:
           python -m pip install -e "/tmp/tinlance-platform/reference_agents[test]" --no-deps
 
       - name: Verify canonical TSIC authority against reviewed baseline
-        working-directory: /tmp/tinlance-agent_developer
+        working-directory: /tmp/tinlance-developer
         run: python scripts/tsic_conformance.py
 
       - name: Run Agent System end-to-end contract certification
-        working-directory: /tmp/tinlance-agent_developer
+        working-directory: /tmp/tinlance-developer
         run: python scripts/ecosystem_conformance.py
 
       - name: Run finite-phase certification
-        working-directory: /tmp/tinlance-agent_developer
+        working-directory: /tmp/tinlance-developer
         run: python scripts/ecosystem_phase_conformance.py
