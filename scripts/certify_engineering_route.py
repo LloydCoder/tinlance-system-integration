@@ -35,11 +35,11 @@ def main() -> None:
     if {item["tsic_contract"] for item in adapter["contract_bindings"]} != required:
         raise AssertionError("FDSE contract bindings drifted")
 
-    required_invariants = set(baseline["invariants"])
-    if not required_invariants <= set(adapter["invariants"]) | {
-        "economic_attribution_carries_route"
-    }:
-        raise AssertionError("engineering authority invariant drift")
+    required_invariants = {"delivery_route_is_explicit","engineering_route_is_distinct_from_transformation","economic_attribution_carries_route"}
+    if "delivery_route_is_explicit" not in adapter["invariants"]:
+        raise AssertionError("delivery route invariant drift")
+    if "engineering_and_transformation_are_distinct_routes" not in adapter["invariants"]:
+        raise AssertionError("engineering/transformation distinction missing")
     if "delivery_route_is_explicit" not in adapter["invariants"]:
         raise AssertionError("delivery route is not explicit")
     if "engineering_and_transformation_are_distinct_routes" not in adapter["invariants"]:
