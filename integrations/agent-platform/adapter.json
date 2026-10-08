@@ -13,13 +13,41 @@
     "integration_contracts": "tsic"
   },
   "contract_bindings": [
-    {"tsic_contract": "identity-context", "platform_surface": "RequestContext/Principal", "direction": "inbound"},
-    {"tsic_contract": "agent-registration", "platform_surface": "agent registry", "direction": "inbound"},
-    {"tsic_contract": "event-envelope", "platform_surface": "events/outbox", "direction": "outbound"},
-    {"tsic_contract": "delivery-semantics", "platform_surface": "idempotent consequential operations", "direction": "both"},
-    {"tsic_contract": "trace-context", "platform_surface": "observability trace metadata", "direction": "both"},
-    {"tsic_contract": "agent-interoperability-gate", "platform_surface": "MCP/A2A authority gate", "direction": "both"},
-    {"tsic_contract": "economic-attribution", "platform_surface": "execution/cost attribution metadata", "direction": "outbound"}
+    {
+      "tsic_contract": "identity-context",
+      "platform_surface": "RequestContext/Principal",
+      "direction": "inbound"
+    },
+    {
+      "tsic_contract": "agent-registration",
+      "platform_surface": "agent registry",
+      "direction": "inbound"
+    },
+    {
+      "tsic_contract": "event-envelope",
+      "platform_surface": "events/outbox",
+      "direction": "outbound"
+    },
+    {
+      "tsic_contract": "delivery-semantics",
+      "platform_surface": "idempotent consequential operations",
+      "direction": "both"
+    },
+    {
+      "tsic_contract": "trace-context",
+      "platform_surface": "observability trace metadata",
+      "direction": "both"
+    },
+    {
+      "tsic_contract": "agent-interoperability-gate",
+      "platform_surface": "MCP/A2A authority gate",
+      "direction": "both"
+    },
+    {
+      "tsic_contract": "economic-attribution",
+      "platform_surface": "execution/cost attribution metadata",
+      "direction": "outbound"
+    }
   ],
   "invariants": [
     "adapter_never_grants_authority",
@@ -28,5 +56,33 @@
     "consequential_operations_are_idempotent",
     "trace_context_is_preserved",
     "authoritative_evidence_remains_platform_owned"
+  ],
+  "protocol": {
+    "method": "POST",
+    "path": "/v1/agent-platform",
+    "api_version": "1.1",
+    "required_headers": [
+      "Authorization",
+      "X-Tinlance-API-Version",
+      "X-Request-ID",
+      "traceparent"
+    ],
+    "consequential_header": "Idempotency-Key"
+  },
+  "required_evidence": [
+    "request_id",
+    "correlation_id",
+    "tenant_id",
+    "agent_id",
+    "run_id",
+    "trace_id",
+    "evidence_id",
+    "cost_attribution"
+  ],
+  "negative_cases": [
+    "unsupported_api_version",
+    "principal_tenant_mismatch",
+    "idempotency_payload_conflict",
+    "non_https_production_transport"
   ]
 }
