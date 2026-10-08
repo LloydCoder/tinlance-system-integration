@@ -1,0 +1,27 @@
+{
+  "schema_version":"1.0.0",
+  "adapter_id":"tsic-fdse-reference",
+  "source_system":"tsic",
+  "target_system":"fdse",
+  "status":"reference-contract",
+  "authority":{
+    "integration_contracts":"tsic",
+    "delivery_orchestration":"fdse",
+    "execution_authority":"agent-platform"
+  },
+  "contract_bindings":[
+    {"tsic_contract":"identity-context","fdse_surface":"tenant/engagement delivery context","direction":"inbound"},
+    {"tsic_contract":"event-envelope","fdse_surface":"delivery intent/evidence/outcome events","direction":"both"},
+    {"tsic_contract":"delivery-semantics","fdse_surface":"idempotent delivery workflow transitions","direction":"both"},
+    {"tsic_contract":"trace-context","fdse_surface":"engagement/workflow correlation","direction":"both"},
+    {"tsic_contract":"economic-attribution","fdse_surface":"engagement route/cost/outcome attribution","direction":"both"}
+  ],
+  "invariants":[
+    "delivery_route_is_explicit",
+    "engineering_and_transformation_are_distinct_routes",
+    "fdse_does_not_grant_platform_execution_authority",
+    "evidence_and_outcomes_are_preserved",
+    "tsic_remains_integration_authority",
+    "agent-platform_remains_execution_authority"
+  ]
+}
