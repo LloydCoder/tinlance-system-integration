@@ -1,9 +1,35 @@
+# Python
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.mypy_cache/
+.ruff_cache/
 .venv/
+venv/
+ENV/
+env/
+
+# Build and coverage
 dist/
 build/
 coverage/
+htmlcov/
+*.egg-info/
 reports/generated/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+
+# OS/editor
 .DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local tooling
+.python-version
