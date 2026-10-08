@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 from uuid import uuid4
+import os
 from tests.support.reference_gateway import ReferencePlatformGateway, StaticPrincipalResolver
 from tinlance_agent_platform_agents import AgentRegistry
 from tinlance_agent_platform_api import AgentPlatformAPI
