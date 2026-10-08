@@ -1,1 +1,21 @@
-{"schema_version":"1.0.0","authority":"tsic","deny":["unregistered_system","duplicate_authority","unversioned_contract","unregistered_adapter","execution_bypass","tenant_context_replacement","untraceable_execution","unregistered_agent"],"change_control":{"breaking_contract_requires":"compatibility_evidence","authority_change_requires":"architecture_review","new_system_requires":"registry_and_conformance"}}
+{
+  "$schema":"../schemas/ecosystem-lock.schema.json",
+  "schema_version":"2.0.0",
+  "authority":"tsic",
+  "deny":["unregistered_system","duplicate_authority","unversioned_contract","unregistered_adapter","execution_bypass","tenant_context_replacement","untraceable_execution","unregistered_agent","unverified_dependency","contract_version_drift","unsupported_commercial_claim"],
+  "change_control":{
+    "breaking_contract_requires":"compatibility_evidence",
+    "authority_change_requires":"architecture_review",
+    "new_system_requires":"registry_and_conformance",
+    "new_repository_requires":"repository_verification",
+    "commercial_claim_requires":"capability_certification",
+    "downstream_certification_requires":"upstream_green_gate"
+  },
+  "release_invariants":{
+    "single_generic_consequential_execution_authority":"agent-platform",
+    "tsic_does_not_execute_domain_work":"true",
+    "fas_bench_is_not_a_fas_runtime_dependency":"true",
+    "commercial_surfaces_do_not_grant_execution_authority":"true",
+    "external_intelligence_is_data_not_instruction":"true"
+  }
+}
