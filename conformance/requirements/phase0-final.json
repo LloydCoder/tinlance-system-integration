@@ -1,0 +1,46 @@
+{
+  "phase": "TSIC-00",
+  "title": "Ecosystem Authority & Dependency Lock",
+  "requirements": [
+    {
+      "id": "TSIC-00-001",
+      "severity": "critical",
+      "statement": "The ecosystem manifest is the canonical registry of systems, repositories, governance roles, and authorities."
+    },
+    {
+      "id": "TSIC-00-002",
+      "severity": "critical",
+      "statement": "The dependency graph records contract version and certification gate for every registered system."
+    },
+    {
+      "id": "TSIC-00-003",
+      "severity": "critical",
+      "statement": "Every dependency edge references registered systems and every system has exactly one authoritative governance role."
+    },
+    {
+      "id": "TSIC-00-004",
+      "severity": "critical",
+      "statement": "ThreatFade Web, FDE Mastery, Tinlance.com, Agent Developer, and FAS-Bench are explicitly represented where applicable."
+    },
+    {
+      "id": "TSIC-00-005",
+      "severity": "critical",
+      "statement": "The lock policy denies unregistered systems, authority conflicts, contract drift, unsupported commercial claims, and downstream certification before upstream green gates."
+    },
+    {
+      "id": "TSIC-00-006",
+      "severity": "critical",
+      "statement": "TSIC does not acquire consequential execution authority; Agent Platform remains the generic consequential execution authority."
+    },
+    {
+      "id": "TSIC-00-007",
+      "severity": "high",
+      "statement": "Certification status is serial: downstream phases cannot be certified when an upstream phase is not green."
+    },
+    {
+      "id": "TSIC-00-008",
+      "severity": "high",
+      "statement": "Repository and architecture documentation are reconciled to the canonical phase registry."
+    }
+  ]
+}
