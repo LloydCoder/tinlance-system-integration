@@ -1,0 +1,23 @@
+{
+  "schema_version": "wi.tads.sdea.v1",
+  "trace_id": "trace-tsic-02-001",
+  "source_id": "source.synthetic.public-company",
+  "artifact_id": "artifact.synthetic.company-change-001",
+  "observation_id": "obs-11111111-1111-4111-8111-111111111111",
+  "evidence_id": "22222222-2222-4222-8222-222222222222",
+  "entity_id": "org:tsic-example",
+  "event_id": "evt-33333333-3333-4333-8333-333333333333",
+  "signal_id": "sig-44444444-4444-4444-8444-444444444444",
+  "observed_at": "2026-10-08T12:00:00Z",
+  "signal_type": "technology",
+  "signal_subtype": "security-platform-modernization",
+  "strength": 0.9,
+  "freshness": 0.95,
+  "reliability": 0.9,
+  "explanation": "corroborated platform-security modernization signal",
+  "capability_id": "platform-security-engineering",
+  "attributes": {
+    "technology": "security platform",
+    "change": "modernization"
+  }
+}
