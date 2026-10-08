@@ -1,0 +1,13 @@
+{
+  "phase":"TSIC-19",
+  "title":"Agent System end-to-end certification",
+  "requirements":[
+    {"id":"TSIC-19-001","category":"baseline","statement":"The four Agent System repositories are certified against immutable reviewed SHAs and TSIC itself is pinned as the integration authority.","mandatory":true},
+    {"id":"TSIC-19-002","category":"authority","statement":"The certified stack preserves the authority chain TADL -> Agent OS -> SDK -> Agent Platform, with Platform as the sole consequential authority.","mandatory":true},
+    {"id":"TSIC-19-003","category":"identity","statement":"Tenant and authenticated-principal context remains bound through the cross-repository execution path.","mandatory":true},
+    {"id":"TSIC-19-004","category":"delivery","statement":"Consequential operations preserve idempotency and fail closed on conflicting replay.","mandatory":true},
+    {"id":"TSIC-19-005","category":"telemetry","statement":"Trace and correlation context survive the developer-to-Platform path.","mandatory":true},
+    {"id":"TSIC-19-006","category":"evidence","statement":"Authoritative evidence remains Platform-owned and is not minted by upstream layers.","mandatory":true},
+    {"id":"TSIC-19-007","category":"verification","statement":"The TSIC-controlled certification workflow executes the pinned Agent System conformance suite successfully.","mandatory":true}
+  ]
+}
