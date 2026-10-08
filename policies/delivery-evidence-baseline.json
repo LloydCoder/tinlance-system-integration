@@ -1,0 +1,7 @@
+{
+  "schema_version":"1.0.0",
+  "baseline_id":"tsic-29-delivery-evidence-2026-10-08",
+  "authority":"tsic",
+  "fdse_toolkit":{"repository":"LloydCoder/Tinlance-FDSE-toolkit","ref":"405805cd936b76f52c1d246cab10a048dffcc4f8"},
+  "invariants":["reports_are_derived_from_provenance_preserving_evidence","engineering_and_transformation_routes_remain_distinct","economic_attribution_retains_delivery_route","toolkit_does_not_grant_execution_authority","toolkit_does_not_become_detection_or_policy_authority","tsic_remains_integration_authority","agent-platform-remains-execution-authority"]
+}
