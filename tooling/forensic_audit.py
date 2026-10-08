@@ -37,7 +37,7 @@ expected={"acquisition-engineering","transformation","agent-development"}
 if {x["id"] for x in wf["workflows"]}!=expected: raise SystemExit("FAIL canonical workflow set")
 for p in ROOT.rglob("*"):
     if not p.is_file() or ".git" in p.parts: continue
-    if p.suffix.lower() in {".md",".json",".py",".yml",".yaml"}:
+    if p != ROOT/"tooling/forensic_audit.py" and p.suffix.lower() in {".md",".json",".py",".yml",".yaml"}:
         t=p.read_text(encoding="utf-8",errors="strict")
         if "TODO" in t or "TBD" in t: raise SystemExit(f"FAIL unresolved placeholder in {p}")
         if re.search(r"-----BEGIN (?:RSA|OPENSSH|EC|DSA|PRIVATE) KEY-----",t): raise SystemExit(f"FAIL private key marker in {p}")
