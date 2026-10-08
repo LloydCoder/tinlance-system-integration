@@ -1,7 +1,35 @@
 {
   "$schema":"https://json-schema.org/draft/2020-12/schema",
   "$id":"https://tinlance.com/schemas/ecosystem-manifest.schema.json",
-  "type":"object","required":["schema_version","ecosystem","systems"],
-  "properties":{"schema_version":{"type":"string"},"ecosystem":{"type":"object","required":["id","integration_authority","integration_repository"]},"systems":{"type":"array","items":{"$ref":"#/$defs/system"}}},
-  "$defs":{"system":{"type":"object","required":["id","name","authority"],"properties":{"id":{"type":"string","pattern":"^[a-z0-9][a-z0-9-]*$"},"name":{"type":"string"},"repository":{"type":["string","null"]},"authority":{"type":"array","items":{"type":"string"}}},"additionalProperties":false}}
+  "type":"object",
+  "required":["schema_version","ecosystem","systems"],
+  "properties":{
+    "schema_version":{"type":"string"},
+    "ecosystem":{"type":"object","required":["id","integration_authority","integration_repository"]},
+    "systems":{"type":"array","items":{"$ref":"#/$defs/system"}}
+  },
+  "$defs":{
+    "system":{
+      "type":"object",
+      "required":["id","name","authority"],
+      "properties":{
+        "id":{"type":"string","pattern":"^[a-z0-9][a-z0-9-]*$"},
+        "name":{"type":"string"},
+        "repository":{"type":["string","null"]},
+        "governance_role":{
+          "type":"string",
+          "enum":[
+            "ecosystem_integration_authority","execution_authority","developer_client_surface",
+            "operating_environment_authority","developer_validation_consumer","acquisition_decisioning_authority",
+            "engineering_acquisition_authority","intelligence_enrichment_authority","outreach_execution_authority",
+            "evidence_analysis_authority","delivery_orchestration_authority","domain_delivery_model",
+            "transformation_delivery_model","delivery_reporting_authority","world_intelligence_authority",
+            "domain_product_authority","domain_security_authority"
+          ]
+        },
+        "authority":{"type":"array","items":{"type":"string"}}
+      },
+      "additionalProperties":false
+    }
+  }
 }
