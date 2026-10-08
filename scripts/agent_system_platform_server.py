@@ -24,8 +24,16 @@ class DiagnosticGateway(ReferencePlatformGateway):
             raise
 
 gateway.__class__=DiagnosticGateway
+class DiagnosticAPI(AgentPlatformAPI):
+    def dispatch(self, request):
+        try:
+            return super().dispatch(request)
+        except Exception as exc:
+            print(f'api_error={request.operation}:{request.payload}:{type(exc).__name__}:{exc}',file=sys.stderr,flush=True)
+            raise
+
 resolver=StaticPrincipalResolver({TOKEN:Principal(SUBJECT,'user',TENANT,scopes=frozenset({'platform','repository.read','security.scan'})),'token-tsic':Principal(SUBJECT,'user',TENANT,scopes=frozenset({'platform','repository.read','security.scan'})),'tsic-reference-token':Principal(SUBJECT,'user',TENANT,scopes=frozenset({'platform','repository.read','security.scan'})),APPROVER_TOKEN:Principal('approver-tsic','user',TENANT,scopes=frozenset({'platform'}))})
-server=serve(AgentPlatformAPI(gateway),resolver)
+server=serve(DiagnosticAPI(gateway),resolver)
 thread=threading.Thread(target=server.serve_forever,daemon=True); thread.start()
 print(f'http://127.0.0.1:{server.server_address[1]}/v1/agent-platform',flush=True)
 try:
