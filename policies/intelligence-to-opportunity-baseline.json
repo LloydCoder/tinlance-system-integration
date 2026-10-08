@@ -10,7 +10,7 @@
   "repositories": {
     "world-intelligence": {
       "repository": "LloydCoder/tinlance-world-intelligence",
-      "ref": "1e3c9754e56f7baf7d852a28d24c7f2e2b467056"
+      "ref": "30b939031081220dee17a44fde1f5c6f887e254f"
     },
     "tads": {
       "repository": "LloydCoder/tinlance-tads",
