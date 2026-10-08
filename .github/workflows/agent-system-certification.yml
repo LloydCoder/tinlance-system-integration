@@ -1,0 +1,104 @@
+name: Agent System Certification
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent-system-certification-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  certify:
+    name: Agent System end-to-end certification
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout TSIC
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.12"
+
+      - name: Read immutable Agent System baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          baseline = json.loads(Path("policies/agent-system-baseline.json").read_text())
+          for key, item in baseline["repositories"].items():
+              if len(item["ref"]) != 40:
+                  raise SystemExit(f"invalid reviewed SHA for {key}")
+          print(f"Agent System baseline: {baseline['baseline_id']}")
+          PY
+
+      - name: Materialize reviewed Agent System repositories
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+
+          baseline = json.loads(Path("policies/agent-system-baseline.json").read_text())
+          for name, item in baseline["repositories"].items():
+              target = Path("/tmp") / f"tinlance-{name}"
+              subprocess.run(
+                  ["git", "clone", "--quiet", f"https://github.com/{item['repository']}.git", str(target)],
+                  check=True,
+              )
+              subprocess.run(
+                  ["git", "-C", str(target), "checkout", "--quiet", item["ref"]],
+                  check=True,
+              )
+          tsic_target = Path("/tmp/tinlance-tsic-baseline")
+          subprocess.run(
+              ["git", "clone", "--quiet", f"https://github.com/{baseline['tsic']['repository']}.git", str(tsic_target)],
+              check=True,
+          )
+          subprocess.run(
+              ["git", "-C", str(tsic_target), "checkout", "--quiet", baseline["tsic"]["ref"]],
+              check=True,
+          )
+          PY
+
+      - name: Install TADL
+        working-directory: /tmp/tinlance-agent_developer
+        run: npm ci --ignore-scripts && npm run build
+
+      - name: Install Python integration components
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install "pytest>=8.4"
+          python -m pip install /tmp/tinlance-agent_platform /tmp/tinlance-agent_platform_sdk /tmp/tinlance-agent_os
+          python -m pip install -e "/tmp/tinlance-agent_platform/reference_agents[test]" --no-deps
+
+      - name: Verify canonical TSIC authority against reviewed baseline
+        working-directory: /tmp/tinlance-agent_developer
+        run: python scripts/tsic_conformance.py
+
+      - name: Run Agent System end-to-end contract certification
+        working-directory: /tmp/tinlance-agent_developer
+        run: python scripts/ecosystem_conformance.py
+
+      - name: Run finite-phase certification
+        working-directory: /tmp/tinlance-agent_developer
+        run: python scripts/ecosystem_phase_conformance.py
