@@ -1,0 +1,7 @@
+{
+  "schema_version":"1.0.0",
+  "baseline_id":"tsic-30-fas-2026-10-08",
+  "authority":"tsic",
+  "fas":{"repository":"LloydCoder/fas","ref":"b84d627cd08ceeb8c04905b4355f078ca6721bdf"},
+  "invariants":["observation_is_not_evidence","evidence_is_not_finding","finding_is_not_verdict","provenance_is_preserved","analysis_does_not_grant_execution_authority","tsic_remains_integration_authority","agent-platform-remains-execution-authority"]
+}
