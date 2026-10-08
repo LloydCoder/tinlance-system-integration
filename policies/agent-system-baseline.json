@@ -1,6 +1,6 @@
 {
-  "schema_version": "1.0.0",
-  "baseline_id": "tsic-19-agent-system-2026-10-08",
+  "schema_version": "2.0.0",
+  "baseline_id": "tsic-01-agent-system-e2e-2026-10-08",
   "tsic": {
     "repository": "LloydCoder/tinlance-system-integration",
     "ref": "bdb5b7f9f2295562ad8681c591a8a927500b4d8c"
@@ -28,6 +28,18 @@
     "Agent OS owns workspace lifecycle and orchestration",
     "Platform SDK remains a developer client surface",
     "TADL remains a developer validation consumer",
-    "TSIC owns ecosystem integration contracts and certification"
-  ]
+    "TSIC owns ecosystem integration contracts and certification",
+    "TADL agent artifact validation precedes governed execution",
+    "Agent OS uses the versioned Platform transport boundary",
+    "Platform API authorization and approval remain authoritative",
+    "SDK and OS cannot grant execution authority",
+    "Evidence and audit references remain causally tied to the Platform run",
+    "The phase is not certified by skipped live tests"
+  ],
+  "execution_gate": {
+    "workflow": ".github/workflows/agent-system-e2e.yml",
+    "certifier": "scripts/certify_agent_system_e2e.py",
+    "forensic_audit": "scripts/forensic_audit_phase1.py",
+    "requires_cross_repository_execution": true
+  }
 }
