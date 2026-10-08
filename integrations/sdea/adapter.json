@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0.0",
+  "adapter_id": "tsic-sdea-reference",
+  "source_system": "tsic",
+  "target_system": "sdea",
+  "status": "reference-contract",
+  "authority": {
+    "integration_contracts": "tsic",
+    "engineering_acquisition": "sdea",
+    "execution_authority": "agent-platform"
+  },
+  "contract_bindings": [
+    {"tsic_contract": "identity-context", "sdea_surface": "account/opportunity tenant context", "direction": "inbound"},
+    {"tsic_contract": "event-envelope", "sdea_surface": "signal/demand/opportunity events", "direction": "both"},
+    {"tsic_contract": "delivery-semantics", "sdea_surface": "deterministic signal processing", "direction": "both"},
+    {"tsic_contract": "trace-context", "sdea_surface": "opportunity processing correlation", "direction": "both"},
+    {"tsic_contract": "economic-attribution", "sdea_surface": "acquisition opportunity attribution", "direction": "outbound"}
+  ],
+  "invariants": [
+    "sdea_is_advisory",
+    "recommendation_is_not_action",
+    "signal_is_not_evidence",
+    "evidence_is_not_demand",
+    "job_posting_is_not_the_only_signal_class",
+    "tenant_context_is_immutable",
+    "tsic_remains_integration_authority",
+    "agent-platform_remains_execution_authority"
+  ]
+}
