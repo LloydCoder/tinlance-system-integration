@@ -59,8 +59,8 @@ def main() -> None:
     assert feedback["rule"] == "feedback_is_learning_input_not_execution_authority"
 
     for system_id, repository in SYSTEM_REPOSITORIES.items():
-        assert baseline["systems"][system_id]["repository"] == repository
-        reviewed_ref = baseline["systems"][system_id]["ref"]
+        assert baseline["systems"][system_id.replace("-", "_")]["repository"] == repository
+        reviewed_ref = baseline["systems"][system_id.replace("-", "_")]["ref"]
         assert reviewed_ref and len(reviewed_ref) == 40
 
         # Verify the reviewed repository revision is reachable and contains its
