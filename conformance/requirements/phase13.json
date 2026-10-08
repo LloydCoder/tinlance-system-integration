@@ -1,0 +1,12 @@
+{
+  "phase":"TSIC-18.3",
+  "title":"Agent Platform SDK reference adapter and contract consumer gate",
+  "requirements":[
+    {"id":"TSIC-18.3-001","category":"registry","statement":"Agent Platform SDK reference adapter is registered in the canonical TSIC adapter registry.","mandatory":true},
+    {"id":"TSIC-18.3-002","category":"authority","statement":"SDK cannot grant execution authority, authorize side effects, or replace Platform identity and authorization.","mandatory":true},
+    {"id":"TSIC-18.3-003","category":"identity","statement":"SDK preserves immutable tenant and authenticated-principal metadata.","mandatory":true},
+    {"id":"TSIC-18.3-004","category":"delivery","statement":"SDK preserves idempotency metadata required for consequential operations.","mandatory":true},
+    {"id":"TSIC-18.3-005","category":"telemetry","statement":"SDK preserves trace and correlation context.","mandatory":true},
+    {"id":"TSIC-18.3-006","category":"verification","statement":"SDK CI validates the immutable TSIC adapter contract and required bindings.","mandatory":true}
+  ]
+}

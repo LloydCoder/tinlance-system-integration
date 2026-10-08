@@ -1,0 +1,28 @@
+{
+  "schema_version":"1.0.0",
+  "adapter_id":"tsic-agent-platform-sdk-reference",
+  "source_system":"tsic",
+  "target_system":"agent-platform-sdk",
+  "status":"reference-contract",
+  "authority":{
+    "integration_contracts":"tsic",
+    "developer_surface":"agent-platform-sdk",
+    "execution_authority":"agent-platform"
+  },
+  "contract_bindings":[
+    {"tsic_contract":"identity-context","sdk_surface":"request context / principal metadata","direction":"outbound"},
+    {"tsic_contract":"agent-registration","sdk_surface":"agent definition / registration client","direction":"outbound"},
+    {"tsic_contract":"delivery-semantics","sdk_surface":"idempotency metadata","direction":"outbound"},
+    {"tsic_contract":"trace-context","sdk_surface":"trace and correlation metadata","direction":"both"},
+    {"tsic_contract":"agent-interoperability-gate","sdk_surface":"MCP/A2A capability declarations","direction":"outbound"},
+    {"tsic_contract":"economic-attribution","sdk_surface":"execution and cost attribution metadata","direction":"outbound"}
+  ],
+  "invariants":[
+    "sdk_never_grants_execution_authority",
+    "sdk_never_authorizes_side_effects",
+    "tenant_context_is_immutable",
+    "authenticated_principal_is_platform_authoritative",
+    "trace_context_is_preserved",
+    "idempotency_metadata_is_preserved"
+  ]
+}
