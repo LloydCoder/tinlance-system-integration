@@ -1,0 +1,1 @@
+{"schema_version":"1.0.0","baseline_id":"tsic-32-bugflow-2026-10-08","authority":"tsic","bugflow":{"repository":"LloydCoder/bugflow-elite","ref":"c9ef8b5f7ef87aaaf23b943a498f39ce8697d07b"},"invariants":["testing_is_not_execution_authority","findings_retain_provenance","tenant_context_is_immutable","tsic_remains_integration_authority","agent-platform-remains-execution-authority"]}
