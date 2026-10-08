@@ -64,9 +64,26 @@ jobs:
       - name: SDEA integration and forensic tests
         working-directory: sdea
         run: python -m pytest -q tests/test_contracts_integrations.py tests/test_forensic_invariants.py tests/test_opportunity_acquisition.py tests/test_signal_intelligence.py tests/test_outcomes_evaluation.py
+      - name: Start World Intelligence runtime
+        working-directory: tsic
+        env:
+          WORLD_INTELLIGENCE_BEARER_TOKEN: tsic-world-token
+        run: python scripts/world_intelligence_reference_server.py > /tmp/tsic-world-url & echo $! > /tmp/tsic-world-pid
+      - name: Wait for World Intelligence
+        run: for i in $(seq 1 30); do test -s /tmp/tsic-world-url && break; sleep 1; done; test -s /tmp/tsic-world-url
+      - name: Export World Intelligence endpoint
+        run: echo "WORLD_INTELLIGENCE_URL=$(cat /tmp/tsic-world-url)" >> "$GITHUB_ENV"
       - name: Execute cross-repository Intelligence to Opportunity vertical slice
         working-directory: tsic
-        run: python scripts/certify_intelligence_to_opportunity.py
+        env:
+          WORLD_INTELLIGENCE_BEARER_TOKEN: tsic-world-token
+        run: python scripts/certify_intelligence_acquisition_e2e.py
+      - name: Post-phase forensic audit
+        working-directory: tsic
+        run: python scripts/forensic_audit_phase2.py
+      - name: Stop World Intelligence
+        if: always()
+        run: if test -f /tmp/tsic-world-pid; then kill $(cat /tmp/tsic-world-pid) || true; fi
       - name: Post-phase forensic audit
         working-directory: tsic
         run: python scripts/forensic_audit_phase2.py
