@@ -32,4 +32,5 @@ gate("conformance/requirements/phase5.json",["contracts/models/routing-authority
 gate("conformance/requirements/phase6.json",["integrations/adapters/registry.json","integrations/adapters/rules.json","docs/integrations/adapter-fabric.md"])
 gate("conformance/requirements/phase7.json",["contracts/economics/attribution.json","catalog/economics/cost-centers.json","docs/economics/attribution-spine.md"])
 gate("conformance/requirements/phase8.json",["policies/ecosystem-lock.json","tooling/ecosystem_lock.py","docs/governance/ecosystem-lock.md"])
-print(f"PASS TSIC gates through TSIC-14; systems={len(ids)} capabilities={len(seen)}")
+gate("conformance/requirements/phase9.json",["workflows/canonical.json","tooling/run_reference_workflow.py","docs/operations/e2e-integration.md"])
+print(f"PASS TSIC gates through TSIC-15; systems={len(ids)} capabilities={len(seen)}")
