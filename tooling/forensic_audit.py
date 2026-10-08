@@ -53,6 +53,7 @@ adapters=json.loads((ROOT/"integrations/adapters/registry.json").read_text())
 adapter_ids={x["id"] for x in adapters["adapters"]}
 if len(adapter_ids)!=len(adapters["adapters"]): raise SystemExit("FAIL duplicate adapter IDs")
 if any(x["from"] not in ids or x["to"] not in ids for x in adapters["adapters"]): raise SystemExit("FAIL adapter references unregistered system")
+wf=json.loads((ROOT/"workflows/canonical.json").read_text())
 if any(x["steps"][0] not in ids or x["steps"][-1] not in ids for x in wf["workflows"]): raise SystemExit("FAIL workflow endpoint not registered")
 wf=json.loads((ROOT/"workflows/canonical.json").read_text())
 expected={"acquisition-engineering","transformation","agent-development"}
