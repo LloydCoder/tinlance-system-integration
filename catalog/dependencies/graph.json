@@ -1,11 +1,129 @@
 {
-  "schema_version": "1.0.0",
+  "$schema": "../../schemas/dependency-graph.schema.json",
+  "schema_version": "2.0.0",
   "authority": "tsic",
+  "nodes": [
+    {
+      "system": "tsic",
+      "contract_version": "2.0.0",
+      "ci_gate": "TSIC-00"
+    },
+    {
+      "system": "agent-developer",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-01"
+    },
+    {
+      "system": "agent-os",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-01"
+    },
+    {
+      "system": "agent-platform-sdk",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-01"
+    },
+    {
+      "system": "agent-platform",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-01"
+    },
+    {
+      "system": "world-intelligence",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-02"
+    },
+    {
+      "system": "tads",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-02"
+    },
+    {
+      "system": "sdea",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-02"
+    },
+    {
+      "system": "reconos",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-03"
+    },
+    {
+      "system": "fadereach",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-04"
+    },
+    {
+      "system": "fas",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-05"
+    },
+    {
+      "system": "fas-bench",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-05"
+    },
+    {
+      "system": "fdse",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-06"
+    },
+    {
+      "system": "fde-mastery",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-07"
+    },
+    {
+      "system": "fde",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-07"
+    },
+    {
+      "system": "fdse-toolkit",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-08"
+    },
+    {
+      "system": "threatfade",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-09"
+    },
+    {
+      "system": "threatfade-web",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-10"
+    },
+    {
+      "system": "bugflow",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-11"
+    },
+    {
+      "system": "hezqara",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-12"
+    },
+    {
+      "system": "economic-attribution",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-13"
+    },
+    {
+      "system": "tinlance-com",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-18"
+    }
+  ],
   "edges": [
     {
+      "from": "agent-developer",
+      "to": "agent-os",
+      "reason": "development_surface"
+    },
+    {
       "from": "agent-os",
-      "to": "agent-platform",
-      "reason": "governed_execution"
+      "to": "agent-platform-sdk",
+      "reason": "agent_development"
     },
     {
       "from": "agent-platform-sdk",
@@ -13,29 +131,9 @@
       "reason": "developer_surface"
     },
     {
-      "from": "sdea",
-      "to": "reconos",
-      "reason": "intelligence_enrichment"
-    },
-    {
-      "from": "sdea",
-      "to": "fadereach",
-      "reason": "outreach_handoff"
-    },
-    {
-      "from": "fdse",
+      "from": "agent-os",
       "to": "agent-platform",
       "reason": "governed_execution"
-    },
-    {
-      "from": "transformation",
-      "to": "fdse",
-      "reason": "engineering_delivery"
-    },
-    {
-      "from": "transformation",
-      "to": "agent-platform",
-      "reason": "governed_agent_execution"
     },
     {
       "from": "world-intelligence",
@@ -46,6 +144,11 @@
       "from": "tads",
       "to": "sdea",
       "reason": "targeting_handoff"
+    },
+    {
+      "from": "sdea",
+      "to": "reconos",
+      "reason": "intelligence_enrichment"
     },
     {
       "from": "reconos",
@@ -60,7 +163,27 @@
     {
       "from": "fdse",
       "to": "fde",
-      "reason": "domain_delivery"
+      "reason": "engineering_or_domain_delivery"
+    },
+    {
+      "from": "fdse",
+      "to": "fde-mastery",
+      "reason": "fde_execution"
+    },
+    {
+      "from": "world-intelligence",
+      "to": "transformation",
+      "reason": "portfolio_signal"
+    },
+    {
+      "from": "transformation",
+      "to": "fdse",
+      "reason": "transformation_delivery"
+    },
+    {
+      "from": "fdse",
+      "to": "agent-platform",
+      "reason": "governed_execution"
     },
     {
       "from": "fdse",
@@ -68,19 +191,64 @@
       "reason": "delivery_reporting"
     },
     {
-      "from": "agent-developer",
-      "to": "agent-os",
-      "reason": "development_surface"
+      "from": "threatfade",
+      "to": "threatfade-web",
+      "reason": "detection_product_surface"
     },
     {
-      "from": "agent-os",
-      "to": "agent-platform-sdk",
-      "reason": "agent_development"
+      "from": "threatfade",
+      "to": "fas",
+      "reason": "detection_evidence"
     },
     {
-      "from": "world-intelligence",
-      "to": "transformation",
-      "reason": "portfolio_signal"
+      "from": "threatfade-web",
+      "to": "fas",
+      "reason": "analyst_evidence_handoff"
+    },
+    {
+      "from": "bugflow",
+      "to": "fas",
+      "reason": "security_evidence"
+    },
+    {
+      "from": "hezqara",
+      "to": "agent-platform",
+      "reason": "governed_ai_execution"
+    },
+    {
+      "from": "fas",
+      "to": "fas-bench",
+      "reason": "independent_evaluation_artifact"
+    },
+    {
+      "from": "fas-bench",
+      "to": "fdse-toolkit",
+      "reason": "evaluation_evidence"
+    },
+    {
+      "from": "fde-mastery",
+      "to": "fdse-toolkit",
+      "reason": "delivery_evidence"
+    },
+    {
+      "from": "economic-attribution",
+      "to": "tads",
+      "reason": "learning_feedback"
+    },
+    {
+      "from": "economic-attribution",
+      "to": "sdea",
+      "reason": "acquisition_feedback"
+    },
+    {
+      "from": "tinlance-com",
+      "to": "tads",
+      "reason": "commercial_intent"
+    },
+    {
+      "from": "tinlance-com",
+      "to": "agent-platform",
+      "reason": "certified_execution_binding"
     }
   ]
 }
