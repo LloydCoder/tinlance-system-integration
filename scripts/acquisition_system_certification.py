@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import json
-from urllib.request import Request, urlopen
+from urllib.error import HTTPError\nfrom urllib.request import Request, urlopen
 
 ROOT = "https://raw.githubusercontent.com"
 TSIC_REVISION = "4c5b7d70c937ca8227ba8a9ebfe0d69b3e5c2bf8"
