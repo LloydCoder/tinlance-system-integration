@@ -1,0 +1,1 @@
+{"schema_version":"1.0.0","cost_centers":["agent-platform","agent-os","sdea","reconos","fadereach","fdse","fde","transformation","product","tsic"],"allocation_keys":["execution_id","agent_id","workspace_id","organization_id","tenant_id"]}
