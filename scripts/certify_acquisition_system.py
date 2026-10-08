@@ -2,13 +2,12 @@
 """Certify the reviewed Tinlance Acquisition System baseline."""
 from __future__ import annotations
 import json
-from urllib.request import Request, urlopen
+from pathlib import Path
 
-ROOT="https://raw.githubusercontent.com/LloydCoder/tinlance-system-integration/main"
+ROOT=Path(__file__).resolve().parents[1]
 
 def fetch(path):
-    req=Request(f"{ROOT}/{path}",headers={"Accept":"application/json","User-Agent":"tinlance-tsic-certifier"})
-    with urlopen(req,timeout=15) as res: return json.load(res)
+    return json.loads((ROOT / path).read_text(encoding="utf-8"))
 
 def main():
     b=fetch("policies/acquisition-system-baseline.json")
