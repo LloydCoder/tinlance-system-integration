@@ -11,8 +11,10 @@ This index organizes the repository using a practical Diátaxis model while pres
 
 - [Phase 0 runbook](operations/phase0-runbook.md)
 - [P0 ecosystem reconciliation](operations/p0-ecosystem-reconciliation.md)
+- [TSIC-18 ecosystem reconciliation](integration/TSIC-18-ECOSYSTEM-RECONCILIATION.md)
 - [Failure and recovery certification](operations/failure-recovery-certification.md)
 - [Adapter fabric](integrations/adapter-fabric.md)
+- [Agent Platform reference adapter](../integrations/agent-platform/reference-adapter.v1.schema.json)
 - [Ecosystem lock](governance/ecosystem-lock.md)
 
 ## Explanation
