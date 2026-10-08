@@ -79,6 +79,11 @@
       "ci_gate": "TSIC-07"
     },
     {
+      "system": "transformation",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-07"
+    },
+    {
       "system": "fdse-toolkit",
       "contract_version": "1.0.0",
       "ci_gate": "TSIC-08"
