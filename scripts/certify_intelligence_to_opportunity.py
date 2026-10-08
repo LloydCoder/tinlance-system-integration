@@ -15,7 +15,8 @@ def main():
     from tads_signals.detector import SignalDetector
     from tads_opportunities.engine import OpportunityEngine
     from tads_opportunities.models import ICPProfile
-    from tinlance_sdea.domain.models import CapabilityNeed,OpportunityRecord,DemandHypothesis
+    from tinlance_sdea.domain.models import CapabilityNeed,DemandHypothesis
+    from tinlance_sdea.opportunity.models import OpportunityRecord
     now=datetime.now(UTC); entity_id='entity-tsic-acme'; tenant='tenant-tsic'
     source_id='source-tsic-greenhouse'; artifact_id=str(uuid4()); observation_id=str(uuid4()); evidence_id=str(uuid4()); signal_id=str(uuid4())
     hypothesis_id=str(uuid4()); capability_need_id=str(uuid4()); opportunity_id=str(uuid4())
