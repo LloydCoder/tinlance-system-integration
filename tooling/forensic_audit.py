@@ -197,7 +197,7 @@ if any(item["steps"][0] not in ids or item["steps"][-1] not in ids for item in w
 if {item["id"] for item in workflows["workflows"]} != {"acquisition-engineering", "transformation", "agent-development", "acquisition-feedback"}:
     raise SystemExit("FAIL canonical workflow set")
 for workflow in workflows["workflows"]:
-    unknown = set(workflow["steps"]) - ids - non_system_nodes
+    unknown = set(workflow["steps"]) - set(ids) - non_system_nodes
     if unknown:
         raise SystemExit(f"FAIL unknown workflow nodes: {sorted(unknown)}")
 
