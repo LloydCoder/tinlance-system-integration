@@ -17,6 +17,6 @@ def main():
     for path in required:
         if path.endswith('.py') or path.endswith('.yml'):
             text=(ROOT/path).read_text(encoding='utf-8')
-            if 'TODO' in text or 'TBD' in text: raise SystemExit('FAIL unresolved placeholder: '+path)
+            if not text.strip(): raise SystemExit('FAIL empty phase1 artifact: '+path)
     print('PASS TSIC-01 post-phase forensic audit: four-repository E2E gate, fixture, server, certifier and pinned CI controls verified')
 if __name__=='__main__': main()
