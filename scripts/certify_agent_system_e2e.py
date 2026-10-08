@@ -14,6 +14,7 @@ def main():
     sys.path.insert(0,str(ROOT/'../agent-os/src')); sys.path.insert(0,str(ROOT/'../agent-platform-sdk/src'))
     from tinlance_agent_platform_sdk import AgentPlatform
     from tinlance_agent_platform_sdk.tools import ToolInvocation
+    from tinlance_agent_platform_contracts import DataClass, ExecutionRequest, Reversibility, RiskTier
     from tinlance_agent_os.platform_adapter import AgentPlatformAdapter
     from tinlance_agent_os.transport import HttpPlatformTransport, PlatformRequestContext, StaticAccessTokenProvider
     from tinlance_agent_os.daemon_service import LocalOSService
@@ -37,7 +38,9 @@ def main():
         task_exec=service.create_task(workspace.workspace_id,session.session_id,agent_id,'perform supervised security scan')
         run_exec=service.dispatch(task_exec); assert run_exec.state=='running'
         execution_intent={'agent_id':agent_id,'run_id':str(run_exec.run_id),'capability_id':'security.scan','capability_version':'1','tool_name':'security.scan','tool_version':'1','action':'scan','resource':'repo:tsic','risk':'medium','reversibility':'reversible','data_class':'internal','blast_radius':'single','requested_timeout_seconds':30.0,'requested_tool_calls':1,'evidence_required':True,'contract_version':'governed-execution.v1'}
-        approval=sdk.approvals.request(run_exec.run_id,'security.scan','repo:tsic','governed security scan',execution_intent=execution_intent)
+        intent_request=ExecutionRequest(request_id='tsic-intent',idempotency_key='tsic-intent',tenant_id=tenant,principal_id=subject,agent_id=__import__('uuid').UUID(agent_id),run_id=__import__('uuid').UUID(str(run_exec.run_id)),capability_id='security.scan',capability_version='1',tool_name='security.scan',tool_version='1',action='scan',resource='repo:tsic',input={},requested_timeout_seconds=30.0,requested_tool_calls=1,risk=RiskTier.MEDIUM,reversibility=Reversibility.REVERSIBLE,data_class=DataClass.INTERNAL,blast_radius='single',evidence_required=True,contract_version='governed-execution.v1')
+        intent_fingerprint=intent_request.fingerprint
+        approval=sdk.approvals.request(run_exec.run_id,'security.scan','repo:tsic','governed security scan',intent_fingerprint=intent_fingerprint,execution_intent=execution_intent)
         assert approval.approval_id
         decision=approver.approvals.decide(approval.approval_id,True)
         assert decision.state
