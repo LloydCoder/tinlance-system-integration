@@ -1,6 +1,6 @@
 {
   "$schema": "../../schemas/authority.schema.json",
-  "schema_version": "1.1.0",
+  "schema_version": "2.0.0",
   "capabilities": [
     {
       "capability": "ecosystem_integration_contracts",
@@ -23,23 +23,27 @@
       "owner": "tsic"
     },
     {
-      "capability": "agent_identity",
+      "capability": "identity",
       "owner": "agent-platform"
     },
     {
-      "capability": "agent_authorization",
+      "capability": "authorization",
       "owner": "agent-platform"
     },
     {
-      "capability": "agent_policy",
+      "capability": "policy",
       "owner": "agent-platform"
     },
     {
-      "capability": "agent_runtime",
+      "capability": "runtime",
       "owner": "agent-platform"
     },
     {
-      "capability": "tools_and_mcp_execution",
+      "capability": "tools",
+      "owner": "agent-platform"
+    },
+    {
+      "capability": "mcp",
       "owner": "agent-platform"
     },
     {
@@ -51,32 +55,64 @@
       "owner": "agent-platform"
     },
     {
-      "capability": "agent_budgets",
+      "capability": "budgets",
       "owner": "agent-platform"
     },
     {
-      "capability": "agent_evidence",
+      "capability": "evidence",
       "owner": "agent-platform"
     },
     {
-      "capability": "agent_audit",
+      "capability": "audit",
       "owner": "agent-platform"
     },
     {
-      "capability": "agent_observability",
+      "capability": "observability",
       "owner": "agent-platform"
     },
     {
-      "capability": "workspace_and_environment",
+      "capability": "developer_sdk_surface",
+      "owner": "agent-platform-sdk"
+    },
+    {
+      "capability": "workspace",
       "owner": "agent-os"
     },
     {
-      "capability": "agent_lifecycle_orchestration",
+      "capability": "environment",
+      "owner": "agent-os"
+    },
+    {
+      "capability": "lifecycle",
+      "owner": "agent-os"
+    },
+    {
+      "capability": "orchestration",
+      "owner": "agent-os"
+    },
+    {
+      "capability": "ux",
+      "owner": "agent-os"
+    },
+    {
+      "capability": "builder",
+      "owner": "agent-os"
+    },
+    {
+      "capability": "fleet",
       "owner": "agent-os"
     },
     {
       "capability": "agent_development_surface",
       "owner": "agent-developer"
+    },
+    {
+      "capability": "world_intelligence",
+      "owner": "world-intelligence"
+    },
+    {
+      "capability": "acquisition_targeting",
+      "owner": "tads"
     },
     {
       "capability": "engineering_acquisition_signals",
@@ -91,48 +127,8 @@
       "owner": "fadereach"
     },
     {
-      "capability": "engineering_delivery",
-      "owner": "fdse"
-    },
-    {
-      "capability": "domain_engineering",
-      "owner": "fde"
-    },
-    {
-      "capability": "portfolio_transformation",
-      "owner": "transformation"
-    },
-    {
-      "capability": "world_intelligence",
-      "owner": "world-intelligence"
-    },
-    {
-      "capability": "developer_surface",
-      "owner": "agent-platform-sdk"
-    },
-    {
-      "capability": "targeting_decisioning",
-      "owner": "tads"
-    },
-    {
-      "capability": "delivery_reporting",
-      "owner": "fdse-toolkit"
-    },
-    {
-      "capability": "forensic_analysis",
+      "capability": "evidence_first_analysis",
       "owner": "fas"
-    },
-    {
-      "capability": "healthcare_workforce",
-      "owner": "hezqara"
-    },
-    {
-      "capability": "application_security_testing",
-      "owner": "bugflow"
-    },
-    {
-      "capability": "security_engineering",
-      "owner": "threatfade"
     },
     {
       "capability": "benchmark_corpus",
@@ -143,12 +139,96 @@
       "owner": "fas-bench"
     },
     {
-      "capability": "benchmark_reproducibility",
+      "capability": "regression_evaluation",
       "owner": "fas-bench"
+    },
+    {
+      "capability": "reproducibility_evidence",
+      "owner": "fas-bench"
+    },
+    {
+      "capability": "engineering_delivery",
+      "owner": "fdse"
+    },
+    {
+      "capability": "transformation_delivery",
+      "owner": "fdse"
+    },
+    {
+      "capability": "fde_methodology",
+      "owner": "fde-mastery"
+    },
+    {
+      "capability": "domain_execution",
+      "owner": "fde-mastery"
+    },
+    {
+      "capability": "engagement_delivery",
+      "owner": "fde-mastery"
+    },
+    {
+      "capability": "domain_engineering",
+      "owner": "fde"
+    },
+    {
+      "capability": "portfolio_transformation",
+      "owner": "transformation"
+    },
+    {
+      "capability": "replication",
+      "owner": "transformation"
+    },
+    {
+      "capability": "delivery_reporting",
+      "owner": "fdse-toolkit"
+    },
+    {
+      "capability": "threat_detection_response",
+      "owner": "threatfade"
+    },
+    {
+      "capability": "product_presentation",
+      "owner": "threatfade-web"
+    },
+    {
+      "capability": "analyst_workflow",
+      "owner": "threatfade-web"
+    },
+    {
+      "capability": "research_surface",
+      "owner": "threatfade-web"
+    },
+    {
+      "capability": "commercial_workflow",
+      "owner": "threatfade-web"
+    },
+    {
+      "capability": "application_security_testing",
+      "owner": "bugflow"
+    },
+    {
+      "capability": "healthcare_governed_ai_workforce",
+      "owner": "hezqara"
     },
     {
       "capability": "economic_attribution",
       "owner": "economic-attribution"
+    },
+    {
+      "capability": "commercial_offers",
+      "owner": "tinlance-com"
+    },
+    {
+      "capability": "aaas_catalog",
+      "owner": "tinlance-com"
+    },
+    {
+      "capability": "buyer_experience",
+      "owner": "tinlance-com"
+    },
+    {
+      "capability": "entitlement_presentation",
+      "owner": "tinlance-com"
     }
   ]
 }
