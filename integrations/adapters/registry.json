@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.3.0",
+  "schema_version": "1.4.0",
   "authority": "tsic",
   "adapters": [
     {
@@ -72,6 +72,12 @@
       "id": "tsic-to-agent-os-reference",
       "from": "tsic",
       "to": "agent-os",
+      "transport": "reference-contract"
+    },
+    {
+      "id": "tsic-to-agent-developer-reference",
+      "from": "tsic",
+      "to": "agent-developer",
       "transport": "reference-contract"
     }
   ]
