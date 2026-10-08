@@ -1,0 +1,37 @@
+# Tinlance System Integration & Conformance
+
+> TSIC is the canonical integration control plane for defining, validating, and certifying interoperability across the Tinlance system-of-systems.
+
+## Start here
+
+- [README](README.md): Product positioning, quick start, repository map, and usage.
+- [Documentation index](docs/README.md): Navigation across tutorials, how-to guides, explanation, and reference.
+- [Governance](GOVERNANCE.md): Ownership boundaries and authority rules.
+- [Security](SECURITY.md): Vulnerability reporting and security controls.
+- [Contributing](CONTRIBUTING.md): Contribution, compatibility, and verification requirements.
+
+## Architecture
+
+- [Canonical system model](docs/architecture/canonical-system-model.md): Authoritative system and path model.
+- [Authority model](docs/architecture/authority-model.md): Capability ownership and boundaries.
+- [Integration topology](docs/architecture/integration-topology.md): System-to-system relationships.
+- [Identity and agent registration](docs/architecture/identity-and-agent-registration.md): Identity propagation and registration contracts.
+- [Model and agent interoperability](docs/architecture/model-and-agent-interoperability.md): Routing and interoperability controls.
+
+## Contracts and verification
+
+- [Event and trace fabric](docs/contracts/event-and-trace-fabric.md): Event envelope, delivery, and trace concepts.
+- [Adapter fabric](docs/integrations/adapter-fabric.md): Cross-system adapter rules.
+- [End-to-end integration](docs/operations/e2e-integration.md): Canonical executable workflows.
+- [Failure and recovery certification](docs/operations/failure-recovery-certification.md): Recovery scenarios and certification.
+- [Production system-of-systems certification](docs/certification/production-system-of-systems.md): Repository-level certification boundary.
+
+## Machine-readable surfaces
+
+- [Ecosystem manifest](manifests/ecosystem.json): Registered systems and authorities.
+- [Capability authority catalog](catalog/capabilities/authority.json): Capability ownership.
+- [Contract registry](catalog/contracts/registry.json): Versioned normative contracts.
+- [Service registry](catalog/services/registry.json): Registered services and protocols.
+- [Dependency graph](catalog/dependencies/graph.json): Canonical dependencies.
+- [Canonical workflows](workflows/canonical.json): Integration paths.
+- [Ecosystem lock](policies/ecosystem-lock.json): Enforcement policy.
