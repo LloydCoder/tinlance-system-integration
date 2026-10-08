@@ -1,1 +1,21 @@
-{"$schema":"../../schemas/authority-reconciliation.schema.json","schema_version":"1.0.0","authority":"tsic","rules":[{"id":"AUTH-001","rule":"exactly_one_authoritative_owner_per_capability"},{"id":"AUTH-002","rule":"agent_platform_is_execution_authority"},{"id":"AUTH-003","rule":"agent_os_owns_workspace_and_orchestration"},{"id":"AUTH-004","rule":"tsic_does_not_execute_agents_or_authorize_business_actions"},{"id":"AUTH-005","rule":"domain_systems_retain_domain_authority"},{"id":"AUTH-006","rule":"transformation_is_a_business_delivery_path_not_a_second_runtime"}],"non_ownership":["tsic.agent_runtime","tsic.authorization","tsic.secrets","tsic.model_execution"]}
+{
+  "$schema":"../../schemas/authority-reconciliation.schema.json",
+  "schema_version":"1.1.0",
+  "authority":"tsic",
+  "rules":[
+    {"id":"AUTH-001","rule":"exactly_one_authoritative_owner_per_capability"},
+    {"id":"AUTH-002","rule":"agent_platform_is_execution_authority"},
+    {"id":"AUTH-003","rule":"agent_os_owns_workspace_and_orchestration"},
+    {"id":"AUTH-004","rule":"tsic_does_not_execute_agents_or_authorize_business_actions"},
+    {"id":"AUTH-005","rule":"domain_systems_retain_domain_authority"},
+    {"id":"AUTH-006","rule":"transformation_is_a_business_delivery_path_not_a_second_runtime"},
+    {"id":"AUTH-007","rule":"tadl_declares_and_validates_developer_intent_but_does_not_grant_execution_authority"},
+    {"id":"AUTH-008","rule":"tsic_is_the_canonical_ecosystem_integration_and_certification_authority"},
+    {"id":"AUTH-009","rule":"tadl_is_a_conformance_consumer_of_tsic_contracts_not_a_competing_ecosystem_authority"},
+    {"id":"AUTH-010","rule":"system_local_ci_may_validate_local_invariants_but_must_not_override_tsic_ecosystem_contracts"}
+  ],
+  "non_ownership":[
+    "tsic.agent_runtime","tsic.authorization","tsic.secrets","tsic.model_execution",
+    "tadl.execution_authority","tadl.authorization","tadl.tenant_authority","tadl.secret_authority"
+  ]
+}
