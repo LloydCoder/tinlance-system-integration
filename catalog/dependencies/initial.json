@@ -1,0 +1,15 @@
+{
+  "$schema":"../../schemas/dependency.schema.json",
+  "schema_version":"1.0.0",
+  "dependencies":[
+    {"from":"agent-os","to":"agent-platform","relationship":"execution_authority"},
+    {"from":"agent-platform-sdk","to":"agent-platform","relationship":"developer_surface"},
+    {"from":"agent-developer","to":"agent-os","relationship":"development_surface"},
+    {"from":"sdea","to":"reconos","relationship":"intelligence_enrichment"},
+    {"from":"sdea","to":"fadereach","relationship":"outreach_handoff"},
+    {"from":"fdse","to":"agent-platform","relationship":"governed_execution"},
+    {"from":"fdse-toolkit","to":"fdse","relationship":"delivery_reporting"},
+    {"from":"transformation","to":"fdse","relationship":"engineering_delivery"},
+    {"from":"transformation","to":"agent-platform","relationship":"governed_agent_execution"}
+  ]
+}

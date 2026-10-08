@@ -1,0 +1,6 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://tinlance.com/schemas/conformance.schema.json",
+  "type":"object","required":["schema_version","requirements"],
+  "properties":{"schema_version":{"type":"string"},"requirements":{"type":"array","items":{"type":"object","required":["id","category","statement","mandatory"],"properties":{"id":{"type":"string"},"category":{"type":"string"},"statement":{"type":"string"},"mandatory":{"type":"boolean"}},"additionalProperties":false}}}
+}
