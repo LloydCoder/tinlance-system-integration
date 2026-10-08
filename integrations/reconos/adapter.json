@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "adapter_id": "tsic-reconos-reference",
+  "source_system": "tsic",
+  "target_system": "reconos",
+  "status": "reference-contract",
+  "authority": {
+    "integration_contracts": "tsic",
+    "intelligence_enrichment": "reconos",
+    "execution_authority": "agent-platform"
+  },
+  "contract_bindings": [
+    {"tsic_contract": "identity-context", "reconos_surface": "tenant/account enrichment context", "direction": "inbound"},
+    {"tsic_contract": "event-envelope", "reconos_surface": "enrichment observation/intelligence events", "direction": "both"},
+    {"tsic_contract": "delivery-semantics", "reconos_surface": "replayable enrichment jobs", "direction": "both"},
+    {"tsic_contract": "trace-context", "reconos_surface": "enrichment request correlation", "direction": "both"},
+    {"tsic_contract": "economic-attribution", "reconos_surface": "enrichment cost attribution", "direction": "outbound"}
+  ],
+  "invariants": [
+    "reconos_does_not_grant_execution_authority",
+    "external_data_is_untrusted",
+    "provenance_and_confidence_are_preserved",
+    "tenant_context_is_immutable",
+    "enrichment_is_not_authorization",
+    "tsic_remains_integration_authority",
+    "agent-platform_remains_execution_authority"
+  ]
+}
