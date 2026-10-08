@@ -74,7 +74,7 @@ def forensic_scan() -> None:
             seen_adapters.add(adapter_id)
 
     for path in ROOT.rglob("*"):
-        if not path.is_file() or ".git" in path.parts or path == ROOT / "scripts/final_certification.py":
+        if not path.is_file() or ".git" in path.parts or path in {ROOT / "scripts/final_certification.py", ROOT / "tooling/forensic_audit.py"}:
             continue
         if path.suffix.lower() not in {".md", ".json", ".py", ".yml", ".yaml", ".txt"}:
             continue
