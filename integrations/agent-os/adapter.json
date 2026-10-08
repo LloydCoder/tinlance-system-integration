@@ -1,0 +1,29 @@
+{
+  "schema_version":"1.0.0",
+  "adapter_id":"tsic-agent-os-reference",
+  "source_system":"tsic",
+  "target_system":"agent-os",
+  "status":"reference-contract",
+  "authority":{
+    "integration_contracts":"tsic",
+    "workspace_lifecycle_orchestration":"agent-os",
+    "execution_authority":"agent-platform"
+  },
+  "contract_bindings":[
+    {"tsic_contract":"identity-context","os_surface":"workspace/session/task context","direction":"both"},
+    {"tsic_contract":"agent-registration","os_surface":"agent lifecycle and registry","direction":"outbound"},
+    {"tsic_contract":"event-envelope","os_surface":"workflow/event runtime","direction":"outbound"},
+    {"tsic_contract":"delivery-semantics","os_surface":"workflow retry/idempotency metadata","direction":"both"},
+    {"tsic_contract":"trace-context","os_surface":"workflow/session trace metadata","direction":"both"},
+    {"tsic_contract":"agent-interoperability-gate","os_surface":"agent delegation/interoperability declarations","direction":"outbound"},
+    {"tsic_contract":"economic-attribution","os_surface":"workspace/execution cost metadata","direction":"outbound"}
+  ],
+  "invariants":[
+    "os_never_grants_execution_authority",
+    "os_never_replaces_platform_authorization",
+    "workspace_tenant_context_is_immutable",
+    "trace_context_is_preserved",
+    "retries_are_idempotency_aware",
+    "platform_remains_consequential_authority"
+  ]
+}
