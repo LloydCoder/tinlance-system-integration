@@ -43,8 +43,12 @@ def main() -> None:
         "tsic_remains_integration_authority",
         "agent-platform_remains-execution-authority",
     }
-    if not required_invariants <= set(adapter["invariants"]):
-        raise AssertionError("engineering route adapter authority invariants drifted")
+    missing_invariants = required_invariants - set(adapter["invariants"])
+    if missing_invariants:
+        raise AssertionError(
+            f"engineering route adapter authority invariants drifted: "
+            f"missing={sorted(missing_invariants)} actual={sorted(adapter["invariants"])}"
+        )
     if "economic_attribution_carries_route" not in baseline["invariants"]:
         raise AssertionError("engineering route baseline lost economic attribution")
 
