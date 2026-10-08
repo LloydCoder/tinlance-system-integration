@@ -6,7 +6,9 @@
     "version": "1.0.0"
   },
   "spec": {
-    "skills": [],
+    "skills": [
+      "tsic.reference"
+    ],
     "capabilities": {
       "allow": [
         "repository.read",
