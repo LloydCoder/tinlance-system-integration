@@ -16,5 +16,7 @@ jobs:
         run: python3 tooling/validate_phase0.py
       - name: Reference E2E workflow
         run: python3 tooling/run_reference_workflow.py
+      - name: Recovery certification
+        run: python3 tooling/recovery_cert.py
       - name: Security baseline
         run: python3 tooling/security_scan.py
