@@ -17,6 +17,6 @@ def main():
         assert any('execution_authority' in str(v) for v in a['authority'].values()) or 'agent-platform_remains_execution_authority' in a['invariants']
     workflow=(ROOT/'.github/workflows/intelligence-to-opportunity.yml').read_text()
     assert 'certify_intelligence_to_opportunity.py' in workflow and 'pytest' in workflow
-    assert '1e3c9754e56f7baf7d852a28d24c7f2e2b467056' in workflow and 'be242dd29335e3e74b4b80176ea073f7b7f74d56' in workflow and 'd189b05ab0db3044c13c461ddd8658aabde5fe03' in workflow
+    assert '30b939031081220dee17a44fde1f5c6f887e254f' in workflow and 'be242dd29335e3e74b4b80176ea073f7b7f74d56' in workflow and 'd189b05ab0db3044c13c461ddd8658aabde5fe03' in workflow
     print('PASS TSIC-02 post-phase forensic audit: authority, lineage, adapters, pinned revisions, E2E certifier and CI gate verified')
 if __name__=='__main__': main()
