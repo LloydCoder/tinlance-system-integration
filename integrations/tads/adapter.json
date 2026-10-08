@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "adapter_id": "tsic-tads-reference",
+  "source_system": "tsic",
+  "target_system": "tads",
+  "status": "reference-contract",
+  "authority": {
+    "integration_contracts": "tsic",
+    "acquisition_targeting": "tads",
+    "execution_authority": "agent-platform"
+  },
+  "contract_bindings": [
+    {"tsic_contract": "identity-context", "tads_surface": "tenant/account context", "direction": "inbound"},
+    {"tsic_contract": "event-envelope", "tads_surface": "canonical signal/event model", "direction": "both"},
+    {"tsic_contract": "delivery-semantics", "tads_surface": "deterministic ingestion/replay", "direction": "both"},
+    {"tsic_contract": "trace-context", "tads_surface": "integration request correlation", "direction": "both"},
+    {"tsic_contract": "economic-attribution", "tads_surface": "opportunity attribution metadata", "direction": "outbound"}
+  ],
+  "invariants": [
+    "tads_does_not_grant_execution_authority",
+    "evidence_lineage_is_preserved",
+    "uncertainty_and_contradictions_are_preserved",
+    "tenant_context_is_immutable",
+    "replay_is_deterministic",
+    "tsic_remains_integration_authority",
+    "agent-platform_remains_execution_authority"
+  ]
+}
