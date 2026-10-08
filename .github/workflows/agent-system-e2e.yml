@@ -34,7 +34,7 @@ jobs:
         with: {repository: LloydCoder/tinlance-agent-platform-sdk, ref: 615eef529831fdfbe37e050e45d9a1a8c4472291, path: agent-platform-sdk, persist-credentials: false}
       - name: Checkout Agent Platform
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-agent-platform, ref: 4f524c51f24ace3fa96b5f2fbd716d0270c16aae, path: agent-platform, persist-credentials: false}
+        with: {repository: LloydCoder/tinlance-agent-platform, ref: 9125f46f526030fdeced492b6df281c4745f77e9, path: agent-platform, persist-credentials: false}
       - name: Setup Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with: {python-version: '3.12'}
