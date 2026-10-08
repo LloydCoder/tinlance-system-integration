@@ -19,7 +19,7 @@ def main():
     sdk=AgentPlatform(base_url=BASE.split('/v1/')[0],bearer_token=os.environ['TSIC_PLATFORM_TOKEN'],tenant_id=os.environ['TSIC_PLATFORM_TENANT'],subject_id=os.environ['TSIC_PLATFORM_SUBJECT'],**{'allow_'+'insecure_'+'http': True})
     assert sdk.health().ready is True
     agents=sdk.agents.list(); assert agents
-    agent_id=agents[0].agent_id
+    agent_id=str(agents[0].agent_id)
     transport=HttpPlatformTransport(BASE,StaticAccessTokenProvider(os.environ['TSIC_PLATFORM_TOKEN']),allow_insecure_localhost=True)
     context=PlatformRequestContext(os.environ['TSIC_PLATFORM_TENANT'],os.environ['TSIC_PLATFORM_SUBJECT'],'tsic-agent-system-01','00-11111111111111111111111111111111-2222222222222222-01')
     adapter=AgentPlatformAdapter(transport,context)
