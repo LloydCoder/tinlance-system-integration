@@ -1,31 +1,31 @@
 {
   "schema_version": "1.0.0",
-  "baseline_id": "tsic-25-acquisition-system-2026-10-08",
+  "baseline_id": "tsic-25-acquisition-system-2026-10-08-r2",
   "authority": "tsic",
   "tsic": {
     "repository": "LloydCoder/tinlance-system-integration",
-    "ref": "72c3664d7917bf9f8adb071713719589ff159972"
+    "ref": "4c5b7d70c937ca8227ba8a9ebfe0d69b3e5c2bf8"
   },
   "systems": {
     "world_intelligence": {
       "repository": "LloydCoder/tinlance-world-intelligence",
-      "ref": "1e3c9754e56f7baf7d852a28d24c7f2e2b467056"
+      "ref": "665487b48217fbcb2f389cfe03fb7be1bc551f1d"
     },
     "tads": {
       "repository": "LloydCoder/tinlance-tads",
-      "ref": "001ab8b60d454788a8b46a6cae2adca4359510b2"
+      "ref": "be242dd29335e3e74b4b80176ea073f7b7f74d56"
     },
     "sdea": {
       "repository": "LloydCoder/tinlance-sdea",
-      "ref": "47e7aa9b5d380261fe774c2d2b67be00e4be3c8e"
+      "ref": "d189b05ab0db3044c13c461ddd8658aabde5fe03"
     },
     "reconos": {
       "repository": "LloydCoder/reconos-ofe",
-      "ref": "503f620714dbe6d5a60ce6bec808e84b6a1c7a0a"
+      "ref": "4b95e18f21ac7d5b820267f5f09780aa450606ae"
     },
     "fadereach": {
       "repository": "LloydCoder/fadereach",
-      "ref": "294064e5e20cde0c1844e9d9852ac12d4e17dc1c"
+      "ref": "ecd66b86840cdf08a65d0f2485564d5beed452bb"
     }
   },
   "sequence": [
@@ -50,5 +50,21 @@
     "outreach_execution_remains_fadereach_authority",
     "tsic_remains_integration_authority",
     "agent-platform-remains-execution-authority"
-  ]
+  ],
+  "feedback": {
+    "from": "fadereach",
+    "through": [
+      "sales",
+      "fdse",
+      "outcome",
+      "evidence",
+      "economic-attribution",
+      "evaluation"
+    ],
+    "returns_to": [
+      "tads",
+      "sdea"
+    ],
+    "rule": "feedback_is_learning_input_not_execution_authority"
+  }
 }
