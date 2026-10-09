@@ -1,0 +1,101 @@
+name: TSIC-10 ThreatFade Web Engine Integration E2E
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tsic-10-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  engine-web-integration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    steps:
+      - name: Checkout TSIC
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {path: tsic, persist-credentials: false}
+      - name: Checkout reviewed ThreatFade engine
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {repository: LloydCoder/tinlance-threatfade, ref: 4691ead86fadd1c95767886d7fb15bacbed012fe, path: threatfade, persist-credentials: false}
+      - name: Checkout reviewed ThreatFade Web
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {repository: LloydCoder/tinlance-threatfade-web, ref: e565ad49e67cd7d20f4e23f90ca5e7d449750043, path: threatfade-web, persist-credentials: false}
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with: {python-version: '3.12'}
+      - name: Setup Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with: {node-version: '22', cache: npm, cache-dependency-path: threatfade-web/package-lock.json}
+      - name: Install ThreatFade engine dependencies
+        working-directory: threatfade
+        run: python -m pip install -r requirements.txt
+      - name: Validate engine security and detection architecture
+        working-directory: threatfade
+        env: {PYTHONPATH: ${{ github.workspace }}/threatfade}
+        run: |
+          python scripts/validate_security_architecture.py
+          python scripts/validate_identity_architecture.py
+          python scripts/validate_detection_science.py
+          python scripts/validate_corpus_architecture.py
+          python scripts/validate_supply_chain.py
+          python scripts/validate_ground_truth.py
+          python scripts/validate_reliability.py
+      - name: Run engine analyst and detection tests
+        working-directory: threatfade
+        env: {PYTHONPATH: ${{ github.workspace }}/threatfade, THREATFADE_ENV: development}
+        run: python -m pytest -q tests/test_analyst_api.py tests/test_analyst_workflow.py tests/test_detection_pipeline.py tests/test_enterprise_security.py tests/test_integrity.py tests/test_reliability.py
+      - name: Install web dependencies
+        working-directory: threatfade-web
+        run: npm ci
+      - name: Reconcile web claims against engine truth
+        working-directory: threatfade-web
+        run: npm run truth:check && npm run docs:check && npm run growth:check
+      - name: Web format, lint, typecheck, unit tests and dependency audit
+        working-directory: threatfade-web
+        run: |
+          npm run format:check
+          npm run lint
+          npm run typecheck
+          npm test
+          npm audit --audit-level=high
+      - name: Build ThreatFade Web
+        working-directory: threatfade-web
+        env:
+          NEXTAUTH_SECRET: tsic-test-secret-at-least-32-characters-long
+          NEXTAUTH_URL: http://localhost:3000
+          THREATFADE_API_URL: http://127.0.0.1:8000
+        run: npm run build
+      - name: Install Playwright browser
+        working-directory: threatfade-web
+        run: npx playwright install --with-deps chromium
+      - name: Run web E2E tests
+        working-directory: threatfade-web
+        env:
+          NEXTAUTH_SECRET: tsic-test-secret-at-least-32-characters-long
+          NEXTAUTH_URL: http://localhost:3000
+          THREATFADE_API_URL: http://127.0.0.1:8000
+        run: npm run test:e2e
+      - name: Start live ThreatFade engine API
+        working-directory: threatfade
+        env:
+          PYTHONPATH: ${{ github.workspace }}/threatfade
+          THREATFADE_ENV: development
+        run: nohup python -m uvicorn api:app --host 127.0.0.1 --port 8000 > /tmp/threatfade-engine.log 2>&1 &
+      - name: Wait for engine health and version
+        run: for i in $(seq 1 45); do curl --fail --silent http://127.0.0.1:8000/health >/dev/null && curl --fail --silent http://127.0.0.1:8000/version >/dev/null && break || sleep 1; done; curl --fail http://127.0.0.1:8000/health; curl --fail http://127.0.0.1:8000/version
+      - name: Verify live engine payload against web schemas and canonical truth
+        working-directory: tsic
+        env:
+          THREATFADE_BASE_URL: http://127.0.0.1:8000
+          THREATFADE_WEB_DIR: ${{ github.workspace }}/threatfade-web
+        run: python scripts/certify_threatfade_web_live.py
+      - name: Validate TSIC authority contract
+        working-directory: tsic
+        run: python scripts/certify_threatfade_web.py
+      - name: Post-phase forensic audit
+        working-directory: tsic
+        run: python scripts/forensic_audit_phase10.py
