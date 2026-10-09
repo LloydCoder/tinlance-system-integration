@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0.0",
+  "baseline_id": "tsic-04-fadereach-acquisition-2026-10-09",
+  "authority": "tsic",
+  "upstream": [
+    "world-intelligence",
+    "tads",
+    "sdea",
+    "reconos"
+  ],
+  "target": "fadereach",
+  "repository": {
+    "name": "LloydCoder/fadereach",
+    "ref": "ecd66b86840cdf08a65d0f2485564d5beed452bb"
+  },
+  "handoff_lineage": [
+    "tenant_id",
+    "source_id",
+    "artifact_id",
+    "observation_id",
+    "evidence_id",
+    "signal_id",
+    "opportunity_id",
+    "trace_id",
+    "campaign_id",
+    "outreach_action_id",
+    "provider_event_id",
+    "reply_id",
+    "meeting_id",
+    "revenue_event_id"
+  ],
+  "authority_boundaries": {
+    "world_intelligence": "source/artifact/observation/signal intelligence",
+    "tads": "account targeting and prioritization",
+    "sdea": "engineering opportunity and buyer hypothesis",
+    "reconos": "OSINT enrichment/entity resolution/confidence",
+    "fadereach": "campaign/outreach/reply/meeting execution",
+    "tsic": "integration contracts/conformance",
+    "agent-platform": "consequential execution, policy and audit"
+  },
+  "invariants": [
+    "consent_and_suppression_checked_before_send",
+    "campaign_actions_tenant_scoped",
+    "evidence_lineage_preserved_from_signal_to_outreach",
+    "provider_webhooks_authenticated_and_replay_safe",
+    "idempotency_key_required_for_consequential_outreach",
+    "provider_failure_retry_is_bounded_and_deduplicated",
+    "external_signal_content_is_untrusted",
+    "outreach_does_not_grant_policy_or_runtime_authority",
+    "revenue_feedback_is_learning_input_not_execution_authority"
+  ],
+  "execution_gate": {
+    "workflow": ".github/workflows/fadereach-acquisition.yml",
+    "source_owned_workflow": "LloydCoder/fadereach/.github/workflows/ci.yml",
+    "source_owned_certifier": "LloydCoder/fadereach/scripts/tsic_conformance.py",
+    "forensic_audit": "scripts/forensic_audit_phase4.py",
+    "requires_cross_repository_contract_execution": true
+  }
+}
