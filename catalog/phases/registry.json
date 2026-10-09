@@ -91,7 +91,7 @@
       ],
       "certification_gate": "fde_vertical",
       "entry_condition": "previous_phase_green",
-      "status": "in_progress"
+      "status": "completed"
     },
     {
       "id": "TSIC-08",
@@ -101,7 +101,7 @@
       ],
       "certification_gate": "delivery_evidence",
       "entry_condition": "previous_phase_green",
-      "status": "planned"
+      "status": "in_progress"
     },
     {
       "id": "TSIC-09",
