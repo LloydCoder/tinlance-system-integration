@@ -132,7 +132,7 @@
       ],
       "certification_gate": "bugflow_to_delivery",
       "entry_condition": "previous_phase_green",
-      "status": "in_progress"
+      "status": "completed"
     },
     {
       "id": "TSIC-12",
@@ -142,7 +142,7 @@
       ],
       "certification_gate": "governed_healthcare",
       "entry_condition": "previous_phase_green",
-      "status": "planned"
+      "status": "in_progress"
     },
     {
       "id": "TSIC-13",
