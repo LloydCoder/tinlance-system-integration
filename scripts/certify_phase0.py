@@ -23,6 +23,9 @@ def main():
     assert systems["threatfade-web"]["repository"]=="LloydCoder/tinlance-threatfade-web"
     assert systems["fde-mastery"]["repository"]=="LloydCoder/fde-mastery"
     assert systems["tinlance-com"]["repository"]=="LloydCoder/Tinlance"
+    assert systems["hezcast"]["repository"]=="LloydCoder/hezcast-engine"
+    assert systems["hezcast-saas"]["repository"]=="LloydCoder/hezcast-saas"
+    assert systems["hezcast-saas"]["governance_role"]=="content_product_experience_authority"
 
     nodes={x["system"]:x for x in graph["nodes"]}
     assert set(nodes)==set(systems)
