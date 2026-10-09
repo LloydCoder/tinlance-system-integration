@@ -16,6 +16,8 @@ def main() -> None:
     baseline = load("policies/production-system-baseline.json")
     ecosystem = load("manifests/ecosystem.json")
     graph = load("catalog/dependencies/graph.json")
+    services = load("catalog/services/registry.json")
+    capabilities = load("catalog/capabilities/authority.json")
     contracts = load("catalog/contracts/registry.json")
     phases = load("catalog/phases/registry.json")
     systems = ecosystem["systems"]
@@ -52,10 +54,28 @@ def main() -> None:
         "fas-evidence-analysis-authority",
         "domain-system-authority",
         "tsic-integration-certification-authority",
+        "hezcast-content-generation-authority",
+        "agent-platform-governed-publishing-authority",
     }
     assert set(baseline["required_boundaries"]) == required_boundaries
     assert baseline["authority"] == "tsic"
     required_contracts = {"identity-context", "event-envelope", "delivery-semantics", "trace-context", "economic-attribution"}
+    hezcast = next(item for item in systems if item["id"] == "hezcast")
+    assert hezcast["repository"] == "Tinlance/hezcast-engine"
+    assert hezcast["governance_role"] == "content_generation_authority"
+    assert "content_generation" in hezcast["authority"]
+    assert "external_content_publishing" not in hezcast["authority"]
+    assert any(edge["from"] == "hezcast" and edge["to"] == "agent-platform" and edge["reason"] == "governed_external_publishing" for edge in graph["edges"])
+    assert any(edge["from"] == "hezcast" and edge["to"] == "fadereach" and edge["reason"] == "content_bundle_handoff" for edge in graph["edges"])
+    assert any(service["id"] == "hezcast" and service["system"] == "hezcast" and {"https", "events", "artifacts"} <= set(service["protocols"]) for service in services["services"])
+    capability_owners = {item["capability"]: item["owner"] for item in capabilities["capabilities"]}
+    assert capability_owners.get("content_generation") == "hezcast"
+    assert capability_owners.get("external_content_publishing") == "agent-platform"
+    adapter = load("integrations/hezcast/adapter.json")
+    assert adapter["authority"]["content_generation"] == "hezcast"
+    assert adapter["authority"]["external_publishing_execution"] == "agent-platform"
+    assert adapter["authority"]["commercial_entitlement"] == "tinlance-com"
+    assert "external_publish_requires_agent_platform_authorization" in adapter["invariants"]
     registered_contracts = {item["id"] for item in contracts["contracts"]}
     assert required_contracts <= registered_contracts
 

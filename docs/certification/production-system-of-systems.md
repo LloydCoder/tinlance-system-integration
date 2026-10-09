@@ -18,6 +18,10 @@ Certification is a repository-level conformance gate, not a claim that every ext
 12. Evidence-bounded production claims.
 13. Final forensic audit of canonical machine-readable sources and phase ordering.
 
+## HezCast content and publishing boundary
+
+HezCast Engine is registered as a content-generation system. Script, voice, video, captions, and post-bundle generation remain in the HezCast domain. Publishing to Telegram or any other external channel is a consequential side effect and must be mediated by Agent Platform with tenant-bound authorization, scoped credentials, policy/approval checks, idempotency, and audit evidence. The HezCast adapter does not confer publish authority on HezCast or on a commercial AaaS offer.
+
 ## Required authority model
 
 - Agent Platform is the sole generic consequential execution authority.

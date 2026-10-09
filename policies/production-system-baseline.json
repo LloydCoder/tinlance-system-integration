@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "baseline_id": "tsic-17-production-system-of-systems-2026-10-09",
+  "baseline_id": "tsic-17-production-system-of-systems-hezcast-recertification-2026-10-09",
   "authority": "tsic",
   "required_boundaries": [
     "agent-platform-execution-authority",
@@ -8,7 +8,9 @@
     "fdse-delivery-orchestration-authority",
     "fas-evidence-analysis-authority",
     "domain-system-authority",
-    "tsic-integration-certification-authority"
+    "tsic-integration-certification-authority",
+    "hezcast-content-generation-authority",
+    "agent-platform-governed-publishing-authority"
   ],
   "invariants": [
     "no_duplicate_consequential_execution_authority",
@@ -19,6 +21,8 @@
     "generic_execution_authority_is_unique",
     "phase_registry_is_contiguous_and_serial",
     "all_production_claims_are_evidence_bounded",
-    "contracts_and_adapters_have_explicit_owners"
+    "contracts_and_adapters_have_explicit_owners",
+    "content_generation_is_separate_from_publishing_authority",
+    "new_system_is_registered_in_manifest_graph_and_service_registry"
   ]
 }

@@ -31,8 +31,9 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: LloydCoder/tinlance-threatfade-web
-          ref: 2fbb3932fb7d641293f011110fbee568f8a98612
+          ref: f2865a034794f706bd57e4427a4e698942c95b54
           path: threatfade-web
+          fetch-depth: 0
           persist-credentials: false
       - name: Setup Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
@@ -73,6 +74,8 @@ jobs:
         run: npm run truth:check && npm run docs:check && npm run growth:check
       - name: Web format, lint, typecheck, unit tests and dependency audit
         working-directory: threatfade-web
+        env:
+          GITHUB_EVENT_PATH: ""
         run: |
           npm run format:check
           npm run lint

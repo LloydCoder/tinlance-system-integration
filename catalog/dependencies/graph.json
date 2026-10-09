@@ -117,6 +117,11 @@
       "system": "tinlance-com",
       "contract_version": "1.0.0",
       "ci_gate": "TSIC-18"
+    },
+    {
+      "system": "hezcast",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-17"
     }
   ],
   "edges": [
@@ -254,6 +259,16 @@
       "from": "tinlance-com",
       "to": "agent-platform",
       "reason": "certified_execution_binding"
+    },
+    {
+      "from": "hezcast",
+      "to": "fadereach",
+      "reason": "content_bundle_handoff"
+    },
+    {
+      "from": "hezcast",
+      "to": "agent-platform",
+      "reason": "governed_external_publishing"
     }
   ]
 }

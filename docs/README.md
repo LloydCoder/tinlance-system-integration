@@ -43,6 +43,7 @@ This index organizes the repository using a practical Diátaxis model while pres
 - [TSIC-15 Observability and Trace Context](observability/trace-context-contract.md)
 - [TSIC-16 MCP/A2A Interoperability](architecture/model-and-agent-interoperability.md)
 - [TSIC-17 Production System-of-Systems](certification/production-system-of-systems.md)
+- [HezCast integration authority boundary](../integrations/hezcast/adapter.json)
 - [Production system-of-systems certification](certification/production-system-of-systems.md)
 - [TSIC-18–38 certification record](certification/TSIC-18-38-certification-record.md)
 - [2026 standards baseline](standards/2026-baseline.md)

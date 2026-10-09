@@ -7,7 +7,7 @@ Certify that ThreatFade Web consumes the ThreatFade Engine as the source of dete
 ## Reviewed immutable revisions
 
 - ThreatFade Engine: `LloydCoder/tinlance-threatfade@4691ead86fadd1c95767886d7fb15bacbed012fe`
-- ThreatFade Web: `LloydCoder/tinlance-threatfade-web@2fbb3932fb7d641293f011110fbee568f8a98612`
+- ThreatFade Web: `LloydCoder/tinlance-threatfade-web@f2865a034794f706bd57e4427a4e698942c95b54`
 
 The integration workflow checks out both reviewed revisions without persisting checkout credentials. It runs engine architecture and analyst tests; web truth, documentation, growth, format, lint, typecheck, unit, dependency audit, build and browser E2E checks; starts the live engine API; verifies health/version and API payloads against web schemas and canonical truth; then runs the authority contract certifier and post-phase forensic audit.
 
@@ -34,4 +34,4 @@ The integration workflow checks out both reviewed revisions without persisting c
 - Live API/schema certifier: `scripts/certify_threatfade_web_live.py`
 - Forensic audit: `scripts/forensic_audit_phase10.py`
 
-The TSIC-10 E2E workflow completed successfully on commit `dc4963c5ad2ead1cb107e0788edf65bf273df002` on 2026-10-09. Later ecosystem commits re-run the integration workflow; phase status is controlled by the canonical phase registry and must be re-certified when relevant contracts or dependencies change.
+The TSIC-10 E2E workflow is re-running against the reviewed dependency-remediation revision after CI exposed an upstream workflow-file formatting defect. Phase status is controlled by the canonical phase registry and must be re-certified when relevant contracts or dependencies change.
