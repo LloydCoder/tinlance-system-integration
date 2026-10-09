@@ -198,6 +198,15 @@
         "buyer_experience",
         "entitlement_presentation"
       ]
+    },
+    {
+      "id": "hezcast",
+      "layer": "content",
+      "authority": [
+        "content_generation",
+        "content_package_generation",
+        "content_quality_validation"
+      ]
     }
   ],
   "paths": {
@@ -258,6 +267,10 @@
       "fdse",
       "economic-attribution",
       "fas-bench"
+    ],
+    "content-generation": [
+      "hezcast",
+      "agent-platform"
     ]
   }
 }
