@@ -40,6 +40,7 @@ This index organizes the repository using a practical Diátaxis model while pres
 - [TSIC-12 Hezqara governed healthcare certification](certification/TSIC-12-hezqara-governed-healthcare.md)
 - [TSIC-13 Economic Attribution](economics/attribution-spine.md)
 - [TSIC-14 Closed-Loop Intelligence](integration/TSIC-14-closed-loop-intelligence.md)
+- [TSIC-15 Observability and Trace Context](observability/trace-context-contract.md)
 - [Production system-of-systems certification](certification/production-system-of-systems.md)
 - [TSIC-18–38 certification record](certification/TSIC-18-38-certification-record.md)
 - [2026 standards baseline](standards/2026-baseline.md)
