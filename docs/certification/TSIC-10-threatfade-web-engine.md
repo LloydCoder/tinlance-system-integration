@@ -7,7 +7,7 @@ Certify that ThreatFade Web consumes the ThreatFade Engine as the source of dete
 ## Reviewed immutable revisions
 
 - ThreatFade Engine: `LloydCoder/tinlance-threatfade@4691ead86fadd1c95767886d7fb15bacbed012fe`
-- ThreatFade Web: `LloydCoder/tinlance-threatfade-web@6cfef44ce2cdecdc8a9a9d4ba781941d787675e7`
+- ThreatFade Web: `LloydCoder/tinlance-threatfade-web@f2865a034794f706bd57e4427a4e698942c95b54`
 
 The integration workflow checks out both reviewed revisions without persisting checkout credentials. It runs engine architecture and analyst tests; web truth, documentation, growth, format, lint, typecheck, unit, dependency audit, build and browser E2E checks; starts the live engine API; verifies health/version and API payloads against web schemas and canonical truth; then runs the authority contract certifier and post-phase forensic audit.
 

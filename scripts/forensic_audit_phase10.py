@@ -13,7 +13,7 @@ def main():
  assert 'playground_input_is_untrusted_and_resource_bounded' in b['invariants']
  assert 'web_proxy_uses_path_allowlist_timeout_redirect_rejection_and_response_limits' in b['invariants']
  wf=(ROOT/'.github/workflows/threatfade-web-engine-e2e.yml').read_text()
- for marker in ['4691ead86fadd1c95767886d7fb15bacbed012fe','6cfef44ce2cdecdc8a9a9d4ba781941d787675e7','npm run truth:check','npm run test:e2e','scripts/certify_threatfade_web_live.py']:
+ for marker in ['4691ead86fadd1c95767886d7fb15bacbed012fe','f2865a034794f706bd57e4427a4e698942c95b54','npm run truth:check','npm run test:e2e','scripts/certify_threatfade_web_live.py']:
   assert marker in wf, 'workflow missing '+marker
  print('PASS TSIC-10 forensic audit: first-class web registry, pinned engine/web, live API/schema check, auth boundaries and CI gates verified')
 if __name__=='__main__': main()
