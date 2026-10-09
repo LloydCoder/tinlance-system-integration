@@ -248,6 +248,17 @@
         "buyer_experience",
         "entitlement_presentation"
       ]
+    },
+    {
+      "id": "hezcast",
+      "name": "HezCast Engine",
+      "repository": "Tinlance/hezcast-engine",
+      "governance_role": "content_generation_authority",
+      "authority": [
+        "content_generation",
+        "content_package_generation",
+        "content_quality_validation"
+      ]
     }
   ]
 }
