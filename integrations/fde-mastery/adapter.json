@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0.0",
+  "adapter_id": "tsic-fde-mastery-vertical",
+  "source_system": "fdse",
+  "target_system": "fde-mastery",
+  "status": "reference-contract",
+  "authority": {
+    "integration_contracts": "tsic",
+    "delivery_orchestration": "fdse",
+    "domain_workflows": "fde-mastery",
+    "execution_authority": "agent-platform"
+  },
+  "contract_bindings": [
+    {
+      "tsic_contract": "identity-context",
+      "surface": "tenant-scoped FDE engagement",
+      "direction": "inbound"
+    },
+    {
+      "tsic_contract": "event-envelope",
+      "surface": "engagement/workflow/delivery/outcome events",
+      "direction": "both"
+    },
+    {
+      "tsic_contract": "delivery-semantics",
+      "surface": "durable engagement and workflow lifecycle",
+      "direction": "both"
+    },
+    {
+      "tsic_contract": "trace-context",
+      "surface": "engagement-to-delivery correlation",
+      "direction": "both"
+    },
+    {
+      "tsic_contract": "economic-attribution",
+      "surface": "customer outcome and value evidence",
+      "direction": "outbound"
+    }
+  ],
+  "invariants": [
+    "engineering_and_transformation_are_distinct_routes",
+    "fde_mastery_does_not_duplicate_agent_platform_authority",
+    "customer_approval_is_required_for_consequential_changes",
+    "evidence_is_preserved_from_intake_through_delivery",
+    "tsic_remains_integration_authority",
+    "agent-platform_remains-execution-authority"
+  ]
+}
