@@ -1,0 +1,64 @@
+name: TSIC-05 FAS Independent Evaluation E2E
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tsic-05-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  fas-independent-evaluation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout TSIC
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {path: tsic, persist-credentials: false}
+      - name: Checkout reviewed FAS
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: LloydCoder/fas
+          ref: c3eb2fcaf7e1f02e2ad0dd61ec4c7bee3384e64e
+          path: fas
+          persist-credentials: false
+      - name: Checkout reviewed FAS-Bench
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: LloydCoder/fas-bench
+          ref: acf23e4ddb2d435290cf4d7fb09f7ac4b797c5de
+          path: fas-bench
+          persist-credentials: false
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with: {python-version: '3.12', cache: pip, cache-dependency-path: fas/pyproject.toml}
+      - name: Install independent systems
+        run: python -m pip install -e './fas[dev]' -e './fas-bench[dev]'
+      - name: Run FAS unit and E2E suite
+        working-directory: fas
+        run: python -m pytest -q tests
+      - name: Run FAS-Bench independent evaluator suite
+        working-directory: fas-bench
+        run: python -m pytest -q tests
+      - name: Execute live FAS-to-FAS-Bench evaluation
+        working-directory: tsic
+        env:
+          TSIC_FAS_DIR: ${{ github.workspace }}/fas
+          TSIC_FAS_BENCH_DIR: ${{ github.workspace }}/fas-bench
+        run: python scripts/certify_fas_bench_e2e.py
+      - name: Validate phase contract
+        working-directory: tsic
+        run: python scripts/certify_fas_bench.py
+      - name: Post-phase forensic audit
+        working-directory: tsic
+        run: python scripts/forensic_audit_phase5.py
+      - name: Upload immutable evaluation evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: tsic-05-fas-bench-evaluation-${{ github.sha }}
+          path: tsic/artifacts/fas-bench/evaluation-artifact.json
+          if-no-files-found: error
+          retention-days: 90
