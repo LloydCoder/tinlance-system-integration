@@ -39,18 +39,30 @@
     "tsic": "integration contracts"
   },
   "invariants": [
+    "reports_are_derived_from_provenance_preserving_evidence",
+    "engineering_and_transformation_routes_remain_distinct",
+    "economic_attribution_retains_delivery_route",
+    "toolkit_does_not_grant_execution_authority",
+    "toolkit_does_not_become_detection_or_policy_authority",
+    "tsic_remains_integration_authority",
+    "agent-platform-remains-execution-authority"
+  ],
+  "execution_gate": {
+    "workflow": ".github/workflows/delivery-evidence-e2e.yml",
+    "forensic_audit": "scripts/forensic_audit_phase8.py",
+    "requires_toolkit_test_execution": true
+  },
+  "fdse_toolkit": {
+    "repository": "LloydCoder/Tinlance-FDSE-toolkit",
+    "ref": "8cb4bedcd2c1755966bdc69a2be2393da609fe6e"
+  },
+  "additional_invariants": [
     "every_report_assertion_has_source_evidence_or_is_marked_unverified",
     "evidence_hash_and_origin_are_preserved",
     "finding_and_claim_ids_are_not_silently_rewritten",
     "customer_delivery_package_is_manifested_and_integrity_checked",
     "delivery_artifacts_are_tenant_scoped_and_classified",
     "report_generation_sanitizes_untrusted_content",
-    "regulatory_mapping_is_not_a_compliance_attestation",
-    "toolkit_does_not_grant_execution_or_detection_authority"
-  ],
-  "execution_gate": {
-    "workflow": ".github/workflows/delivery-evidence-e2e.yml",
-    "forensic_audit": "scripts/forensic_audit_phase8.py",
-    "requires_toolkit_test_execution": true
-  }
+    "regulatory_mapping_is_not_a_compliance_attestation"
+  ]
 }
