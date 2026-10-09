@@ -17,25 +17,40 @@ jobs:
     steps:
       - name: Checkout TSIC
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {path: tsic, persist-credentials: false}
+        with:
+          path: tsic
+          persist-credentials: false
       - name: Checkout reviewed ThreatFade engine
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-threatfade, ref: 4691ead86fadd1c95767886d7fb15bacbed012fe, path: threatfade, persist-credentials: false}
+        with:
+          repository: LloydCoder/tinlance-threatfade
+          ref: 4691ead86fadd1c95767886d7fb15bacbed012fe
+          path: threatfade
+          persist-credentials: false
       - name: Checkout reviewed ThreatFade Web
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-threatfade-web, ref: e565ad49e67cd7d20f4e23f90ca5e7d449750043, path: threatfade-web, persist-credentials: false}
+        with:
+          repository: LloydCoder/tinlance-threatfade-web
+          ref: e565ad49e67cd7d20f4e23f90ca5e7d449750043
+          path: threatfade-web
+          persist-credentials: false
       - name: Setup Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
-        with: {python-version: '3.12'}
+        with:
+          python-version: '3.12'
       - name: Setup Node
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
-        with: {node-version: '22', cache: npm, cache-dependency-path: threatfade-web/package-lock.json}
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: threatfade-web/package-lock.json
       - name: Install ThreatFade engine dependencies
         working-directory: threatfade
         run: python -m pip install -r requirements.txt
       - name: Validate engine security and detection architecture
         working-directory: threatfade
-        env: {PYTHONPATH: ${{ github.workspace }}/threatfade}
+        env:
+          PYTHONPATH: ${{ github.workspace }}/threatfade
         run: |
           python scripts/validate_security_architecture.py
           python scripts/validate_identity_architecture.py
@@ -46,7 +61,9 @@ jobs:
           python scripts/validate_reliability.py
       - name: Run engine analyst and detection tests
         working-directory: threatfade
-        env: {PYTHONPATH: ${{ github.workspace }}/threatfade, THREATFADE_ENV: development}
+        env:
+          PYTHONPATH: ${{ github.workspace }}/threatfade
+          THREATFADE_ENV: development
         run: python -m pytest -q tests/test_analyst_api.py tests/test_analyst_workflow.py tests/test_detection_pipeline.py tests/test_enterprise_security.py tests/test_integrity.py tests/test_reliability.py
       - name: Install web dependencies
         working-directory: threatfade-web
