@@ -1,0 +1,76 @@
+name: TSIC-12 Hezqara Governed Healthcare Integration E2E
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tsic-12-hezqara-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  governed-healthcare-integration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout TSIC
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          path: tsic
+          persist-credentials: false
+      - name: Checkout reviewed Hezqara
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: LloydCoder/hezqara
+          ref: e1f5749fc334262eaf63cf25837b629ca86b09b6
+          path: hezqara
+          persist-credentials: false
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: hezqara/backend/requirements.txt
+      - name: Setup Node
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38d
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: hezqara/frontend/package-lock.json
+      - name: Install backend dependencies
+        working-directory: hezqara/backend
+        run: python -m pip install -r requirements.txt
+      - name: Compile backend
+        working-directory: hezqara/backend
+        run: python -m compileall -q app
+      - name: Verify backend dependency integrity
+        working-directory: hezqara/backend
+        run: python -m pip check
+      - name: Run backend and security tests
+        working-directory: hezqara/backend
+        env:
+          APP_ENV: test
+          PYTHONPATH: .
+        run: pytest -q tests ../tests/security
+      - name: Install frontend dependencies
+        working-directory: hezqara/frontend
+        run: npm ci
+      - name: Lint frontend
+        working-directory: hezqara/frontend
+        run: npm run lint
+      - name: Type-check frontend
+        working-directory: hezqara/frontend
+        run: npm run type-check
+      - name: Build frontend
+        working-directory: hezqara/frontend
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+        run: npm run build
+      - name: Verify TSIC healthcare authority and contract
+        working-directory: tsic
+        run: python3 scripts/certify_hezqara.py
+      - name: Post-phase forensic audit
+        working-directory: tsic
+        run: python3 scripts/forensic_audit_phase12.py
