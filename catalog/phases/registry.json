@@ -122,7 +122,7 @@
       ],
       "certification_gate": "threatfade_web_engine",
       "entry_condition": "previous_phase_green",
-      "status": "in_progress"
+      "status": "completed"
     },
     {
       "id": "TSIC-11",
@@ -132,7 +132,7 @@
       ],
       "certification_gate": "bugflow_to_delivery",
       "entry_condition": "previous_phase_green",
-      "status": "planned"
+      "status": "in_progress"
     },
     {
       "id": "TSIC-12",
