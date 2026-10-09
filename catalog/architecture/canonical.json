@@ -208,6 +208,13 @@
         "content_package_generation",
         "content_quality_validation"
       ]
+    },
+    {
+      "id": "hezcast-saas",
+      "layer": "product",
+      "authority": [
+        "content_product_experience"
+      ]
     }
   ],
   "paths": {
