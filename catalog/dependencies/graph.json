@@ -122,6 +122,11 @@
       "system": "hezcast",
       "contract_version": "1.0.0",
       "ci_gate": "TSIC-17"
+    },
+    {
+      "system": "hezcast-saas",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-17"
     }
   ],
   "edges": [
@@ -269,6 +274,16 @@
       "from": "hezcast",
       "to": "agent-platform",
       "reason": "governed_external_publishing"
+    },
+    {
+      "from": "hezcast-saas",
+      "to": "hezcast",
+      "reason": "content_generation_api_client"
+    },
+    {
+      "from": "tinlance-com",
+      "to": "hezcast-saas",
+      "reason": "commercial_offer_and_buyer_experience"
     }
   ]
 }
