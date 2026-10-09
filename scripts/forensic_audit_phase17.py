@@ -17,6 +17,8 @@ def main() -> None:
         "manifests/ecosystem.json",
         "integrations/hezcast/adapter.json",
         "catalog/dependencies/graph.json",
+        "catalog/services/registry.json",
+        "catalog/capabilities/authority.json",
         "catalog/contracts/registry.json",
         "catalog/phases/registry.json",
         "policies/production-system-baseline.json",
@@ -32,6 +34,8 @@ def main() -> None:
         raise SystemExit("FAIL missing TSIC-17 artifacts: " + ", ".join(missing))
     manifest = load("manifests/ecosystem.json")
     graph = load("catalog/dependencies/graph.json")
+    services = load("catalog/services/registry.json")
+    capabilities = load("catalog/capabilities/authority.json")
     phases = load("catalog/phases/registry.json")
     baseline = load("policies/production-system-baseline.json")
     failure_matrix = load("reliability/failure-matrix.json")
@@ -47,6 +51,12 @@ def main() -> None:
     if len([item for item in manifest["systems"] if item.get("governance_role") == "execution_authority"]) != 1:
         raise SystemExit("FAIL generic execution authority is not unique")
     adapter = load("integrations/hezcast/adapter.json")
+    service_ids = {item["id"] for item in services["services"]}
+    if "hezcast" not in service_ids:
+        raise SystemExit("FAIL HezCast missing from service registry")
+    capability_owners = {item["capability"]: item["owner"] for item in capabilities["capabilities"]}
+    if capability_owners.get("content_generation") != "hezcast" or capability_owners.get("external_content_publishing") != "agent-platform":
+        raise SystemExit("FAIL HezCast content/publishing capability ownership drift")
     if adapter["authority"].get("external_publishing_execution") != "agent-platform":
         raise SystemExit("FAIL HezCast must not own external publishing execution authority")
     if manifest["ecosystem"]["integration_authority"] != "tsic" or graph["authority"] != "tsic":
