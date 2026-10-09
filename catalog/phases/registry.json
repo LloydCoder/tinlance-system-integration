@@ -142,7 +142,7 @@
       ],
       "certification_gate": "governed_healthcare",
       "entry_condition": "previous_phase_green",
-      "status": "in_progress"
+      "status": "completed"
     },
     {
       "id": "TSIC-13",
@@ -152,7 +152,7 @@
       ],
       "certification_gate": "economic_attribution",
       "entry_condition": "previous_phase_green",
-      "status": "planned"
+      "status": "in_progress"
     },
     {
       "id": "TSIC-14",
