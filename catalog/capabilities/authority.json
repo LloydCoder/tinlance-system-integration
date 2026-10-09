@@ -245,6 +245,10 @@
     {
       "capability": "external_content_publishing",
       "owner": "agent-platform"
+    },
+    {
+      "capability": "content_product_experience",
+      "owner": "hezcast-saas"
     }
   ]
 }
