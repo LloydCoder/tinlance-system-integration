@@ -211,6 +211,11 @@
     "ltv": {
       "type": "number",
       "minimum": 0
+    },
+    "delivery_route": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
     }
   },
   "allOf": [
