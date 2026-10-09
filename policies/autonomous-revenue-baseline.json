@@ -21,6 +21,10 @@
     "external_publishing_requires_agent_platform_authorization"
   ],
   "required_workflow_steps": [
+    "world-intelligence",
+    "tads",
+    "sdea",
+    "reconos",
     "entitlement",
     "consent-and-suppression",
     "policy-approval",
