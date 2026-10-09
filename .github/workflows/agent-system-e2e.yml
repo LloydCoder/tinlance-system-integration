@@ -15,7 +15,7 @@ jobs:
     timeout-minutes: 20
     env:
       PYTHONPATH: ${{ github.workspace }}/agent-platform
-      TSIC_PLATFORM_TOKEN: tsic-reference-token
+      TSIC_PLATFORM_TOKEN: token-tsic
       TSIC_PLATFORM_TENANT: tenant-tsic
       TSIC_PLATFORM_SUBJECT: subject-tsic
       TSIC_PLATFORM_APPROVER_TOKEN: approver-tsic-token
