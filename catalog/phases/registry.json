@@ -191,7 +191,7 @@
       ],
       "certification_gate": "protocol_interoperability",
       "entry_condition": "previous_phase_green",
-      "status": "in_progress"
+      "status": "completed"
     },
     {
       "id": "TSIC-17",
@@ -201,7 +201,7 @@
       ],
       "certification_gate": "production_system_of_systems",
       "entry_condition": "previous_phase_green",
-      "status": "planned"
+      "status": "in_progress"
     },
     {
       "id": "TSIC-18",
