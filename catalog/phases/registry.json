@@ -80,7 +80,7 @@
       ],
       "certification_gate": "engineering_route",
       "entry_condition": "previous_phase_green",
-      "status": "in_progress"
+      "status": "completed"
     },
     {
       "id": "TSIC-07",
@@ -91,7 +91,7 @@
       ],
       "certification_gate": "fde_vertical",
       "entry_condition": "previous_phase_green",
-      "status": "planned"
+      "status": "in_progress"
     },
     {
       "id": "TSIC-08",
