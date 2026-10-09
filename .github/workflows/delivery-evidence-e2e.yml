@@ -1,0 +1,41 @@
+name: TSIC-08 Delivery Evidence E2E
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tsic-08-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  delivery-evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout TSIC
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {path: tsic, persist-credentials: false}
+      - name: Checkout reviewed FDSE Toolkit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {repository: LloydCoder/Tinlance-FDSE-toolkit, ref: 8cb4bedcd2c1755966bdc69a2be2393da609fe6e, path: toolkit, persist-credentials: false}
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with: {python-version: '3.12'}
+      - name: Install FDSE Toolkit
+        working-directory: toolkit
+        run: python -m pip install -e '.[test]'
+      - name: Run complete toolkit test suite
+        working-directory: toolkit
+        run: python -m pytest -q tests
+      - name: Run evidence, report, delivery, regulatory and air-gap gates
+        working-directory: toolkit
+        run: python -m pytest -q tests/test_evidence.py tests/test_reporting.py tests/test_delivery.py tests/test_regulatory.py tests/test_roi.py tests/test_airgap.py tests/test_airgap_security.py tests/test_contracts.py
+      - name: Validate canonical delivery evidence contract
+        working-directory: tsic
+        run: python scripts/certify_delivery_evidence.py
+      - name: Post-phase forensic audit
+        working-directory: tsic
+        run: python scripts/forensic_audit_phase8.py
