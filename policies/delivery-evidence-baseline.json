@@ -1,7 +1,56 @@
 {
-  "schema_version":"1.0.0",
-  "baseline_id":"tsic-29-delivery-evidence-2026-10-08",
-  "authority":"tsic",
-  "fdse_toolkit":{"repository":"LloydCoder/Tinlance-FDSE-toolkit","ref":"405805cd936b76f52c1d246cab10a048dffcc4f8"},
-  "invariants":["reports_are_derived_from_provenance_preserving_evidence","engineering_and_transformation_routes_remain_distinct","economic_attribution_retains_delivery_route","toolkit_does_not_grant_execution_authority","toolkit_does_not_become_detection_or_policy_authority","tsic_remains_integration_authority","agent-platform-remains-execution-authority"]
+  "schema_version": "2.0.0",
+  "baseline_id": "tsic-08-delivery-evidence-2026-10-09",
+  "authority": "tsic",
+  "toolkit": {
+    "repository": "LloydCoder/Tinlance-FDSE-toolkit",
+    "ref": "8cb4bedcd2c1755966bdc69a2be2393da609fe6e"
+  },
+  "upstream": [
+    "fdse",
+    "fas",
+    "fas-bench",
+    "threatfade",
+    "bugflow",
+    "reconos",
+    "hezqara"
+  ],
+  "lineage": [
+    "tenant_id",
+    "engagement_id",
+    "route_id",
+    "source_system",
+    "source_revision",
+    "source_artifact_id",
+    "evidence_id",
+    "evidence_sha256",
+    "finding_id",
+    "claim_id",
+    "report_id",
+    "delivery_id",
+    "customer_acceptance_id"
+  ],
+  "authority_boundaries": {
+    "fdse": "delivery orchestration and engagement route",
+    "fdse_toolkit": "evidence packaging, report/playbook generation, delivery artifacts",
+    "fas": "evidence analysis",
+    "fas_bench": "independent evaluation",
+    "agent_platform": "governed execution, policy, approval and audit",
+    "tsic": "integration contracts"
+  },
+  "invariants": [
+    "every_report_assertion_has_source_evidence_or_is_marked_unverified",
+    "evidence_hash_and_origin_are_preserved",
+    "finding_and_claim_ids_are_not_silently_rewritten",
+    "customer_delivery_package_is_manifested_and_integrity_checked",
+    "delivery_artifacts_are_tenant_scoped_and_classified",
+    "report_generation_sanitizes_untrusted_content",
+    "regulatory_mapping_is_not_a_compliance_attestation",
+    "toolkit_does_not_grant_execution_or_detection_authority"
+  ],
+  "execution_gate": {
+    "workflow": ".github/workflows/delivery-evidence-e2e.yml",
+    "forensic_audit": "scripts/forensic_audit_phase8.py",
+    "requires_toolkit_test_execution": true
+  }
 }
