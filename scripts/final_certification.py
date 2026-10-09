@@ -15,7 +15,7 @@ PHASE_SCRIPTS=[
 "scripts/certify_interoperability.py","scripts/certify_production_system.py","scripts/certify_commercial_aaas.py",
 "scripts/certify_autonomous_revenue.py"]
 REQUIRED_POLICIES=[
-"policies/agent-system-baseline.json","policies/acquisition-system-baseline.json","policies/engineering-route-baseline.json",
+"policies/agent-system-baseline.json","policies/acquisition-system-baseline.json","policies/fadereach-acquisition-baseline.json","policies/engineering-route-baseline.json",
 "policies/transformation-route-baseline.json","policies/delivery-evidence-baseline.json","policies/fas-baseline.json",
 "policies/fas-bench-baseline.json","policies/threatfade-baseline.json","policies/bugflow-baseline.json",
 "policies/hezqara-baseline.json","policies/economic-attribution-baseline.json","policies/closed-loop-baseline.json",
