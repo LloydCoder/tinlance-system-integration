@@ -1,12 +1,19 @@
 {
   "schema_version": "1.0.0",
-  "baseline_id": "tsic-40-commercial-aaas-2026-10-08",
+  "baseline_id": "tsic-18-commercial-aaas-2026-10-09",
   "authority": "tsic",
   "invariants": [
     "commercial_surface_does_not_replace_domain_authority",
     "aaas_offers_bind_to_certified_agent_execution",
     "pricing_and_entitlement_are_traceable",
     "customer_tenant_context_is_preserved",
-    "delivery_evidence_is attributable_to_workflow_and_customer"
+    "delivery_evidence_is_attributable_to_workflow_and_customer",
+    "aaas_offers_are_machine_readable_and_unique",
+    "all_offer_systems_and_capabilities_are_registered",
+    "public_prices_are_not_invented",
+    "entitlements_are_tenant_scoped_and_policy_gated",
+    "external_publishing_is_agent_platform_authorized",
+    "fas_bench_is_evaluation_only",
+    "healthcare_scope_and_clinician_review_boundaries_are_preserved"
   ]
 }
