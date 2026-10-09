@@ -13,6 +13,8 @@ def main():
     assert b["source_system"]=="fas" and b["target_system"]=="fas-bench"
     assert "fas-bench_is_not_a_fas_runtime_dependency" in b["independence_invariants"]
     assert "fas_bench_is_not_on_production_execution_path" in p["invariants"]
+    assert p["execution_gate"]["requires_live_fas_cli_and_independent_evaluator"] is True
+    assert p["artifact_contract"]["lineage"] == ["fas_analysis_id","fas_report_digest","submission_id","case_id","evaluation_id","evaluator_version","correlation_id"]
     assert len(p["fas"]["ref"])==40 and len(p["fas_bench"]["ref"])==40
     assert p["fas"]["repository"]=="LloydCoder/fas"
     assert p["fas_bench"]["repository"]=="LloydCoder/fas-bench"
