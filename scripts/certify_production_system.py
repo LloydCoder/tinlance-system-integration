@@ -61,7 +61,7 @@ def main() -> None:
     assert baseline["authority"] == "tsic"
     required_contracts = {"identity-context", "event-envelope", "delivery-semantics", "trace-context", "economic-attribution"}
     hezcast = next(item for item in systems if item["id"] == "hezcast")
-    assert hezcast["repository"] == "Tinlance/hezcast-engine"
+    assert hezcast["repository"] == "LloydCoder/hezcast-engine"
     assert hezcast["governance_role"] == "content_generation_authority"
     assert "content_generation" in hezcast["authority"]
     assert "external_content_publishing" not in hezcast["authority"]
@@ -70,6 +70,11 @@ def main() -> None:
     assert any(service["id"] == "hezcast" and service["system"] == "hezcast" and {"https", "events", "artifacts"} <= set(service["protocols"]) for service in services["services"])
     capability_owners = {item["capability"]: item["owner"] for item in capabilities["capabilities"]}
     assert capability_owners.get("content_generation") == "hezcast"
+    hezcast_saas = next(item for item in systems if item["id"] == "hezcast-saas")
+    assert hezcast_saas["repository"] == "LloydCoder/hezcast-saas"
+    assert hezcast_saas["governance_role"] == "content_product_experience_authority"
+    assert capability_owners.get("content_product_experience") == "hezcast-saas"
+    assert any(edge["from"] == "hezcast-saas" and edge["to"] == "hezcast" and edge["reason"] == "content_generation_api_client" for edge in graph["edges"])
     assert capability_owners.get("external_content_publishing") == "agent-platform"
     adapter = load("integrations/hezcast/adapter.json")
     assert adapter["authority"]["content_generation"] == "hezcast"
