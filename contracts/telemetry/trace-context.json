@@ -1,1 +1,35 @@
-{"schema_version":"1.0.0","standards":["W3C Trace Context","OpenTelemetry"],"required":["trace_id","span_id","traceparent"],"optional":["tracestate","baggage"],"rules":{"preserve_trace_across_system_boundaries":true,"never_log_secrets":true}}
+{
+  "schema_version": "1.1.0",
+  "standards": [
+    "W3C Trace Context",
+    "OpenTelemetry"
+  ],
+  "required": [
+    "trace_id",
+    "span_id",
+    "traceparent"
+  ],
+  "optional": [
+    "tracestate",
+    "baggage",
+    "correlation_id",
+    "tenant_id",
+    "execution_id",
+    "evidence_id"
+  ],
+  "formats": {
+    "trace_id": "32 lowercase hexadecimal characters; all-zero value forbidden",
+    "span_id": "16 lowercase hexadecimal characters; all-zero value forbidden",
+    "traceparent": "00-{trace_id}-{span_id}-{flags}, with two lowercase hexadecimal flag characters"
+  },
+  "rules": {
+    "preserve_trace_across_system_boundaries": true,
+    "traceparent_ids_must_match_explicit_trace_and_span_ids": true,
+    "never_log_secrets": true,
+    "baggage_allowlist_only": true,
+    "baggage_max_bytes": 8192,
+    "tenant_context_is_required_for_tenant_scoped_events": true,
+    "sampling_flags_never_grant_authorization": true,
+    "semantic_convention_version": "1.37.0"
+  }
+}
