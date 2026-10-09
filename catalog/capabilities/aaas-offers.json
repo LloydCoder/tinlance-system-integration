@@ -428,5 +428,12 @@
         "fas_bench_evaluation_only": true
       }
     }
-  ]
+  ],
+  "commercial_surface": {
+    "repository": "LloydCoder/Tinlance",
+    "public_route": "/agent-as-a-service",
+    "generated_catalog_path": "apps/web/lib/platform/aaas-offers.generated.json",
+    "primary_cta": "request-assessment",
+    "pricing_disclosure": "quote_required"
+  }
 }
