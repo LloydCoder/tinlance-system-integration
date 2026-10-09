@@ -184,6 +184,14 @@
         "events",
         "artifacts"
       ]
+    },
+    {
+      "id": "hezcast-saas",
+      "system": "hezcast-saas",
+      "protocols": [
+        "https",
+        "events"
+      ]
     }
   ]
 }
