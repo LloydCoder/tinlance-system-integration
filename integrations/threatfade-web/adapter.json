@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0.0",
+  "adapter_id": "tsic-threatfade-web-engine",
+  "source_system": "threatfade",
+  "target_system": "threatfade-web",
+  "status": "reference-contract",
+  "authority": {
+    "integration_contracts": "tsic",
+    "detection_and_analyst_authority": "threatfade",
+    "product_and_analyst_presentation": "threatfade-web",
+    "independent_evaluation": "fas-bench",
+    "execution_authority": "agent-platform"
+  },
+  "contract_bindings": [
+    {
+      "tsic_contract": "identity-context",
+      "surface": "authenticated analyst identity and tenant binding",
+      "direction": "inbound"
+    },
+    {
+      "tsic_contract": "event-envelope",
+      "surface": "detection, evidence, analyst disposition and audit events",
+      "direction": "both"
+    },
+    {
+      "tsic_contract": "delivery-semantics",
+      "surface": "safe proxy retries and analyst mutation semantics",
+      "direction": "both"
+    },
+    {
+      "tsic_contract": "trace-context",
+      "surface": "request ID and detection case correlation",
+      "direction": "both"
+    },
+    {
+      "tsic_contract": "economic-attribution",
+      "surface": "customer usage and value telemetry",
+      "direction": "outbound"
+    }
+  ],
+  "invariants": [
+    "engine_capability_truth_is_canonical",
+    "web_claims_never_exceed_engine_capability_registry",
+    "browser_never_receives_engine_credentials",
+    "analyst_authorization_is_enforced_by_engine",
+    "tenant_headers_from_browser_are_not_authoritative",
+    "playground_input_is_untrusted_and_resource_bounded",
+    "observation_detection_finding_and_verdict_remain_distinct",
+    "tsic_remains_integration_authority",
+    "agent-platform-remains-execution-authority"
+  ]
+}
