@@ -27,6 +27,7 @@ def main() -> None:
     missing = [path for path in required if not (ROOT / path).is_file()]
     if missing:
         raise SystemExit("FAIL missing TSIC-18 artifacts: " + ", ".join(missing))
+    baseline = load("policies/commercial-aaas-baseline.json")
     catalog = load("catalog/capabilities/aaas-offers.json")
     capabilities = load("catalog/capabilities/authority.json")
     manifest = load("manifests/ecosystem.json")
@@ -57,6 +58,8 @@ def main() -> None:
     status = {item["id"]: item["status"] for item in phases["sequence"]}
     if status["TSIC-17"] != "completed" or status["TSIC-18"] not in {"in_progress", "completed"}:
         raise SystemExit("FAIL serial phase dependency is not satisfied")
+    if baseline.get("website_ref") != "0ef4e270a9b20325b7064413e66d895e78e67490":
+        raise SystemExit("FAIL TSIC-18 website reference does not match the reviewed commit")
     workflow = (ROOT / ".github/workflows/commercial-aaas-certification.yml").read_text(encoding="utf-8")
     for marker in ("scripts/certify_commercial_aaas.py", "scripts/verify_aaas_site_sync.py", "scripts/forensic_audit_phase18.py", "LloydCoder/Tinlance", "0ef4e270a9b20325b7064413e66d895e78e67490", "persist-credentials: false"):
         if marker not in workflow:
