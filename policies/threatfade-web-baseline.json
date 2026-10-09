@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0.0",
+  "baseline_id": "tsic-10-threatfade-web-engine-2026-10-09",
+  "authority": "tsic",
+  "engine": {
+    "repository": "LloydCoder/tinlance-threatfade",
+    "ref": "4691ead86fadd1c95767886d7fb15bacbed012fe"
+  },
+  "web": {
+    "repository": "LloydCoder/tinlance-threatfade-web",
+    "ref": "e565ad49e67cd7d20f4e23f90ca5e7d449750043"
+  },
+  "authority_boundaries": {
+    "engine": "detection, canonical analyst records, authorization and evidence persistence",
+    "web": "product, analyst UX, research, commercial presentation and server-side proxy",
+    "tsic": "cross-repository integration contract",
+    "agent_platform": "generic governed execution authority"
+  },
+  "invariants": [
+    "engine_capability_truth_is_canonical",
+    "web_claims_never_exceed_engine_capability_registry",
+    "browser_never_receives_engine_credentials",
+    "analyst_authorization_is_enforced_by_engine",
+    "tenant_headers_from_browser_are_not_authoritative",
+    "playground_input_is_untrusted_and_resource_bounded",
+    "web_proxy_uses_path_allowlist_timeout_redirect_rejection_and_response_limits",
+    "observation_detection_finding_and_verdict_remain_distinct",
+    "research_validation_uses_fas_bench_as_independent_evaluator"
+  ],
+  "execution_gate": {
+    "workflow": ".github/workflows/threatfade-web-engine-e2e.yml",
+    "forensic_audit": "scripts/forensic_audit_phase10.py",
+    "requires_engine_and_web_ci_plus_live_contract": true
+  }
+}
