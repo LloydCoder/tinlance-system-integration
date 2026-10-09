@@ -180,7 +180,7 @@
       ],
       "certification_gate": "system_observability",
       "entry_condition": "previous_phase_green",
-      "status": "in_progress"
+      "status": "completed"
     },
     {
       "id": "TSIC-16",
@@ -191,7 +191,7 @@
       ],
       "certification_gate": "protocol_interoperability",
       "entry_condition": "previous_phase_green",
-      "status": "planned"
+      "status": "in_progress"
     },
     {
       "id": "TSIC-17",
