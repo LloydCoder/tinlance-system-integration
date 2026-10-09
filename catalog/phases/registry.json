@@ -10,7 +10,7 @@
       ],
       "certification_gate": "ecosystem_authority",
       "entry_condition": "repository_authority_established",
-      "status": "planned"
+      "status": "completed"
     },
     {
       "id": "TSIC-01",
@@ -45,7 +45,7 @@
       ],
       "certification_gate": "reconos_acquisition",
       "entry_condition": "previous_phase_green",
-      "status": "in_progress"
+      "status": "completed"
     },
     {
       "id": "TSIC-04",
@@ -55,7 +55,7 @@
       ],
       "certification_gate": "acquisition_execution",
       "entry_condition": "previous_phase_green",
-      "status": "planned"
+      "status": "in_progress"
     },
     {
       "id": "TSIC-05",
@@ -224,5 +224,6 @@
       "status": "planned"
     }
   ],
-  "completion_rule": "A phase is complete only when implementation, cross-system execution, security/authority boundaries, failure/recovery/idempotency, evidence lineage, documentation reconciliation, dedicated CI certification, and post-phase forensic audit are green."
+  "completion_rule": "A phase is complete only when implementation, cross-system execution, security/authority boundaries, failure/recovery/idempotency, evidence lineage, documentation reconciliation, dedicated CI certification, and post-phase forensic audit are green.",
+  "last_reconciled": "2026-10-09"
 }
