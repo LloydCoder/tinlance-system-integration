@@ -1,0 +1,26 @@
+name: TSIC-14 Closed-Loop Intelligence E2E
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  closed-loop:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout TSIC
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: "3.12"
+      - name: Certify canonical feedback loop
+        run: python3 scripts/certify_closed_loop.py
+      - name: Post-phase forensic audit
+        run: python3 scripts/forensic_audit_phase14.py
