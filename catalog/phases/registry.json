@@ -101,7 +101,7 @@
       ],
       "certification_gate": "delivery_evidence",
       "entry_condition": "previous_phase_green",
-      "status": "in_progress"
+      "status": "completed"
     },
     {
       "id": "TSIC-09",
@@ -111,7 +111,7 @@
       ],
       "certification_gate": "threatfade_detection_to_delivery",
       "entry_condition": "previous_phase_green",
-      "status": "planned"
+      "status": "in_progress"
     },
     {
       "id": "TSIC-10",
