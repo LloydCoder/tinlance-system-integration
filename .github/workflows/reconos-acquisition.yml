@@ -25,7 +25,7 @@ jobs:
           import json
           b=json.load(open("policies/reconos-acquisition-baseline.json"))
           a=json.load(open("integrations/reconos/adapter.json"))
-          assert b["repository"]["repository"] == "LloydCoder/reconos-ofe"
+          assert b["repository"]["name"] == "LloydCoder/reconos-ofe"
           assert len(b["repository"]["ref"]) == 40
           assert a["target_system"] == "reconos"
           assert a["authority"]["execution_authority"] == "agent-platform"
