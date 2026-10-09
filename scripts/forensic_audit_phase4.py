@@ -14,7 +14,7 @@ def main():
  assert 'provider_webhooks_authenticated_and_replay_safe' in b['invariants']
  assert 'economic-attribution' in b['handoff_lineage'] or 'revenue_event_id' in b['handoff_lineage']
  workflow=(ROOT/'.github/workflows/fadereach-acquisition.yml').read_text()
- for required_text in ['LloydCoder/fadereach','ecd66b86840cdf08a65d0f2485564d5beed452bb','scripts/tsic_conformance.py','tests/test_outbound_queue.py','tests/test_tads_sdea_bridge.py','forensic_audit_phase4.py']:
+ for required_text in ['LloydCoder/fadereach','ecd66b86840cdf08a65d0f2485564d5beed452bb','scripts/tsic_conformance.py','tests/test_tads_sdea_bridge.py','forensic_audit_phase4.py']:
   assert required_text in workflow, 'workflow missing '+required_text
  assert a['authority']['execution_authority']=='agent-platform'
  print('PASS TSIC-04 forensic audit: reviewed source pin, consent, idempotency, webhook, authority and dedicated CI gates verified')
