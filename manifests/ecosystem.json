@@ -268,11 +268,7 @@
       "repository": "LloydCoder/hezcast-saas",
       "governance_role": "content_product_experience_authority",
       "authority": [
-        "content_product_ui",
-        "tenant_dashboard",
-        "billing_presentation",
-        "analytics_presentation",
-        "brand_management_ui"
+        "content_product_experience"
       ]
     }
   ]
