@@ -10,7 +10,7 @@ PHASE_SCRIPTS=[
 "tooling/ecosystem_lock.py","tooling/forensic_audit.py","tooling/security_scan.py",
 "scripts/certify_acquisition_system.py","scripts/certify_fadereach_acquisition.py","scripts/forensic_audit_phase4.py","scripts/forensic_audit_phase1.py","scripts/certify_engineering_route.py","scripts/forensic_audit_phase6.py","scripts/certify_fde_vertical.py","scripts/forensic_audit_phase7.py","scripts/certify_transformation_route.py",
 "scripts/certify_delivery_evidence.py","scripts/forensic_audit_phase8.py","scripts/certify_fas.py","scripts/certify_fas_bench.py","scripts/forensic_audit_phase5.py",
-"scripts/certify_threatfade.py","scripts/forensic_audit_phase9.py","scripts/certify_bugflow.py","scripts/certify_hezqara.py",
+"scripts/certify_threatfade.py","scripts/forensic_audit_phase9.py","scripts/certify_threatfade_web.py","scripts/forensic_audit_phase10.py","scripts/certify_bugflow.py","scripts/certify_hezqara.py",
 "scripts/certify_economic_attribution.py","scripts/certify_closed_loop.py","scripts/certify_observability.py",
 "scripts/certify_interoperability.py","scripts/certify_production_system.py","scripts/certify_commercial_aaas.py",
 "scripts/certify_autonomous_revenue.py"]
@@ -18,7 +18,7 @@ REQUIRED_POLICIES=[
 "policies/agent-system-baseline.json","policies/acquisition-system-baseline.json","policies/fadereach-acquisition-baseline.json","policies/fde-vertical-baseline.json","policies/engineering-route-baseline.json",
 "policies/transformation-route-baseline.json","policies/delivery-evidence-baseline.json","policies/fas-baseline.json",
 "policies/fas-bench-baseline.json","policies/threatfade-baseline.json","policies/bugflow-baseline.json",
-"policies/hezqara-baseline.json","policies/economic-attribution-baseline.json","policies/closed-loop-baseline.json",
+"policies/threatfade-web-baseline.json","policies/hezqara-baseline.json","policies/economic-attribution-baseline.json","policies/closed-loop-baseline.json",
 "policies/observability-baseline.json","policies/interoperability-baseline.json","policies/production-system-baseline.json",
 "policies/commercial-aaas-baseline.json","policies/autonomous-revenue-baseline.json"]
 PRIVATE_KEY=re.compile(r"-----BEGIN (?:RSA|OPENSSH|EC|DSA|PRIVATE) KEY-----")
