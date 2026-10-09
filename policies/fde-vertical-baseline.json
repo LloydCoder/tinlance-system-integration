@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0.0",
+  "baseline_id": "tsic-07-fde-mastery-vertical-2026-10-09",
+  "authority": "tsic",
+  "fdse": {
+    "repository": "LloydCoder/tinlance-fdse",
+    "ref": "e1f213c918ba712666e4dd8a5db418caad0b060f"
+  },
+  "fde_mastery": {
+    "repository": "LloydCoder/fde-mastery",
+    "ref": "370fea68bdb74182f0893a5a4421f147ed139597"
+  },
+  "routes": [
+    "engineering",
+    "transformation"
+  ],
+  "handoff_lineage": [
+    "tenant_id",
+    "engagement_id",
+    "route_id",
+    "domain_id",
+    "capability_id",
+    "workflow_id",
+    "execution_id",
+    "evidence_id",
+    "delivery_id",
+    "customer_acceptance_id",
+    "outcome_id",
+    "economic_attribution_id"
+  ],
+  "authority_boundaries": {
+    "fdse": "delivery orchestration and route selection",
+    "fde_mastery": "domain workflow, engineering execution and customer-value delivery",
+    "agent-platform": "identity, authorization, policy, approval, runtime, tools, secrets, audit and execution authority",
+    "tsic": "integration contract and conformance"
+  },
+  "invariants": [
+    "engineering_and_transformation_are_distinct_routes",
+    "fde_mastery_does_not_duplicate_agent_platform_authority",
+    "customer_approval_is_required_for_consequential_changes",
+    "engagement_and_execution_are_tenant_scoped",
+    "evidence_is_preserved_from_intake_through_delivery",
+    "customer_acceptance_and_outcome_are_separate_events",
+    "economic_attribution_is_evidence_linked",
+    "failure_recovery_is_idempotent_and_auditable"
+  ],
+  "execution_gate": {
+    "workflow": ".github/workflows/fde-mastery-e2e.yml",
+    "forensic_audit": "scripts/forensic_audit_phase7.py",
+    "requires_fdse_and_fde_mastery_test_execution": true
+  }
+}
