@@ -42,6 +42,7 @@ This index organizes the repository using a practical Diátaxis model while pres
 - [TSIC-14 Closed-Loop Intelligence](integration/TSIC-14-closed-loop-intelligence.md)
 - [TSIC-15 Observability and Trace Context](observability/trace-context-contract.md)
 - [TSIC-16 MCP/A2A Interoperability](architecture/model-and-agent-interoperability.md)
+- [TSIC-17 Production System-of-Systems](certification/production-system-of-systems.md)
 - [Production system-of-systems certification](certification/production-system-of-systems.md)
 - [TSIC-18–38 certification record](certification/TSIC-18-38-certification-record.md)
 - [2026 standards baseline](standards/2026-baseline.md)
