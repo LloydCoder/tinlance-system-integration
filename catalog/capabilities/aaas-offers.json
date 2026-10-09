@@ -71,7 +71,10 @@
       "limitations": [
         "Production deployment and external provider configuration require separate verification.",
         "Protocol support alone does not grant tool execution permission."
-      ]
+      ],
+      "safety_boundaries": {
+        "consequential_actions_require_platform_authorization": true
+      }
     },
     {
       "id": "signal-to-outcome-acquisition",
@@ -129,7 +132,11 @@
       "limitations": [
         "A signal or successful message delivery is not proof of a qualified opportunity, conversion, or recognized revenue.",
         "Outreach must honor consent, opt-out, and jurisdictional requirements."
-      ]
+      ],
+      "safety_boundaries": {
+        "outreach_consent_and_suppression_required": true,
+        "customer_outcome_claims_require_evidence": true
+      }
     },
     {
       "id": "content-to-outreach-agent",
@@ -181,7 +188,11 @@
       "limitations": [
         "HezCast content generation does not grant direct external publishing authority.",
         "Publishing requires scoped Agent Platform authorization, policy checks, idempotency, and audit evidence."
-      ]
+      ],
+      "safety_boundaries": {
+        "direct_external_publishing_allowed": false,
+        "external_publishing_requires_agent_platform": true
+      }
     },
     {
       "id": "security-detection-and-assurance-agent",
@@ -238,7 +249,11 @@
         "A finding is not a verdict without evidence and validation.",
         "FAS-Bench is independent evaluation authority, not a production runtime dependency.",
         "Testing requires explicit authorization and bounded scope."
-      ]
+      ],
+      "safety_boundaries": {
+        "authorized_scope_required": true,
+        "fas_bench_evaluation_only": true
+      }
     },
     {
       "id": "governed-healthcare-workforce",
@@ -286,7 +301,12 @@
         "Not a diagnosis, triage, symptom-checker, treatment-decision or prescribing engine.",
         "AI Scribe outputs remain drafts requiring clinician review, editing and approval.",
         "Regulatory and clinical suitability must be assessed for each deployment."
-      ]
+      ],
+      "safety_boundaries": {
+        "diagnosis_or_triage": false,
+        "clinical_treatment_decisions": false,
+        "ai_scribe_requires_clinician_review": true
+      }
     },
     {
       "id": "engineering-and-transformation-workforce",
@@ -346,7 +366,12 @@
         "Domain-specific execution requires an explicitly scoped engagement and approved capabilities.",
         "FAS-Bench remains evaluation-only.",
         "Customer outcomes and ROI must be supported by customer-specific evidence."
-      ]
+      ],
+      "safety_boundaries": {
+        "approved_change_scope_required": true,
+        "customer_outcome_claims_require_evidence": true,
+        "fas_bench_evaluation_only": true
+      }
     },
     {
       "id": "evidence-first-assurance-agent",
@@ -397,7 +422,11 @@
         "Observations are not automatically evidence, findings, or verdicts.",
         "Benchmark evaluation is separate from production analysis.",
         "Regulatory or assurance certification is not implied by report generation."
-      ]
+      ],
+      "safety_boundaries": {
+        "observations_are_not_verdicts": true,
+        "fas_bench_evaluation_only": true
+      }
     }
   ]
 }
