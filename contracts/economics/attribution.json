@@ -1,1 +1,256 @@
-{"schema_version":"1.0.0","required":["tenant_id","organization_id","workspace_id","execution_id","agent_id","service_id","cost_center","currency","amount","meter_type"],"meter_types":["model","tool","compute","storage","network","human_review","external_service"],"rules":{"immutable_execution_id":true,"currency_iso4217":true,"amount_nonnegative":true,"cost_must_be_traceable":true}}
+{
+  "schema_version": "2.0.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tinlance Economic Attribution Record",
+  "description": "One immutable, traceable cost or revenue ledger entry. Costs and revenue are separate typed records and must never be conflated.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "entry_id",
+    "entry_type",
+    "tenant_id",
+    "organization_id",
+    "workspace_id",
+    "execution_id",
+    "agent_id",
+    "service_id",
+    "cost_center",
+    "currency",
+    "amount",
+    "meter_type",
+    "trace_id",
+    "evidence_id",
+    "occurred_at",
+    "idempotency_key"
+  ],
+  "properties": {
+    "entry_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "entry_type": {
+      "type": "string",
+      "enum": [
+        "cost",
+        "revenue"
+      ]
+    },
+    "tenant_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "organization_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "workspace_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "execution_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "agent_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "service_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "cost_center": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$",
+      "description": "ISO 4217 currency code; runtime must validate against the supported currency registry."
+    },
+    "amount": {
+      "type": "number",
+      "minimum": 0
+    },
+    "meter_type": {
+      "type": "string",
+      "enum": [
+        "model",
+        "tool",
+        "compute",
+        "storage",
+        "network",
+        "human_review",
+        "external_service",
+        "subscription",
+        "one_time",
+        "recurring",
+        "usage"
+      ]
+    },
+    "trace_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "correlation_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "evidence_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "source_event_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "source_system": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "allocation_method": {
+      "type": "string",
+      "enum": [
+        "direct",
+        "proportional",
+        "fixed",
+        "usage_based"
+      ]
+    },
+    "allocation_ratio": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "idempotency_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "account_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "signal_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "opportunity_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "campaign_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "workflow_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "engagement_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "delivery_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "outcome_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "cost_amount": {
+      "type": "number",
+      "minimum": 0
+    },
+    "cost_currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    },
+    "revenue_amount": {
+      "type": "number",
+      "minimum": 0
+    },
+    "revenue_currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    },
+    "mrr": {
+      "type": "number",
+      "minimum": 0
+    },
+    "acv": {
+      "type": "number",
+      "minimum": 0
+    },
+    "ltv": {
+      "type": "number",
+      "minimum": 0
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "entry_type": {
+            "const": "cost"
+          }
+        },
+        "required": [
+          "entry_type"
+        ]
+      },
+      "then": {
+        "not": {
+          "required": [
+            "revenue_amount"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "entry_type": {
+            "const": "revenue"
+          }
+        },
+        "required": [
+          "entry_type"
+        ]
+      },
+      "then": {
+        "not": {
+          "required": [
+            "cost_amount"
+          ]
+        }
+      }
+    }
+  ]
+}
