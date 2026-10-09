@@ -38,7 +38,8 @@
         "budgets",
         "evidence",
         "audit",
-        "observability"
+        "observability",
+        "external_content_publishing"
       ]
     },
     {
