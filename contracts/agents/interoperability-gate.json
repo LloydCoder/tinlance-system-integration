@@ -1,1 +1,40 @@
-{"schema_version":"1.0.0","protocols":{"mcp":{"allowed":true,"authorization_authority":"agent-platform"},"a2a":{"allowed":true,"authorization_authority":"agent-platform"}},"rules":{"capability_discovery_required":true,"identity_propagation_required":true,"policy_check_required":true,"audit_required":true}}
+{
+  "schema_version": "1.1.0",
+  "protocols": {
+    "mcp": {
+      "allowed": true,
+      "specification": "2026-07-28",
+      "version_negotiation_required": true,
+      "authorization_authority": "agent-platform",
+      "transport_security": "TLS for remote transports"
+    },
+    "a2a": {
+      "allowed": true,
+      "specification": "1.0.0",
+      "version_negotiation_required": true,
+      "authorization_authority": "agent-platform",
+      "transport_security": "TLS for production remote transports"
+    }
+  },
+  "boundaries": {
+    "mcp": "agent-to-tool/context integration",
+    "a2a": "agent-to-agent communication",
+    "tsic": "ecosystem integration/certification",
+    "agent_platform": "identity, authorization, policy, approval, budget, sandbox and consequential execution"
+  },
+  "rules": {
+    "capability_discovery_required": true,
+    "capabilities_must_be_versioned": true,
+    "identity_propagation_required": true,
+    "policy_check_required": true,
+    "tenant_context_required": true,
+    "delegation_must_be_scoped_and_expiring": true,
+    "trace_context_required": true,
+    "idempotency_and_replay_protection_required": true,
+    "audit_required": true,
+    "protocol_metadata_is_untrusted": true,
+    "protocol_support_never_grants_execution_authority": true,
+    "tool_arguments_are_untrusted": true,
+    "remote_response_size_and_timeout_limits_required": true
+  }
+}
