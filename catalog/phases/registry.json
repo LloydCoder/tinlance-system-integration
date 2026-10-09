@@ -201,7 +201,7 @@
       ],
       "certification_gate": "production_system_of_systems",
       "entry_condition": "previous_phase_green",
-      "status": "in_progress"
+      "status": "completed"
     },
     {
       "id": "TSIC-18",
@@ -211,7 +211,7 @@
       ],
       "certification_gate": "commercial_aaas",
       "entry_condition": "previous_phase_green",
-      "status": "planned"
+      "status": "in_progress"
     },
     {
       "id": "TSIC-19",
