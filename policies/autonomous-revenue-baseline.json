@@ -1,12 +1,39 @@
 {
   "schema_version": "1.0.0",
-  "baseline_id": "tsic-41-autonomous-revenue-2026-10-08",
+  "baseline_id": "tsic-19-autonomous-revenue-2026-10-09",
   "authority": "tsic",
   "invariants": [
     "revenue_actions_are_policy_governed",
     "outreach_is_consent_and_compliance_bounded",
     "economic_attribution_is_end_to_end",
     "human_approval_is_required_for_high_impact_actions",
-    "closed_loop_feedback_cannot_mutate_authority_boundaries"
+    "closed_loop_feedback_cannot_mutate_authority_boundaries",
+    "consent_and_suppression_checked_before_outreach",
+    "tenant_entitlement_and_usage_budget_checked_before_execution",
+    "agent_platform_authorizes_all_consequential_actions",
+    "outcomes_are_not_inferred_from_delivery",
+    "cost_and_revenue_records_are_separate_and_idempotent",
+    "revenue_recognition_requires_source_evidence",
+    "feedback_updates_tads_and_sdea_only",
+    "learning_cannot_change_execution_authority",
+    "fas_bench_is_evaluation_only",
+    "healthcare_non_diagnostic_boundaries_are_preserved",
+    "external_publishing_requires_agent_platform_authorization"
+  ],
+  "required_workflow_steps": [
+    "entitlement",
+    "consent-and-suppression",
+    "policy-approval",
+    "budget-check",
+    "agent-platform",
+    "fadereach",
+    "fdse",
+    "outcome",
+    "evidence",
+    "economic-attribution",
+    "revenue-recognition",
+    "evaluation",
+    "tads",
+    "sdea"
   ]
 }
