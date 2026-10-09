@@ -258,8 +258,7 @@
       "authority": [
         "content_generation",
         "content_package_generation",
-        "content_quality_validation",
-        "content_generation_api"
+        "content_quality_validation"
       ]
     },
     {
