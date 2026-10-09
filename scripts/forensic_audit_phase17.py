@@ -15,6 +15,7 @@ def load(path: str) -> dict:
 def main() -> None:
     required = [
         "manifests/ecosystem.json",
+        "integrations/hezcast/adapter.json",
         "catalog/dependencies/graph.json",
         "catalog/contracts/registry.json",
         "catalog/phases/registry.json",
@@ -37,12 +38,17 @@ def main() -> None:
     lock = load("policies/ecosystem-lock.json")
     manifest_ids = {item["id"] for item in manifest["systems"]}
     graph_ids = {item["system"] for item in graph["nodes"]}
+    if "hezcast" not in manifest_ids or "hezcast" not in graph_ids:
+        raise SystemExit("FAIL HezCast missing from ecosystem manifest or dependency graph")
     if manifest_ids != graph_ids:
         raise SystemExit("FAIL manifest/dependency graph system sets diverge")
     if not graph["edges"] or any(edge["from"] not in graph_ids or edge["to"] not in graph_ids for edge in graph["edges"]):
         raise SystemExit("FAIL dependency graph has missing nodes or no edges")
     if len([item for item in manifest["systems"] if item.get("governance_role") == "execution_authority"]) != 1:
         raise SystemExit("FAIL generic execution authority is not unique")
+    adapter = load("integrations/hezcast/adapter.json")
+    if adapter["authority"].get("external_publishing_execution") != "agent-platform":
+        raise SystemExit("FAIL HezCast must not own external publishing execution authority")
     if manifest["ecosystem"]["integration_authority"] != "tsic" or graph["authority"] != "tsic":
         raise SystemExit("FAIL TSIC is not the canonical integration authority")
     if not baseline["required_boundaries"] or not failure_matrix:
