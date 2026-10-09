@@ -253,12 +253,26 @@
     {
       "id": "hezcast",
       "name": "HezCast Engine",
-      "repository": "Tinlance/hezcast-engine",
+      "repository": "LloydCoder/hezcast-engine",
       "governance_role": "content_generation_authority",
       "authority": [
         "content_generation",
         "content_package_generation",
-        "content_quality_validation"
+        "content_quality_validation",
+        "content_generation_api"
+      ]
+    },
+    {
+      "id": "hezcast-saas",
+      "name": "HezCast SaaS",
+      "repository": "LloydCoder/hezcast-saas",
+      "governance_role": "content_product_experience_authority",
+      "authority": [
+        "content_product_ui",
+        "tenant_dashboard",
+        "billing_presentation",
+        "analytics_presentation",
+        "brand_management_ui"
       ]
     }
   ]
