@@ -19,6 +19,7 @@ def main() -> None:
         "manifests/ecosystem.json",
         "policies/commercial-aaas-baseline.json",
         "scripts/certify_commercial_aaas.py",
+        "scripts/verify_aaas_site_sync.py",
         ".github/workflows/commercial-aaas-certification.yml",
         "docs/integrations/aaas-catalog.md",
         "catalog/phases/registry.json",
@@ -57,7 +58,7 @@ def main() -> None:
     if status["TSIC-17"] != "completed" or status["TSIC-18"] not in {"in_progress", "completed"}:
         raise SystemExit("FAIL serial phase dependency is not satisfied")
     workflow = (ROOT / ".github/workflows/commercial-aaas-certification.yml").read_text(encoding="utf-8")
-    for marker in ("scripts/certify_commercial_aaas.py", "scripts/forensic_audit_phase18.py", "persist-credentials: false"):
+    for marker in ("scripts/certify_commercial_aaas.py", "scripts/verify_aaas_site_sync.py", "scripts/forensic_audit_phase18.py", "LloydCoder/Tinlance", "0ef4e270a9b20325b7064413e66d895e78e67490", "persist-credentials: false"):
         if marker not in workflow:
             raise SystemExit(f"FAIL commercial AaaS workflow missing gate: {marker}")
     print("PASS TSIC-18 forensic audit: offer registry, registered systems/capabilities, quote-only pricing, entitlement, publishing and healthcare boundaries")

@@ -16,11 +16,21 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           persist-credentials: false
+      - name: Checkout Tinlance.com AaaS surface
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: LloydCoder/Tinlance
+          ref: 0ef4e270a9b20325b7064413e66d895e78e67490
+          path: tinlance-site
+          fetch-depth: 1
+          persist-credentials: false
       - name: Setup Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
           python-version: "3.12"
       - name: Certify AaaS catalog and entitlement boundaries
         run: python3 scripts/certify_commercial_aaas.py
+      - name: Verify canonical catalog and public route parity
+        run: python3 scripts/verify_aaas_site_sync.py --site-root tinlance-site
       - name: Post-phase forensic audit
         run: python3 scripts/forensic_audit_phase18.py

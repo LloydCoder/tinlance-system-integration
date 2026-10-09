@@ -34,7 +34,7 @@ Every offer is assessment-led and marked `assessment_required`. Public prices ar
 - Primary CTA: technical assessment with the selected offer prefilled
 - Machine-readable discovery: sitemap and `llms.txt`
 
-The TSIC-18 cross-repository workflow must compare the generated snapshot to the canonical catalog and verify that the route, navigation, sitemap, and CTA are present before the phase can be certified.
+The TSIC-18 cross-repository workflow checks the generated snapshot against the canonical catalog at Tinlance commit `0ef4e270a9b20325b7064413e66d895e78e67490`, and verifies that the route, desktop/mobile navigation, sitemap, `llms.txt`, and offer-prefilled assessment CTA are present before the phase can be certified.
 
 ## Certification
 
