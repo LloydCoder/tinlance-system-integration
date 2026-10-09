@@ -1,0 +1,44 @@
+name: TSIC-06 Engineering Delivery Route E2E
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tsic-06-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  engineering-route:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout TSIC
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {path: tsic, persist-credentials: false}
+      - name: Checkout reviewed FDSE
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {repository: LloydCoder/tinlance-fdse, ref: e1f213c918ba712666e4dd8a5db418caad0b060f, path: fdse, persist-credentials: false}
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with: {python-version: '3.12'}
+      - name: Install FDSE
+        working-directory: fdse
+        run: python -m pip install -e '.[dev]'
+      - name: Run FDSE complete unit/integration suite
+        working-directory: fdse
+        run: python -m pytest -q tests
+      - name: Run FDSE E4 evidence lineage and E5 integration proof
+        working-directory: fdse
+        run: python -m pytest -q tests/test_e4_evidence_lineage.py tests/test_e5_integration.py tests/test_e6_enterprise_validation.py tests/test_e2_engineering_intelligence.py
+      - name: Validate canonical TSIC engineering route
+        working-directory: tsic
+        run: python scripts/certify_engineering_route.py
+      - name: Validate delivery evidence contract
+        working-directory: tsic
+        run: python scripts/certify_delivery_evidence.py
+      - name: Post-phase forensic audit
+        working-directory: tsic
+        run: python scripts/forensic_audit_phase6.py
