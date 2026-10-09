@@ -1,0 +1,66 @@
+name: TSIC-07 FDE Mastery Engagement E2E
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tsic-07-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  fde-vertical:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout TSIC
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {path: tsic, persist-credentials: false}
+      - name: Checkout reviewed FDSE
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {repository: LloydCoder/tinlance-fdse, ref: e1f213c918ba712666e4dd8a5db418caad0b060f, path: fdse, persist-credentials: false}
+      - name: Checkout reviewed FDE Mastery
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {repository: LloydCoder/fde-mastery, ref: 370fea68bdb74182f0893a5a4421f147ed139597, path: fde-mastery, persist-credentials: false}
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with: {python-version: '3.12'}
+      - name: Install FDSE
+        working-directory: fdse
+        run: python -m pip install -e '.[dev]'
+      - name: Install FDE Mastery test dependencies
+        working-directory: fde-mastery/packages/platform-core
+        run: python -m pip install -e '.[test,quality,security,redis,observability,sbom]'
+      - name: Run FDSE full test suite
+        working-directory: fdse
+        run: python -m pytest -q tests
+      - name: Run FDE engagement, domain, integration and recovery tests
+        working-directory: fde-mastery/packages/platform-core
+        env:
+          FDE_STORAGE_BACKEND: memory
+          FDE_RATE_LIMIT_BACKEND: memory
+          FDE_MONTH1_PROVIDER: mock
+          MOCK_LLM: 'true'
+          FDE_ENVIRONMENT: test
+          FDE_SECRETS_BACKEND: environment
+          OTEL_ENABLED: 'false'
+        run: python -m pytest -q tests/test_fde_engagement_workflow.py tests/test_enterprise_integrations.py tests/test_domain_adapters.py tests/test_durable_workflows.py tests/test_chaos_controls.py tests/test_enterprise_readiness.py
+      - name: Run FDE Mastery full platform suite
+        working-directory: fde-mastery/packages/platform-core
+        env:
+          FDE_STORAGE_BACKEND: memory
+          FDE_RATE_LIMIT_BACKEND: memory
+          FDE_MONTH1_PROVIDER: mock
+          MOCK_LLM: 'true'
+          FDE_ENVIRONMENT: test
+          FDE_SECRETS_BACKEND: environment
+          OTEL_ENABLED: 'false'
+        run: python -m pytest -q
+      - name: Validate TSIC FDE vertical contract
+        working-directory: tsic
+        run: python scripts/certify_fde_vertical.py
+      - name: Post-phase forensic audit
+        working-directory: tsic
+        run: python scripts/forensic_audit_phase7.py
