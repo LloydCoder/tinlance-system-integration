@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "baseline_id": "tsic-39-production-system-of-systems-2026-10-08",
+  "baseline_id": "tsic-17-production-system-of-systems-2026-10-09",
   "authority": "tsic",
   "required_boundaries": [
     "agent-platform-execution-authority",
@@ -14,6 +14,11 @@
     "no_duplicate_consequential_execution_authority",
     "all_cross-system_events_are_traceable",
     "all_registered_systems_have_contracts_or_explicit_non_runtime_model_status",
-    "recovery_is_replay_safe"
+    "recovery_is_replay_safe",
+    "dependency_graph_endpoints_are_registered",
+    "generic_execution_authority_is_unique",
+    "phase_registry_is_contiguous_and_serial",
+    "all_production_claims_are_evidence_bounded",
+    "contracts_and_adapters_have_explicit_owners"
   ]
 }
