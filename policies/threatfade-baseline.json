@@ -1,1 +1,40 @@
-{"schema_version":"1.0.0","baseline_id":"tsic-31-threatfade-2026-10-08","authority":"tsic","threatfade":{"repository":"LloydCoder/tinlance-threatfade","ref":"4691ead86fadd1c95767886d7fb15bacbed012fe"},"invariants":["detection_is_not_execution_authority","evidence_and_provenance_are_preserved","tenant_context_is_immutable","tsic_remains_integration_authority","agent-platform-remains-execution-authority"]}
+{
+  "schema_version": "2.0.0",
+  "baseline_id": "tsic-31-threatfade-2026-10-08",
+  "authority": "tsic",
+  "threatfade": {
+    "repository": "LloydCoder/tinlance-threatfade",
+    "ref": "4691ead86fadd1c95767886d7fb15bacbed012fe"
+  },
+  "invariants": [
+    "detection_is_not_execution_authority",
+    "evidence_and_provenance_are_preserved",
+    "tenant_context_is_immutable",
+    "tsic_remains_integration_authority",
+    "agent-platform-remains-execution-authority"
+  ],
+  "execution_gate": {
+    "workflow": ".github/workflows/threatfade-engine-e2e.yml",
+    "forensic_audit": "scripts/forensic_audit_phase9.py",
+    "requires_detection_and_analyst_tests": true
+  },
+  "evidence_lineage": [
+    "tenant_id",
+    "trace_id",
+    "sensor_event_id",
+    "observation_id",
+    "detection_id",
+    "analyst_case_id",
+    "evidence_id",
+    "finding_id",
+    "delivery_id",
+    "outcome_id"
+  ],
+  "additional_invariants": [
+    "detection_output_is_not_a_verdict",
+    "analyst_disposition_is_separate_from_detector_score",
+    "detection_evidence_preserves_source_and_detector_version",
+    "replay_and_duplicate_alerts_are_deduplicated",
+    "unknown_or_partial_telemetry_never_becomes_clean_verdict"
+  ]
+}
