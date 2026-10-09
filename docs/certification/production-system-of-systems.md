@@ -4,16 +4,34 @@ Certification is a repository-level conformance gate, not a claim that every ext
 
 ## Certification gates
 
-1. Architecture and authority reconciliation
-2. Identity and agent registration
-3. Event, delivery and trace fabric
-4. Service, dependency and contract registry
-5. Model routing and MCP/A2A interoperability
-6. Adapter fabric
-7. Economic attribution
-8. Ecosystem lock
-9. Executable reference workflows
-10. Failure/replay/recovery
-11. Final forensic audit
+1. Architecture and authority reconciliation.
+2. Identity and agent registration.
+3. Event, delivery and trace fabric.
+4. Service, dependency and contract registry parity.
+5. Model routing and MCP/A2A interoperability.
+6. Adapter fabric and explicit contract ownership.
+7. Economic attribution with distinct cost/revenue semantics.
+8. Ecosystem lock and dependency governance.
+9. Executable reference workflows.
+10. Failure/replay/recovery and idempotency.
+11. Unique generic consequential execution authority.
+12. Evidence-bounded production claims.
+13. Final forensic audit of canonical machine-readable sources and phase ordering.
 
-All gates are executed by CI.
+## Required authority model
+
+- Agent Platform is the sole generic consequential execution authority.
+- Agent OS owns workspace, environment, lifecycle, and orchestration, but cannot grant execution authority.
+- FDSE owns delivery orchestration; FDE Mastery and domain systems retain domain execution semantics.
+- FAS owns evidence-first analysis; FAS-Bench remains independent evaluation authority and is not a FAS runtime dependency.
+- TSIC owns system-of-systems contracts, dependency graph, compatibility, conformance, and certification evidence.
+- Commercial/AaaS surfaces bind to certified capabilities and cannot create a second execution authority.
+
+## Certification commands
+
+```bash
+python3 scripts/certify_production_system.py
+python3 scripts/forensic_audit_phase17.py
+```
+
+The dedicated workflow checks graph/manifest parity, authority uniqueness, the canonical TSIC-00..19 phase sequence, ecosystem lock, recovery matrix, and the post-phase audit. A green repository gate is not proof of production reachability, external deployment health, customer outcomes, regulatory certification, or revenue.
