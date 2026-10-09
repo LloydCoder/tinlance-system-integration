@@ -38,7 +38,8 @@ jobs:
           import json
           b=json.load(open("policies/reconos-acquisition-baseline.json"))
           assert b["execution_gate"]["source_owned_certifier"] == "LloydCoder/reconos-ofe/scripts/tsic_acquisition_e2e.py"
-          assert b["execution_gate"]["forensic_audit"] == "scripts/forensic_audit_phase3.py"
+          assert b["execution_gate"]["source_owned_forensic_audit"] == "LloydCoder/reconos-ofe/scripts/tsic_forensic_audit.py"
+          assert b["execution_gate"]["tsic_forensic_audit"] == "scripts/forensic_audit_phase3.py"
           print("PASS ReconOS source-owned E2E gate contract")
           PY
         env:
