@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0.0",
+  "source_system": "tsic",
+  "target_system": "hezcast",
+  "repository": "Tinlance/hezcast-engine",
+  "reviewed_ref": "f658308b982e4f5a790fc367fe7483c16cc632c3",
+  "authority": {
+    "integration_contracts": "tsic",
+    "content_generation": "hezcast",
+    "external_publishing_execution": "agent-platform",
+    "commercial_entitlement": "tinlance-com"
+  },
+  "contract_bindings": [
+    {
+      "tsic_contract": "identity-context",
+      "direction": "inbound"
+    },
+    {
+      "tsic_contract": "event-envelope",
+      "direction": "bidirectional"
+    },
+    {
+      "tsic_contract": "delivery-semantics",
+      "direction": "bidirectional"
+    },
+    {
+      "tsic_contract": "trace-context",
+      "direction": "bidirectional"
+    },
+    {
+      "tsic_contract": "economic-attribution",
+      "direction": "inbound"
+    }
+  ],
+  "invariants": [
+    "content_generation_does_not_grant_publish_authority",
+    "external_publish_requires_agent_platform_authorization",
+    "tenant_context_is_immutable",
+    "content_bundle_provenance_is_preserved",
+    "publication_is_idempotent",
+    "human_approval_and_channel_policy_are_enforced",
+    "tsic_remains_integration_authority"
+  ]
+}
