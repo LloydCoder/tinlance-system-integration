@@ -229,6 +229,22 @@
     {
       "capability": "entitlement_presentation",
       "owner": "tinlance-com"
+    },
+    {
+      "capability": "content_generation",
+      "owner": "hezcast"
+    },
+    {
+      "capability": "content_package_generation",
+      "owner": "hezcast"
+    },
+    {
+      "capability": "content_quality_validation",
+      "owner": "hezcast"
+    },
+    {
+      "capability": "external_content_publishing",
+      "owner": "agent-platform"
     }
   ]
 }
