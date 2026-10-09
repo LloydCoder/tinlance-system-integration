@@ -11,7 +11,7 @@ def main():
  assert b['fde_mastery']['repository']=='LloydCoder/fde-mastery' and len(b['fde_mastery']['ref'])==40
  assert a['source_system']=='fdse' and a['target_system']=='fde-mastery'
  assert a['authority']['execution_authority']=='agent-platform'
- assert 'fde_mastery' in f['target_system'] or f['target_system']=='fdse'
+ assert f['source_system']=='tsic' and f['target_system']=='fdse'
  required={'identity-context','event-envelope','delivery-semantics','trace-context','economic-attribution'}
  assert {x['tsic_contract'] for x in a['contract_bindings']}==required
  assert 'engineering_and_transformation_are_distinct_routes' in b['invariants']
