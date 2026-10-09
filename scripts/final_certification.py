@@ -10,7 +10,7 @@ PHASE_SCRIPTS=[
 "tooling/ecosystem_lock.py","tooling/forensic_audit.py","tooling/security_scan.py",
 "scripts/certify_acquisition_system.py","scripts/certify_fadereach_acquisition.py","scripts/forensic_audit_phase4.py","scripts/forensic_audit_phase1.py","scripts/certify_engineering_route.py","scripts/forensic_audit_phase6.py","scripts/certify_fde_vertical.py","scripts/forensic_audit_phase7.py","scripts/certify_transformation_route.py",
 "scripts/certify_delivery_evidence.py","scripts/forensic_audit_phase8.py","scripts/certify_fas.py","scripts/certify_fas_bench.py","scripts/forensic_audit_phase5.py",
-"scripts/certify_threatfade.py","scripts/certify_bugflow.py","scripts/certify_hezqara.py",
+"scripts/certify_threatfade.py","scripts/forensic_audit_phase9.py","scripts/certify_bugflow.py","scripts/certify_hezqara.py",
 "scripts/certify_economic_attribution.py","scripts/certify_closed_loop.py","scripts/certify_observability.py",
 "scripts/certify_interoperability.py","scripts/certify_production_system.py","scripts/certify_commercial_aaas.py",
 "scripts/certify_autonomous_revenue.py"]
