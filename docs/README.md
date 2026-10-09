@@ -35,6 +35,8 @@ This index organizes the repository using a practical Diátaxis model while pres
 
 - [Event and trace fabric](contracts/event-and-trace-fabric.md)
 - [Service and contract registry](architecture/service-contract-registry.md)
+- [TSIC-10 ThreatFade Web ↔ Engine certification](certification/TSIC-10-threatfade-web-engine.md)
+- [TSIC-11 BugFlow integration certification](certification/TSIC-11-bugflow-integration.md)
 - [Production system-of-systems certification](certification/production-system-of-systems.md)
 - [TSIC-18–38 certification record](certification/TSIC-18-38-certification-record.md)
 - [2026 standards baseline](standards/2026-baseline.md)
