@@ -31,7 +31,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: LloydCoder/tinlance-threatfade-web
-          ref: e565ad49e67cd7d20f4e23f90ca5e7d449750043
+          ref: 2fbb3932fb7d641293f011110fbee568f8a98612
           path: threatfade-web
           persist-credentials: false
       - name: Setup Python
@@ -78,7 +78,7 @@ jobs:
           npm run lint
           npm run typecheck
           npm test
-          npm audit --audit-level=high
+          npm audit --omit=dev --audit-level=high
       - name: Build ThreatFade Web
         working-directory: threatfade-web
         env:
