@@ -215,6 +215,13 @@
       "authority": [
         "content_product_experience"
       ]
+    },
+    {
+      "id": "aurontra",
+      "layer": "product",
+      "authority": [
+        "it_resilience_product"
+      ]
     }
   ],
   "paths": {

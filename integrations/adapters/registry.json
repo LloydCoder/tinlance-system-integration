@@ -85,6 +85,12 @@
       "from": "fas",
       "to": "fas-bench",
       "transport": "immutable-evaluation-artifact"
+    },
+    {
+      "id": "tsic-to-aurontra-reference",
+      "from": "tsic",
+      "to": "aurontra",
+      "transport": "reference-contract"
     }
   ]
 }

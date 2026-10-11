@@ -192,6 +192,13 @@
         "https",
         "events"
       ]
+    },
+    {
+      "id": "aurontra",
+      "system": "aurontra",
+      "protocols": [
+        "https"
+      ]
     }
   ]
 }

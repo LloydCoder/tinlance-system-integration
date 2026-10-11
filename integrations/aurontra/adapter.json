@@ -1,0 +1,50 @@
+{
+  "schema_version": "1.0.0",
+  "adapter_id": "tsic-aurontra-reference",
+  "source_system": "tsic",
+  "target_system": "aurontra",
+  "status": "reference-contract",
+  "authority": {
+    "integration_contracts": "tsic",
+    "it_resilience_product": "aurontra",
+    "execution_authority": "agent-platform"
+  },
+  "contract_bindings": [
+    {
+      "tsic_contract": "identity-context",
+      "aurontra_surface": "verified tenant and subject context",
+      "direction": "inbound"
+    },
+    {
+      "tsic_contract": "event-envelope",
+      "aurontra_surface": "telemetry, finding, remediation and verification evidence envelopes",
+      "direction": "both"
+    },
+    {
+      "tsic_contract": "delivery-semantics",
+      "aurontra_surface": "durable job/outbox idempotency and replay handling",
+      "direction": "both"
+    },
+    {
+      "tsic_contract": "trace-context",
+      "aurontra_surface": "API, worker and governed action correlation",
+      "direction": "both"
+    },
+    {
+      "tsic_contract": "agent-registration",
+      "aurontra_surface": "governed action service identity and registered capability references",
+      "direction": "outbound"
+    }
+  ],
+  "invariants": [
+    "aurontra_is_not_execution_authority",
+    "agent-platform_is_the_only_generic_consequential_execution_authority",
+    "tenant_context_is_derived_from_verified_server_side_identity",
+    "approval_and_policy_decisions_are_platform_authoritative",
+    "execution_acknowledgement_is_not_business_postcondition_verification",
+    "threat_finding_is_not_proof_of_containment",
+    "independent_verification_is_required_for_containment_claims",
+    "tsic_remains_integration_contract_and_registry_authority",
+    "reference_registration_does_not_certify_production_readiness"
+  ]
+}
