@@ -269,6 +269,20 @@
       "authority": [
         "content_product_experience"
       ]
+    },
+    {
+      "id": "aurontra",
+      "name": "Aurontra — Autonomous IT Resilience Platform",
+      "repository": "LloydCoder/AURONTRA",
+      "governance_role": "domain_product_authority",
+      "authority": [
+        "it_resilience_product",
+        "service_desk_assistance",
+        "telemetry_analysis",
+        "remediation_intent_planning",
+        "threat_analysis",
+        "operational_evidence_consumption"
+      ]
     }
   ]
 }
