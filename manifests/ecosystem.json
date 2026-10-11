@@ -276,12 +276,7 @@
       "repository": "LloydCoder/AURONTRA",
       "governance_role": "domain_product_authority",
       "authority": [
-        "it_resilience_product",
-        "service_desk_assistance",
-        "telemetry_analysis",
-        "remediation_intent_planning",
-        "threat_analysis",
-        "operational_evidence_consumption"
+        "it_resilience_product"
       ]
     }
   ]
