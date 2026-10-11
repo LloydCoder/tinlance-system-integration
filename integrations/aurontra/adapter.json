@@ -13,27 +13,32 @@
     {
       "tsic_contract": "identity-context",
       "aurontra_surface": "verified tenant and subject context",
-      "direction": "inbound"
+      "direction": "inbound",
+      "contract_version": "1.0.0"
     },
     {
       "tsic_contract": "event-envelope",
       "aurontra_surface": "telemetry, finding, remediation and verification evidence envelopes",
-      "direction": "both"
+      "direction": "both",
+      "contract_version": "1.0.0"
     },
     {
       "tsic_contract": "delivery-semantics",
       "aurontra_surface": "durable job/outbox idempotency and replay handling",
-      "direction": "both"
+      "direction": "both",
+      "contract_version": "1.0.0"
     },
     {
       "tsic_contract": "trace-context",
       "aurontra_surface": "API, worker and governed action correlation",
-      "direction": "both"
+      "direction": "both",
+      "contract_version": "1.1.0"
     },
     {
       "tsic_contract": "agent-registration",
       "aurontra_surface": "governed action service identity and registered capability references",
-      "direction": "outbound"
+      "direction": "outbound",
+      "contract_version": "1.0.0"
     }
   ],
   "invariants": [
