@@ -249,6 +249,10 @@
     {
       "capability": "content_product_experience",
       "owner": "hezcast-saas"
+    },
+    {
+      "capability": "it_resilience_product",
+      "owner": "aurontra"
     }
   ]
 }
