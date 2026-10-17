@@ -9,7 +9,7 @@ def main():
     fixture=json.loads((ROOT/required[0]).read_text())
     assert fixture['apiVersion']=='tadl.tinlance.com/v1' and fixture['kind']=='Agent'
     workflow=(ROOT/'.github/workflows/agent-system-e2e.yml').read_text()
-    for sha in ['3d3c42e5aac5ba805825da76410c181273ba90b1','5fda3b95a4ea91299a34e894583c3862153e4b97','249970729cb0ef3589644e2896645e5dc5ba9c38']:
+    for sha in ['3d3c42e5aac5ba805825da76410c181273ba90b1','5fda3b95a4ea91299a34e894583c3862153e4b97','949feb2413d6458794dcd2491c4babbbce0c15c1']:
         assert sha in workflow
     for repo in ['tinlance-agent-developer','tinlance-agent-os','tinlance-agent-platform-sdk','tinlance-agent-platform']:
         assert repo in workflow
