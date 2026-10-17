@@ -164,3 +164,19 @@ The SDK's `tests/test_live_platform.py` is explicitly skipped unless `TINLANCE_P
 | P0-11 | High | Align certification status semantics with test scope | Phase registry/report states exactly which structural, simulated, deployed and production gates passed |
 
 These findings mean Phase 0 remains open. They should be implemented and tested before a green Phase 0 certification is considered.
+
+
+## Remediation status update — PR #62
+
+The PR candidate updates `.github/workflows/agent-system-e2e.yml` to use the reviewed lock source at TADL `e458a2aee1e72f18c912011793769400af7ef5fe` and the exact TADL/OS/SDK/Platform SHAs recorded by that lock. The fail-closed SHA comparison remains mandatory. The reference E2E summary explicitly labels itself `reference_pass` on success, `live_status=not_run`, and `production_status=unverified`; a deterministic reference service is not represented as deployed production evidence.
+
+A separate manually dispatched workflow, `.github/workflows/live-platform-smoke.yml`, targets the protected `production-smoke` GitHub environment and runs the reviewed SDK's authenticated HTTPS health probe only when all required live inputs are present. Missing inputs produce `not_run` / `unverified`, not a pass. The workflow code cannot itself prove that environment approval rules or secrets are configured in GitHub settings; those remain operational prerequisites and must be verified before a live run.
+
+**PR #62 remains pending** until all required checks complete successfully and the exact-head audit confirms no lock drift. This status update is not a certification.
+
+
+### P0-02 — Phase evidence ledger implementation
+
+The candidate now adds `catalog/phases/evidence-ledger.json`, links it from `catalog/phases/registry.json`, updates `last_reconciled` to 2026-10-17, and makes `scripts/certify_phase0.py` fail closed if any TSIC-00…TSIC-19 phase lacks a successful workflow reference on the recorded full source SHA. The ledger labels each record's scope as structural, contract, certification, or reference E2E and explicitly sets `production_claim=false`; the overall production status remains `unverified`. `tooling/validate_phase0.py` also requires the ledger to exist and parses it with the repository's JSON validation sweep.
+
+The recorded evidence is a reviewed baseline at TSIC commit `9f348bdb9f550a44490b2afb14320173f0911877`. PR #62 reruns the updated E2E workflow on its own head; those new runs, not the older ledger entries, are the acceptance evidence for the workflow changes in this PR. After merge, the ledger baseline must be refreshed to the exact merged TSIC SHA in a post-merge certification update. This avoids treating a pre-merge workflow run as proof of the merged revision.

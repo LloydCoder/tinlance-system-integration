@@ -1,0 +1,70 @@
+name: Protected Live Platform Smoke
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tsic-live-platform-smoke
+  cancel-in-progress: false
+jobs:
+  live-platform-smoke:
+    runs-on: ubuntu-24.04
+    environment: production-smoke
+    timeout-minutes: 10
+    env:
+      TINLANCE_PLATFORM_TEST_URL: ${{ secrets.TINLANCE_PLATFORM_TEST_URL }}
+      TINLANCE_PLATFORM_TEST_TOKEN: ${{ secrets.TINLANCE_PLATFORM_TEST_TOKEN }}
+      TINLANCE_PLATFORM_TEST_TENANT: ${{ secrets.TINLANCE_PLATFORM_TEST_TENANT }}
+      TINLANCE_PLATFORM_TEST_SUBJECT: ${{ secrets.TINLANCE_PLATFORM_TEST_SUBJECT }}
+      TINLANCE_PLATFORM_TEST_DEPLOYMENT_ID: ${{ vars.TINLANCE_PLATFORM_TEST_DEPLOYMENT_ID }}
+    steps:
+      - name: Checkout TSIC
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - name: Checkout reviewed Platform SDK
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: LloydCoder/tinlance-agent-platform-sdk
+          ref: 8a41d6dce2fe778ab25c33dfa315328d06ec4908
+          path: agent-platform-sdk
+          persist-credentials: false
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
+        with:
+          python-version: '3.12'
+      - name: Install reviewed SDK
+        working-directory: agent-platform-sdk
+        run: python -m pip install -e '.[test]'
+      - name: Execute live smoke or report not-run
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -z "$TINLANCE_PLATFORM_TEST_URL" || -z "$TINLANCE_PLATFORM_TEST_TOKEN" || -z "$TINLANCE_PLATFORM_TEST_TENANT" || -z "$TINLANCE_PLATFORM_TEST_SUBJECT" || -z "$TINLANCE_PLATFORM_TEST_DEPLOYMENT_ID" ]]; then
+            {
+              echo "## Live Platform smoke"
+              echo "- Status: not_run"
+              echo "- Production verification: unverified"
+              echo "- Reason: one or more required live-test inputs or the deployment identifier are not configured in the protected production-smoke environment."
+              echo "- Commit: ${GITHUB_SHA}"
+              echo "- No live production pass is claimed."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          python -m pytest -q agent-platform-sdk/tests/test_live_platform.py -rs
+          python - <<'PY'
+          import os
+          from urllib.parse import urlparse
+          endpoint = urlparse(os.environ["TINLANCE_PLATFORM_TEST_URL"])
+          if endpoint.scheme != "https":
+              raise SystemExit("Live Platform smoke requires an HTTPS endpoint.")
+          deployment_id = os.environ["TINLANCE_PLATFORM_TEST_DEPLOYMENT_ID"]
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as summary:
+              summary.write("## Live Platform smoke\n")
+              summary.write("- Status: `live_pass`\n")
+              summary.write("- Commit: `" + os.environ["GITHUB_SHA"] + "`\n")
+              summary.write("- Production verification: `verified for the recorded health probe only`\n")
+              summary.write(f"- Endpoint host: `{endpoint.hostname}`\n")
+              summary.write(f"- Deployment identifier: `{deployment_id}`\n")
+              summary.write("- Scope: authenticated SDK health/ready probe only; not a full production-readiness certification.\n")
+          PY
