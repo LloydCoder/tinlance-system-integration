@@ -23,6 +23,9 @@ jobs:
       - name: Checkout TSIC
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with: {path: tsic, persist-credentials: false}
+      - name: Checkout reviewed ecosystem lock source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {repository: LloydCoder/tinlance-agent-developer, ref: cccff78ba88dcc2b9a5e22c14bf9175fbd81d105, path: agent-developer-lock, persist-credentials: false}
       - name: Checkout Agent Developer
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with: {repository: LloydCoder/tinlance-agent-developer, ref: 25fac21a8912bf58f0a9fc65e6ed1cbede70bbee, path: agent-developer, persist-credentials: false}
@@ -41,6 +44,32 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
         with: {node-version: '22', cache: npm, cache-dependency-path: agent-developer/package-lock.json}
+      - name: Verify cross-repository revisions against TADL ecosystem lock
+        run: |
+          python - <<'PY'
+          import json
+          import subprocess
+          from pathlib import Path
+
+          lock = json.loads(Path("agent-developer-lock/ecosystem.lock.json").read_text())
+          repositories = {
+              "developer": "agent-developer",
+              "os": "agent-os",
+              "platform": "agent-platform",
+              "platform_sdk": "agent-platform-sdk",
+          }
+          errors = []
+          for key, checkout in repositories.items():
+              expected = lock["repositories"][key]["ref"]
+              actual = subprocess.check_output(
+                  ["git", "-C", checkout, "rev-parse", "HEAD"], text=True
+              ).strip()
+              if actual != expected:
+                  errors.append(f"{key}: expected {expected}, got {actual}")
+          if errors:
+              raise SystemExit("Ecosystem lock mismatch:\\n" + "\\n".join(errors))
+          print("PASS cross-repository SHAs match the reviewed TADL ecosystem lock")
+          PY
       - name: Install Platform
         run: python -m pip install -e './agent-platform[test]'
       - name: Install Agent OS
