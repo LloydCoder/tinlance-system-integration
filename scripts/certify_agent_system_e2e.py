@@ -27,7 +27,14 @@ def main():
     agents=sdk.agents.list(); assert agents
     agent_id=str(agents[0].agent_id)
     transport=HttpPlatformTransport(base_endpoint,StaticAccessTokenProvider(token),allow_insecure_localhost=True)
-    context=PlatformRequestContext(tenant,subject,'tsic-agent-system-01','00-11111111111111111111111111111111-2222222222222222-01')
+    context=PlatformRequestContext(
+        tenant,
+        subject,
+        'tsic-agent-system-01',
+        trace_id='11111111111111111111111111111111',
+        span_id='2222222222222222',
+        traceparent='00-11111111111111111111111111111111-2222222222222222-01',
+    )
     adapter=AgentPlatformAdapter(transport,context)
     with tempfile.TemporaryDirectory() as directory:
         service=LocalOSService(StateStore(Path(directory)/'state.db'),adapter)
