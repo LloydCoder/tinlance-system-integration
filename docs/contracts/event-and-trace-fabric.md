@@ -1,5 +1,7 @@
 # Event, Delivery and Trace Fabric
 
-TSIC uses a CloudEvents-compatible envelope for domain events, W3C Trace Context for distributed tracing and OpenTelemetry semantic conventions for telemetry. CloudEvents 1.0.2 is the current released core specification; W3C Trace Context standardizes propagation of tracing context; OpenTelemetry provides the telemetry API/SDK/data model and semantic conventions. Durable event publication requires an outbox; consumers require idempotency and replay-safe processing.
+TSIC uses the canonical TADL `event-envelope/v1` schema, aligned with CloudEvents core 1.0.2. The exact same JSON Schema is mirrored at `schemas/event-envelope.schema.json` and validated by the ecosystem conformance gate. CloudEvents core attributes use the standard names (`specversion`, `id`, `source`, `type`, `time`, `subject`, `datacontenttype`); Tinlance extension attributes use lowercase names without underscores (`tenantid`, `executionid`, `traceid`, `correlationid`).
+
+Delivery is at least once. Durable publication requires an outbox, consumers require a durable idempotent inbox, duplicate identity with a different payload digest is rejected, retries are bounded with expiring leases and dead-letter/replay audit, and event IDs are preserved during replay. Execution journal transition plus outbox insertion must share one database transaction; cross-database atomicity and exactly-once claims are prohibited. W3C Trace Context standardizes propagation of trace context; OpenTelemetry defines telemetry APIs/data model and semantic conventions. P3 carries trace identity; P4 validates traceparent/tracestate propagation.
 
 References: CloudEvents, W3C Trace Context, OpenTelemetry, AsyncAPI 3.0.0.
