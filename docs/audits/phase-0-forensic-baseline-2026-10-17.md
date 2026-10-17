@@ -130,15 +130,16 @@ This document is a source-backed triage baseline, not a complete implementation 
 
 ### Certification workflow revision drift — remediation in this PR
 
-The original `.github/workflows/agent-system-e2e.yml` checked out TADL at `25fac21a...`, Agent OS at `8da4acec...`, Platform SDK at `615eef52...`, and Agent Platform at `9125f46f...`. Those TADL and Platform revisions did not match the release revisions pinned by the reviewed TADL ecosystem lock (`4fac75ba...` and `4f524c51...`). The first test run after adding a lock assertion reproduced the mismatch: the lock embedded in the old TADL code revision itself referred to a still older set of commits.
+The original `.github/workflows/agent-system-e2e.yml` mixed TADL at `25fac21a...`, OS at `8da4acec...`, SDK at `615eef52...`, and Platform at `9125f46f...` without validating the combination against the reviewed lock. A first lock assertion exposed that the lock source at TADL `25fac21a...` instead pinned TADL `4fac75ba...` and Platform `4f524c51...`. Testing that older locked combination failed at `tools.execute` with HTTP 400 `invalid_request`.
 
-The workflow was then corrected on this branch to:
-1. Check out the reviewed lock source at TADL commit `25fac21a8912bf58f0a9fc65e6ed1cbede70bbee` separately from the TADL code under test.
-2. Check out TADL code at `4fac75ba9f14d438d045b877685b2695b4da2c5b`, OS at `8da4aceca56ff58792b81545f3992c5e4493bda4`, Platform SDK at `615eef529831fdfbe37e050e45d9a1a8c4472291`, and Platform at `4f524c51f24ace3fa96b5f2fbd716d0270c16aae`.
-3. Compare all four checked-out code SHAs to the lock source and fail closed on any mismatch.
+The lock itself was stale relative to the known successful TSIC-01 reference E2E combination. The lock and matching ecosystem manifest were refreshed in [TADL PR #47](https://github.com/LloydCoder/tinlance-agent-developer/pull/47), which passed CI, Security, Secret Scan, Ecosystem Integration, and CodeQL and was merged as `cccff78ba88dcc2b9a5e22c14bf9175fbd81d105`.
 
-The lock-verification step passed in the subsequent TSIC-01 workflow run for commit `802a787b...`. The full vertical-slice test on that commit was still running when this audit update was prepared; the final candidate commit's complete workflow suite must pass before merge. This resolves the detected revision mismatch only if the final candidate's repeated checks remain green.
+The current TSIC PR candidate now:
+1. Checks out the reviewed lock source at TADL merge commit `cccff78ba88dcc2b9a5e22c14bf9175fbd81d105`.
+2. Checks out the exact code SHAs pinned by that lock: TADL `25fac21a8912bf58f0a9fc65e6ed1cbede70bbee`, OS `8da4aceca56ff58792b81545f3992c5e4493bda4`, Platform SDK `615eef529831fdfbe37e050e45d9a1a8c4472291`, and Platform `9125f46f526030fdeced492b6df281c4745f77e9`.
+3. Compares all four code SHAs against the lock and fails closed on drift.
 
+The lock assertion passed on the prior candidate, but that candidate's full vertical-slice execution failed against the older Platform pin. The updated baseline must therefore be validated by the final candidate's complete TSIC-01 run and full PR workflow suite before merge. This section records the cause and remediation path; it does not predeclare the new run green.
 ### Reference integration is not production integration
 
 The inspected TSIC-01 workflow starts `scripts/agent_system_platform_server.py`, probes a reference Platform endpoint, then runs the vertical slice. It sets deterministic fixture credentials such as `token-tsic` and `tenant-tsic`. This is useful for deterministic CI conformance, but it is a reference/test environment—not evidence that the external production Platform, real identity provider, production secret store, deployed sandbox, or production telemetry are healthy.
