@@ -43,10 +43,10 @@ jobs:
           if [[ -z "$TINLANCE_PLATFORM_TEST_URL" || -z "$TINLANCE_PLATFORM_TEST_TOKEN" || -z "$TINLANCE_PLATFORM_TEST_TENANT" || -z "$TINLANCE_PLATFORM_TEST_SUBJECT" || -z "$TINLANCE_PLATFORM_TEST_DEPLOYMENT_ID" ]]; then
             {
               echo "## Live Platform smoke"
-              echo "- Status: `not_run`"
-              echo "- Production verification: `unverified`"
-              echo "- Reason: one or more required live-test inputs or the deployment identifier are not configured in the protected `production-smoke` environment."
-              echo "- Commit: `$GITHUB_SHA`"
+              echo "- Status: not_run"
+              echo "- Production verification: unverified"
+              echo "- Reason: one or more required live-test inputs or the deployment identifier are not configured in the protected production-smoke environment."
+              echo "- Commit: ${GITHUB_SHA}"
               echo "- No live production pass is claimed."
             } >> "$GITHUB_STEP_SUMMARY"
             exit 0
