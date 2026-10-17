@@ -40,12 +40,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if [[ -z "$TINLANCE_PLATFORM_TEST_URL" || -z "$TINLANCE_PLATFORM_TEST_TOKEN" || -z "$TINLANCE_PLATFORM_TEST_TENANT" || -z "$TINLANCE_PLATFORM_TEST_SUBJECT" ]]; then
+          if [[ -z "$TINLANCE_PLATFORM_TEST_URL" || -z "$TINLANCE_PLATFORM_TEST_TOKEN" || -z "$TINLANCE_PLATFORM_TEST_TENANT" || -z "$TINLANCE_PLATFORM_TEST_SUBJECT" || -z "$TINLANCE_PLATFORM_TEST_DEPLOYMENT_ID" ]]; then
             {
               echo "## Live Platform smoke"
               echo "- Status: `not_run`"
               echo "- Production verification: `unverified`"
-              echo "- Reason: one or more required live-test inputs are not configured in the protected `production-smoke` environment."
+              echo "- Reason: one or more required live-test inputs or the deployment identifier are not configured in the protected `production-smoke` environment."
+              echo "- Commit: `$GITHUB_SHA`"
               echo "- No live production pass is claimed."
             } >> "$GITHUB_STEP_SUMMARY"
             exit 0
@@ -57,7 +58,7 @@ jobs:
           endpoint = urlparse(os.environ["TINLANCE_PLATFORM_TEST_URL"])
           if endpoint.scheme != "https":
               raise SystemExit("Live Platform smoke requires an HTTPS endpoint.")
-          deployment_id = os.environ.get("TINLANCE_PLATFORM_TEST_DEPLOYMENT_ID") or "not-provided"
+          deployment_id = os.environ["TINLANCE_PLATFORM_TEST_DEPLOYMENT_ID"]
           with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as summary:
               summary.write("## Live Platform smoke\n")
               summary.write("- Status: `live_pass`\n")
