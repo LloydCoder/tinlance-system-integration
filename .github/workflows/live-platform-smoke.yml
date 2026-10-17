@@ -62,6 +62,7 @@ jobs:
           with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as summary:
               summary.write("## Live Platform smoke\n")
               summary.write("- Status: `live_pass`\n")
+              summary.write("- Commit: `" + os.environ["GITHUB_SHA"] + "`\\n")
               summary.write("- Production verification: `verified for the recorded health probe only`\n")
               summary.write(f"- Endpoint host: `{endpoint.hostname}`\n")
               summary.write(f"- Deployment identifier: `{deployment_id}`\n")
