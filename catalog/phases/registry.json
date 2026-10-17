@@ -225,5 +225,6 @@
     }
   ],
   "completion_rule": "A phase is complete only when implementation, cross-system execution, security/authority boundaries, failure/recovery/idempotency, evidence lineage, documentation reconciliation, dedicated CI certification, and post-phase forensic audit are green.",
-  "last_reconciled": "2026-10-09"
+  "last_reconciled": "2026-10-17",
+  "evidence_ledger": "catalog/phases/evidence-ledger.json"
 }
