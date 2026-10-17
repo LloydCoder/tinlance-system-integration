@@ -52,6 +52,22 @@ def main():
     assert req["phase"]=="TSIC-00"
     assert len(req["requirements"])>=8
 
+    ledger=load("catalog/phases/evidence-ledger.json")
+    assert ledger["production_status"]=="unverified"
+    assert len(ledger["reviewed_commit"])==40
+    phase_evidence={x["phase"]:x for x in ledger["phases"]}
+    assert set(phase_evidence)=={x["id"] for x in seq}
+    for phase in seq:
+        record=phase_evidence[phase["id"]]
+        assert record["status"]=="completed_on_reviewed_reference_baseline"
+        assert record["evidence"], f"missing evidence: {phase['id']}"
+        for evidence in record["evidence"]:
+            assert evidence["conclusion"]=="success"
+            assert evidence["head_sha"]==ledger["reviewed_commit"]
+            assert evidence["production_claim"] is False
+            assert str(evidence["run_id"]) in evidence["url"]
+            assert evidence["url"].startswith("https://github.com/")
+
     print(f"PASS TSIC-00 authority lock: systems={len(systems)} nodes={len(nodes)} edges={len(graph['edges'])} phases={len(seq)}")
 
 if __name__=="__main__":
