@@ -2,7 +2,7 @@
 
 ## Status
 
-**Audit status: IN PROGRESS — NOT CERTIFIED GREEN.**
+**Audit status: CERTIFIED GREEN for the reviewed reference baseline. Live production status remains UNVERIFIED.**
 
 This document records an evidence-bounded baseline for the Tinlance Agent System. It is not a production-readiness certificate. No claim is made here that the full live system, external infrastructure, or all cross-repository paths have been exercised.
 
@@ -189,3 +189,17 @@ The recorded evidence is a reviewed baseline at TSIC commit `9f348bdb9f550a44490
 The merged workflow pins its four repository checkouts to the exact reviewed TADL lock and fails closed on SHA drift. The reference E2E result is a **reference certification only**. The protected `production-smoke` workflow is present but has not been dispatched in this run; live deployment status remains `not_run/unverified`. No production health, persistence, external identity, secret-management, sandbox, backup/restore, or incident-response claim is made.
 
 **Overall ecosystem P0 is still in progress** until TADL PR #53 (reviewed lock/manifest update and serial release-state enforcement) passes all checks and merges. This section certifies the TSIC subgate, not the entire ecosystem P0 gate.
+
+
+## Phase 0 post-merge certification — 2026-10-17
+
+- **Merged PR:** [#62](https://github.com/LloydCoder/tinlance-system-integration/pull/62)
+- **Merged TSIC SHA:** `9d4361a16ae1a5570eee49d6baf499f61e222a20`
+- **Post-merge CI:** [TSIC CI run 39063755897](https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755897) — success
+- **Post-merge Agent System E2E:** [run 39063755995](https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755995) — success
+- **Post-merge forensic audit:** the `Forensic audit` step in TSIC CI run 39063755897 passed.
+- **Exact-head checks:** 30/30 completed successfully on the merged SHA.
+- **Evidence ledger:** all 20 TSIC-00…TSIC-19 records now point to successful workflows on the merged SHA.
+- **Production boundary:** the protected live smoke workflow remains separate; without configured environment inputs and a successful live run, production readiness remains unverified.
+
+Phase 0 is closed for the reviewed reference baseline. This is not a claim that external production infrastructure has been live-tested.
