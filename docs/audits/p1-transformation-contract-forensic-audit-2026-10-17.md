@@ -33,7 +33,7 @@ The P1 lock is tsic-19-agent-system-p1-2026-10-17 and pins:
 - Agent OS: fa895ac047a94e9bf87234dbaaca44d70ef43efc
 - Platform SDK: 8a41d6dce2fe778ab25c33dfa315328d06ec4908
 - Agent Platform: 8ad20e37f5d559c757e360fbaf49bdf81e6e3e26
-- TSIC integration authority: 9f348bdb9f550a44490b2afb14320173f0911877
+- TSIC integration authority (post-P0 reviewed implementation baseline): 9d4361a16ae1a5570eee49d6baf499f61e222a20
 
 The lock is a reviewed test baseline, not a mutable branch pointer. The TADL checkout executes the conformance gate against the pinned OS/SDK/Platform implementations.
 
@@ -52,6 +52,10 @@ On TADL merge revision e458a2aee1e72f18c912011793769400af7ef5fe:
 - [Ecosystem Integration — 39062280534](https://github.com/LloydCoder/tinlance-agent-developer/actions/runs/39062280534): success
 
 The Ecosystem Integration run included the full finite-phase certification gate and a real SDK Transformation serialization validated against the canonical JSON Schema.
+
+### Original P1 certification baseline evidence (historical)
+
+The initial P1 certification used TSIC reference revision `9f348bdb9f550a44490b2afb14320173f0911877`. Its recorded 33 certification/integration workflows passed on that exact SHA. This remains historical evidence for the original baseline; the post-P0 lock and revalidation below supersede it for the current serial phase sequence.
 
 ### Component implementation revisions
 
@@ -72,6 +76,22 @@ The Ecosystem Integration run included the full finite-phase certification gate 
 - [x] Lock, manifest, phase document and exact repository revisions are reconciled.
 - [x] Full cross-repository Ecosystem Integration and repository security/CI workflows are green on the reviewed baseline.
 - [x] Post-phase audit records the exact revisions and evidence.
+
+
+## Post-P0 serial revalidation — 2026-10-17
+
+Phase 0 was completed before this revalidation. TSIC PR #62 merged the P0 implementation and reference-vs-live scope correction at `9d4361a16ae1a5570eee49d6baf499f61e222a20`; TSIC PR #67 then merged the post-merge evidence reconciliation at `99b893963559aef97d167bd58192ea9f3ddefdc1`. The current TADL lock and manifest intentionally pin the reviewed P0 implementation baseline `9d4361a16ae1a5570eee49d6baf499f61e222a20`; the later TSIC commit is documentation/evidence-ledger reconciliation and does not alter the tested Transformation contract.
+
+The current TADL lock-refresh/serial-release revision is `ebca342c1e7f4cc901f5f9eb13541e8a2f01549c`. Its complete repository workflow set passed on that exact SHA:
+- [Ecosystem Integration — 39064307020](https://github.com/LloydCoder/tinlance-agent-developer/actions/runs/39064307020) — success; validates the locked cross-repository baseline and real SDK Transformation payload against the canonical schema.
+- [CI — 39064307048](https://github.com/LloydCoder/tinlance-agent-developer/actions/runs/39064307048) — success.
+- [Security — 39064307109](https://github.com/LloydCoder/tinlance-agent-developer/actions/runs/39064307109) — success.
+- [Secret Scan — 39064307099](https://github.com/LloydCoder/tinlance-agent-developer/actions/runs/39064307099) — success.
+- [CodeQL — 39064307165](https://github.com/LloydCoder/tinlance-agent-developer/actions/runs/39064307165) — success.
+- [Scorecard — 39064307102](https://github.com/LloydCoder/tinlance-agent-developer/actions/runs/39064307102) — success.
+- [Release Attestations — 39064307115](https://github.com/LloydCoder/tinlance-agent-developer/actions/runs/39064307115) — success.
+
+The locked implementation revisions remain OS `fa895ac047a94e9bf87234dbaaca44d70ef43efc`, SDK `8a41d6dce2fe778ab25c33dfa315328d06ec4908`, and Platform `8ad20e37f5d559c757e360fbaf49bdf81e6e3e26`; each revision's CI/security checks passed. The lock, manifest, P1 document, and TSIC P0 baseline now agree. The final post-P0 P1 gate is green; this remains repository/reference certification, not production deployment certification.
 
 ## Explicit limitations
 
