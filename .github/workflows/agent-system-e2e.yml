@@ -23,6 +23,9 @@ jobs:
       - name: Checkout TSIC
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with: {path: tsic, persist-credentials: false}
+      - name: Checkout reviewed ecosystem lock source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with: {repository: LloydCoder/tinlance-agent-developer, ref: 25fac21a8912bf58f0a9fc65e6ed1cbede70bbee, path: agent-developer-lock, persist-credentials: false}
       - name: Checkout Agent Developer
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with: {repository: LloydCoder/tinlance-agent-developer, ref: 4fac75ba9f14d438d045b877685b2695b4da2c5b, path: agent-developer, persist-credentials: false}
@@ -48,7 +51,7 @@ jobs:
           import subprocess
           from pathlib import Path
 
-          lock = json.loads(Path("agent-developer/ecosystem.lock.json").read_text())
+          lock = json.loads(Path("agent-developer-lock/ecosystem.lock.json").read_text())
           repositories = {
               "developer": "agent-developer",
               "os": "agent-os",
