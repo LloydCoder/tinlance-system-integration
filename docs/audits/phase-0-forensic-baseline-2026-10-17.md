@@ -124,3 +124,43 @@ This document is a source-backed triage baseline, not a complete implementation 
 - [Agent OS repository](https://github.com/LloydCoder/tinlance-agent-os)
 - [Platform SDK repository](https://github.com/LloydCoder/tinlance-agent-platform-sdk)
 - [TADL repository](https://github.com/LloydCoder/tinlance-agent-developer)
+
+
+## Additional code-level findings from Phase 0 review
+
+### Certification workflow revision drift
+
+The current `.github/workflows/agent-system-e2e.yml` checks out these cross-repository revisions:
+- TADL: `25fac21a8912bf58f0a9fc65e6ed1cbede70bbee`
+- Agent OS: `8da4aceca56ff58792b81545f3992c5e4493bda4`
+- Platform SDK: `615eef529831fdfbe37e050e45d9a1a8c4472291`
+- Agent Platform: `9125f46f526030fdeced492b6df281c4745f77e9`
+
+These TADL and Platform revisions differ from the TADL ecosystem lock's pinned TADL `4fac75ba...` and Platform `4f524c51...` revisions. The OS and SDK revisions match the observed lock. This creates a material reproducibility ambiguity: a green cross-repository workflow may certify a different combination from the declared ecosystem release lock.
+
+**Required remediation:** make the workflow consume the reviewed canonical lock (or assert its checked-out SHAs against that lock), and fail closed on drift. If a deliberately separate certification baseline is required, give it a separately versioned, reviewed manifest and explain the difference. Do not simply replace pins with branch heads.
+
+### Reference integration is not production integration
+
+The inspected TSIC-01 workflow starts `scripts/agent_system_platform_server.py`, probes a reference Platform endpoint, then runs the vertical slice. It sets deterministic fixture credentials such as `token-tsic` and `tenant-tsic`. This is useful for deterministic CI conformance, but it is a reference/test environment—not evidence that the external production Platform, real identity provider, production secret store, deployed sandbox, or production telemetry are healthy.
+
+The SDK's `tests/test_live_platform.py` is explicitly skipped unless `TINLANCE_PLATFORM_TEST_URL`, `TINLANCE_PLATFORM_TEST_TOKEN`, `TINLANCE_PLATFORM_TEST_TENANT`, and `TINLANCE_PLATFORM_TEST_SUBJECT` are supplied. The current evidence reviewed here does not show that these live-test inputs were present in the relevant CI run.
+
+**Required remediation:** keep deterministic reference tests, and add a separate protected deployment-smoke/integration gate that reports whether a real deployment was tested. Missing live credentials must produce a clearly reported `not_run` / `unverified` status, never an implied production pass. Do not store live credentials in source or logs.
+
+### Phase 0 validator scope
+
+`tooling/validate_phase0.py` checks foundation files, parses JSON, checks duplicate system IDs and authority owners, and checks the presence of selected later-phase artifacts. `scripts/certify_phase0.py` checks registry/graph/lock invariants and the TSIC-00 phase sequence. These are valuable deterministic structural gates. By design, they do not establish external deployment health, actual provider authentication, production data durability, or live cross-tenant denial behavior.
+
+**Required remediation:** preserve these fast structural checks and make the separation between structural conformance, simulated E2E, deployed smoke tests and production-readiness evidence explicit in certification outputs and phase status.
+
+### Phase 0 implementation tasks added to the blocker register
+
+| ID | Severity | Remediation | Acceptance test |
+|---|---|---|---|
+| P0-08 | Critical | Eliminate untracked cross-repository revision combinations in TSIC E2E | Workflow verifies every checked-out SHA against one reviewed lock/baseline and fails on drift |
+| P0-09 | Critical | Separate reference E2E certification from deployed integration certification | CI clearly distinguishes `reference_pass`, `live_pass`, `not_run` and `failed`; no production claim follows from reference pass alone |
+| P0-10 | High | Make live Platform test coverage/status visible in certification | Protected live-test workflow records commit, deployment identifier, test outcome and safe evidence; absent configuration is explicitly unverified |
+| P0-11 | High | Align certification status semantics with test scope | Phase registry/report states exactly which structural, simulated, deployed and production gates passed |
+
+These findings mean Phase 0 remains open. They should be implemented and tested before a green Phase 0 certification is considered.
