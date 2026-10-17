@@ -1,104 +1,82 @@
 # P1 Forensic Audit — Transformation Contract
 
-**Status: BLOCKED — NOT CERTIFIED.** Component repositories now have green checks for the reviewed main revisions, but P1 is not complete until the canonical lock and cross-repository round-trip contract are reconciled.
+**Status: CERTIFIED GREEN — 2026-10-17.**
+
+The canonical finite phase matrix assigns P1 to the cross-repository transformation/v1 contract. P1 is certified after the implementation gaps identified below were fixed, merged, the reviewed lock was refreshed, and the full ecosystem conformance gate passed on the exact reviewed baseline.
 
 ## Canonical phase authority
 
-TADL `docs/ecosystem/PHASE-MATRIX.md` is the ecosystem phase matrix: P1 is the cross-repository `transformation/v1` contract; P2 is governed execution; P3 is identity/authority. The separate TSIC PR #61 attempted to redefine P1 as broad architecture/trace-context reconciliation and depended on an out-of-sequence trace change. It was closed without merge. Trace-context work is deferred to the phase that owns it.
+TADL docs/ecosystem/PHASE-MATRIX.md is the canonical phase matrix:
+- P1 — Transformation contract from declaration to outcome.
+- P2 — Governed execution and adversarial boundary.
+- P3 — Agent identity and authority.
 
-## Evidence reviewed
+The competing TSIC PR #61 redefined P1 as broad architecture/trace-context reconciliation and depended on an out-of-sequence trace change. It was closed without merge. Agent OS PR #132 and Platform PR #98 trace-context changes were also closed without merge; preserve that work for the phase that explicitly owns trace/observability. It was not included in P1.
 
-Canonical contract:
-- `schemas/transformation/v1/transformation.schema.json`
-- `schemas/examples/transformation.v1.json`
-- `docs/architecture/PHASE-14-TRANSFORMATION.md`
-- `docs/ecosystem/PHASE-MATRIX.md`
-- `scripts/ecosystem_phase_conformance.py`
+## P1 implementation changes merged
 
-Implementation models:
-- Agent OS: `src/tinlance_agent_os/transformation.py`, `tests/test_transformation.py`
-- Platform SDK: `src/tinlance_agent_platform_sdk/transformation.py`, `tests/test_transformation.py`
-- Platform: `packages/contracts/src/tinlance_agent_platform_contracts/transformation.py`, `tests/contracts/test_transformation.py`
-- TADL schema tests: `tests/contract/schema-contracts.test.mjs`
+| Area | Change | Merged revision / evidence |
+|---|---|---|
+| Canonical schema | Schema suite includes transformation/v1; example validated; contradictory outcome states rejected | TADL PR #48, merged implementation revision 411910dceadce113852c1f9870d3d8db02073beb |
+| Platform typed contract | Full Transformation payload model and outcome consistency | Platform PR #99, merged revision f6e14c917c38dbfdb403e92b9a3d8b5724e7c908 |
+| Platform context round-trip | Preserve optional context.source_refs, validate non-empty references and max 100 items | Platform PR #102, merged revision dc6ec112edefcc398289b594e72b468d36bbbf26 |
+| Reference-agent dependency | Reference-agent package pin reconciled with locked SDK SHA | Platform PR #103, merged revision 8ad20e37f5d559c757e360fbaf49bdf81e6e3e26 |
+| OS lifecycle provenance | Each new Transformation version gets new provenance while prior version remains immutable | OS PR #133, merged revision fa895ac047a94e9bf87234dbaaca44d70ef43efc |
+| Reviewed ecosystem baseline | Lock, manifest, and P1 revision table refreshed | TADL PR #49, merged revision d29613fca507a9b288f3b322911114678ba74678 |
+| Final P1 certification record | Exact successful workflow evidence recorded | TADL PR #50, merged revision e458a2aee1e72f18c912011793769400af7ef5fe |
 
-## Findings
+## Final reviewed ecosystem lock
 
-### P1-01 — Schema coverage and outcome consistency are now implemented
+The P1 lock is tsic-19-agent-system-p1-2026-10-17 and pins:
 
-TADL PR #48 is merged. The canonical schema is in the default schema-contract suite, the example is validated, provenance is required, and schema-level `oneOf` logic rejects contradictory `status` / `achieved` values.
+- TADL reviewed source: 818ca441d0708187152beb501ea0abe634417f07
+- Agent OS: fa895ac047a94e9bf87234dbaaca44d70ef43efc
+- Platform SDK: 8a41d6dce2fe778ab25c33dfa315328d06ec4908
+- Agent Platform: 8ad20e37f5d559c757e360fbaf49bdf81e6e3e26
+- TSIC integration authority: 9f348bdb9f550a44490b2afb14320173f0911877
 
-### P1-02 — The Platform Transformation contract implementation is now merged
+The lock is a reviewed test baseline, not a mutable branch pointer. The TADL checkout executes the conformance gate against the pinned OS/SDK/Platform implementations.
 
-Platform PR #99 is merged. Its final head passed CI, CodeQL, Secret Scan, R10 Certification, and Reference Agents checks. The typed payload includes governance, constraints, execution metadata, outputs, evidence, outcomes, and provenance.
+## Final CI and conformance evidence
 
-### P1-03 — Current OS and SDK models include the required top-level payload fields
+### TADL final merged certification record
 
-The current OS and SDK models serialize provenance, constraints, idempotency, execution metadata, outputs/evidence, and outcome data. SDK outcome validation rejects inconsistent achieved states. The previous statement that the SDK omits provenance/constraints was based on an outdated baseline and is withdrawn.
+On TADL merge revision e458a2aee1e72f18c912011793769400af7ef5fe:
 
-### P1-04 — Platform model drops optional canonical context provenance
+- [CI — 39062280456](https://github.com/LloydCoder/tinlance-agent-developer/actions/runs/39062280456): success
+- [CodeQL — 39062280490](https://github.com/LloydCoder/tinlance-agent-developer/actions/runs/39062280490): success
+- [Security — 39062280565](https://github.com/LloydCoder/tinlance-agent-developer/actions/runs/39062280565): success
+- [Secret Scan — 39062280465](https://github.com/LloydCoder/tinlance-agent-developer/actions/runs/39062280465): success
+- [Scorecard — 39062280499](https://github.com/LloydCoder/tinlance-agent-developer/actions/runs/39062280499): success
+- [Release Attestations — 39062280547](https://github.com/LloydCoder/tinlance-agent-developer/actions/runs/39062280547): success
+- [Ecosystem Integration — 39062280534](https://github.com/LloydCoder/tinlance-agent-developer/actions/runs/39062280534): success
 
-The canonical schema permits `context.source_refs`, and the SDK/OS models can carry source references in context. The current Platform Transformation model only serializes `workspace_ref` and `task_ref`; it has no field for context source references. A payload that contains this supported optional field cannot round-trip through the Platform model without losing data.
+The Ecosystem Integration run included the full finite-phase certification gate and a real SDK Transformation serialization validated against the canonical JSON Schema.
 
-**Required fix:** add validated `context_source_refs` (or an equivalent typed context object) to the Platform contract model and serializer, then add a round-trip regression test proving those references survive. Do not silently move the field to another section; context source references and provenance source references have distinct semantics.
+### Component implementation revisions
 
-### P1-05 — OS lifecycle versioning preserves stale provenance
+- Agent OS fa895ac047a94e9bf87234dbaaca44d70ef43efc: CI 39061478539, CodeQL 39061478591, OpenSSF Scorecard 39061478536 — all success.
+- Platform SDK 8a41d6dce2fe778ab25c33dfa315328d06ec4908: CI 39060766356, Security 39060766382 — all success.
+- Agent Platform 8ad20e37f5d559c757e360fbaf49bdf81e6e3e26: CI 39061875766, CodeQL 39061875758, Secret Scan 39061875780, R10 Certification 39061875763, Reference Agents 39061875743 — all success.
+- TSIC reviewed integration revision 9f348bdb9f550a44490b2afb14320173f0911877: all 33 associated certification/integration workflows completed successfully, including TSIC CI 39061218883.
 
-The OS `with_execution()` method increments the Transformation version but reuses the original provenance object and provides no way to set provenance for the new version. The canonical model describes versioned, append-oriented records; each newly recorded version needs provenance that identifies when/by whom that version was recorded.
+## Final P1 acceptance
 
-**Required fix:** allow an explicit new provenance value for the new version, or construct it through a documented trusted recording boundary. Do not silently rewrite the prior version's provenance. Add tests proving the previous version remains unchanged and the new version carries its own timestamp/source attribution.
+- [x] Canonical schema and example validated by the default schema-contract suite.
+- [x] Outcome status and achieved flag cannot contradict each other.
+- [x] OS, SDK and Platform preserve the canonical required fields.
+- [x] Platform preserves supported context source references.
+- [x] OS lifecycle versions carry version-specific provenance without mutating prior versions.
+- [x] The reference-agent SDK dependency pin matches the reviewed lock.
+- [x] A real SDK-produced Transformation payload validates against the canonical schema.
+- [x] Lock, manifest, phase document and exact repository revisions are reconciled.
+- [x] Full cross-repository Ecosystem Integration and repository security/CI workflows are green on the reviewed baseline.
+- [x] Post-phase audit records the exact revisions and evidence.
 
-### P1-06 — The reviewed ecosystem lock is stale relative to the implementations being certified
+## Explicit limitations
 
-The current `ecosystem.lock.json` pins older revisions:
-- TADL: `25fac21a8912bf58f0a9fc65e6ed1cbede70bbee`
-- Agent OS: `dd2119e4ace0bd0ca5dbae083badbb5d9909670b`
-- Platform SDK: `61712794078b967aa84e3db21dd006b19136bcba`
-- Platform: `c294acad0489e1165e2a3d89dcbcf24c21639d5e`
-
-The current reviewed main revisions at this audit were:
-- TADL: `818ca441d0708187152beb501ea0abe634417f07`
-- Agent OS: `502161b863042ca40f823f9c5e3a0ac2f6677746`
-- Platform SDK: `8a41d6dce2fe778ab25c33dfa315328d06ec4908`
-- Platform: `5bfe29305be3aa77af2a1ec002bd146caaa105b5`
-
-The four component main revisions above had green CI/security/conformance checks at review time. A green workflow against an old lock does not certify the newer implementation revisions. Refresh the reviewed lock and manifest after the required model fixes, then rerun the complete ecosystem gate against the exact locked SHAs.
-
-### P1-07 — Real SDK serialization gate exists, but the lock must point at the intended SDK revision
-
-The TADL ecosystem gate now constructs a real SDK Transformation, serializes it, and validates that payload against the canonical schema. This is the correct kind of test; validating only a fixture/example would be insufficient. Its result is only meaningful for the SDK revision actually checked out by the lock, which is currently stale.
-
-## Current CI evidence
-
-The following exact revisions had successful repository workflows at review time:
-
-- TADL `818ca441d0708187152beb501ea0abe634417f07`: CI, CodeQL, Security, Secret Scan, Scorecard, Release Attestations, Ecosystem Integration — all success.
-- Agent OS `502161b863042ca40f823f9c5e3a0ac2f6677746`: CI, CodeQL, OpenSSF Scorecard — all success.
-- Platform SDK `8a41d6dce2fe778ab25c33dfa315328d06ec4908`: CI and Security — success.
-- Platform `5bfe29305be3aa77af2a1ec002bd146caaa105b5`: CI, CodeQL, Secret Scan, R10 Certification, Reference Agents — all success.
-
-These results establish repository-level workflow status only. They do not prove external production infrastructure is deployed.
-
-## Required implementation order
-
-1. Add context source-reference preservation to the Platform Transformation model and test.
-2. Update OS lifecycle transitions so every new Transformation version has correct version-specific provenance without mutating prior versions.
-3. Run OS, SDK and Platform contract tests and all repository security/CI workflows on exact candidate heads.
-4. Refresh the reviewed ecosystem lock/manifest to the exact candidate SHAs and reconcile the P1 certification record.
-5. Run the full TADL ecosystem gate, including serialization of a real SDK payload against the canonical schema.
-6. Audit the resulting merged SHAs and confirm there is no P1 contract loss or stale pin.
-
-## P1 exit gate
-
-- [x] Canonical schema and example are included in TADL schema tests.
-- [x] Schema rejects contradictory outcome states.
-- [x] TADL real-SDK-payload validation gate exists.
-- [x] Component CI/security checks are green on the revisions listed above.
-- [ ] Platform preserves supported `context.source_refs`.
-- [ ] OS lifecycle versions carry correct new-version provenance while preserving old versions.
-- [ ] Reviewed lock/manifest pins the intended tested implementation revisions.
-- [ ] Full cross-repository conformance passes against that refreshed lock.
-- [ ] Post-phase audit records final merged SHAs and workflow evidence.
+P1 certifies the Transformation contract and repository-level conformance. It does not prove external production PostgreSQL, KMS/HSM, secret management, isolated runtime fleet, production telemetry, backups/restore, incident response, or independent production assessment are deployed.
 
 ## Verdict
 
-P1 remains **blocked** by two concrete round-trip/lifecycle gaps and a stale reviewed lock. Do not start P2 until these fixes are merged and the refreshed cross-repository gate is green.
+**P1 is complete and merged. P2 may begin.** Maintain the serial phase gate: forensic audit, implementation, adversarial tests, exact-SHA CI/security, cross-repository certification, merge, and post-phase audit before proceeding to P3.
