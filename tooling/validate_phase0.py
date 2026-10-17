@@ -11,7 +11,7 @@ base=[
     ".gitignore",".github/workflows/ci.yml",".github/dependabot.yml",
     ".github/ISSUE_TEMPLATE/config.yml",".github/ISSUE_TEMPLATE/bug_report.yml",
     ".github/ISSUE_TEMPLATE/feature_request.yml",".github/pull_request_template.md",
-    "llms.txt","manifests/ecosystem.json","catalog/capabilities/authority.json",
+    "llms.txt","catalog/phases/evidence-ledger.json","manifests/ecosystem.json","catalog/capabilities/authority.json",
     "catalog/dependencies/initial.json","schemas/ecosystem-manifest.schema.json",
     "schemas/authority.schema.json","schemas/dependency.schema.json",
     "schemas/conformance.schema.json","conformance/requirements/phase0.json"
