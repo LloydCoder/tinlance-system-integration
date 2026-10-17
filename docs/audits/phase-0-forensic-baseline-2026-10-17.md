@@ -173,3 +173,10 @@ The PR candidate updates `.github/workflows/agent-system-e2e.yml` to use the rev
 A separate manually dispatched workflow, `.github/workflows/live-platform-smoke.yml`, targets the protected `production-smoke` GitHub environment and runs the reviewed SDK's authenticated HTTPS health probe only when all required live inputs are present. Missing inputs produce `not_run` / `unverified`, not a pass. The workflow code cannot itself prove that environment approval rules or secrets are configured in GitHub settings; those remain operational prerequisites and must be verified before a live run.
 
 **PR #62 remains pending** until all required checks complete successfully and the exact-head audit confirms no lock drift. This status update is not a certification.
+
+
+### P0-02 — Phase evidence ledger implementation
+
+The candidate now adds `catalog/phases/evidence-ledger.json`, links it from `catalog/phases/registry.json`, updates `last_reconciled` to 2026-10-17, and makes `scripts/certify_phase0.py` fail closed if any TSIC-00…TSIC-19 phase lacks a successful workflow reference on the recorded full source SHA. The ledger labels each record's scope as structural, contract, certification, or reference E2E and explicitly sets `production_claim=false`; the overall production status remains `unverified`. `tooling/validate_phase0.py` also requires the ledger to exist and parses it with the repository's JSON validation sweep.
+
+The recorded evidence is a reviewed baseline at TSIC commit `9f348bdb9f550a44490b2afb14320173f0911877`. PR #62 reruns the updated E2E workflow on its own head; those new runs, not the older ledger entries, are the acceptance evidence for the workflow changes in this PR. After merge, the ledger baseline must be refreshed to the exact merged TSIC SHA in a post-merge certification update. This avoids treating a pre-merge workflow run as proof of the merged revision.
