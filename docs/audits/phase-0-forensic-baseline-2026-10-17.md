@@ -164,3 +164,12 @@ The SDK's `tests/test_live_platform.py` is explicitly skipped unless `TINLANCE_P
 | P0-11 | High | Align certification status semantics with test scope | Phase registry/report states exactly which structural, simulated, deployed and production gates passed |
 
 These findings mean Phase 0 remains open. They should be implemented and tested before a green Phase 0 certification is considered.
+
+
+## Remediation status update — PR #62
+
+The PR candidate updates `.github/workflows/agent-system-e2e.yml` to use the reviewed lock source at TADL `e458a2aee1e72f18c912011793769400af7ef5fe` and the exact TADL/OS/SDK/Platform SHAs recorded by that lock. The fail-closed SHA comparison remains mandatory. The reference E2E summary explicitly labels itself `reference_pass` on success, `live_status=not_run`, and `production_status=unverified`; a deterministic reference service is not represented as deployed production evidence.
+
+A separate manually dispatched workflow, `.github/workflows/live-platform-smoke.yml`, targets the protected `production-smoke` GitHub environment and runs the reviewed SDK's authenticated HTTPS health probe only when all required live inputs are present. Missing inputs produce `not_run` / `unverified`, not a pass. The workflow code cannot itself prove that environment approval rules or secrets are configured in GitHub settings; those remain operational prerequisites and must be verified before a live run.
+
+**PR #62 remains pending** until all required checks complete successfully and the exact-head audit confirms no lock drift. This status update is not a certification.
