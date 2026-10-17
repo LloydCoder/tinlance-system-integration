@@ -180,3 +180,12 @@ A separate manually dispatched workflow, `.github/workflows/live-platform-smoke.
 The candidate now adds `catalog/phases/evidence-ledger.json`, links it from `catalog/phases/registry.json`, updates `last_reconciled` to 2026-10-17, and makes `scripts/certify_phase0.py` fail closed if any TSIC-00…TSIC-19 phase lacks a successful workflow reference on the recorded full source SHA. The ledger labels each record's scope as structural, contract, certification, or reference E2E and explicitly sets `production_claim=false`; the overall production status remains `unverified`. `tooling/validate_phase0.py` also requires the ledger to exist and parses it with the repository's JSON validation sweep.
 
 The recorded evidence is a reviewed baseline at TSIC commit `9f348bdb9f550a44490b2afb14320173f0911877`. PR #62 reruns the updated E2E workflow on its own head; those new runs, not the older ledger entries, are the acceptance evidence for the workflow changes in this PR. After merge, the ledger baseline must be refreshed to the exact merged TSIC SHA in a post-merge certification update. This avoids treating a pre-merge workflow run as proof of the merged revision.
+
+
+## Post-merge evidence — TSIC P0 subgate
+
+**TSIC P0 implementation merge:** `9d4361a16ae1a5570eee49d6baf499f61e222a20` (PR #62). All 30 reported check-runs on that exact merged SHA completed successfully, including TSIC CI, TSIC-01 Agent System E2E, Agent System Certification, TSIC-38 final forensic certification, the phase-specific integration/certification workflows, and OpenSSF Scorecard. The exact run IDs are recorded in `catalog/phases/evidence-ledger.json`; `scripts/certify_phase0.py` now validates the 20 phase evidence entries against the same full SHA and requires every entry to disclaim production claims.
+
+The merged workflow pins its four repository checkouts to the exact reviewed TADL lock and fails closed on SHA drift. The reference E2E result is a **reference certification only**. The protected `production-smoke` workflow is present but has not been dispatched in this run; live deployment status remains `not_run/unverified`. No production health, persistence, external identity, secret-management, sandbox, backup/restore, or incident-response claim is made.
+
+**Overall ecosystem P0 is still in progress** until TADL PR #53 (reviewed lock/manifest update and serial release-state enforcement) passes all checks and merges. This section certifies the TSIC subgate, not the entire ecosystem P0 gate.
