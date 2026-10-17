@@ -98,18 +98,18 @@ The following must remain **unverified** until direct evidence is attached:
 
 ## Phase 0 exit gate
 
-Phase 0 is **not complete** until all of the following are true:
+Phase 0 (TSIC-00 / forensic baseline) is **not complete** until all of the following are true:
 
-- [ ] Reviewed commit baseline and ecosystem lock are consistent.
-- [ ] Phase registry claims are supported by retrievable evidence.
-- [ ] Open PRs have been reviewed; only required, verified changes are merged.
-- [ ] Required CI/security workflows pass on the exact candidate commits.
-- [ ] Real cross-repository integration runs against a controlled deployed environment.
-- [ ] Authorization, tenant isolation, approval gating and denied-action behavior pass.
-- [ ] Retry, idempotency, cancellation and recovery tests pass.
-- [ ] Trace/evidence lineage is complete and secrets are not exposed.
-- [ ] Production-dependency status is explicitly classified as deployed, not deployed, or unverified.
-- [ ] A post-phase audit signs off with no unresolved critical blocker.
+- [ ] Reviewed commit baseline and ecosystem lock are consistent and enforced by CI.
+- [ ] Phase registry claims are reconciled against retrievable implementation, test, and certification evidence; unsupported completion claims are explicitly downgraded or reopened.
+- [ ] Open PRs have been reviewed; relevant blockers are fixed or tracked with a justified disposition.
+- [ ] Required structural, security, and repository-level CI workflows pass on the exact candidate commit.
+- [ ] The deterministic cross-repository reference workflow passes against the exact reviewed SHAs.
+- [ ] Production dependency status is explicitly classified as deployed, not deployed, or unverified; reference CI is never described as production proof.
+- [ ] The phase 0 audit report and source-of-truth documentation are reconciled and committed.
+- [ ] A post-phase audit signs off with no unresolved **Phase 0** critical blocker.
+
+The following are mandatory for the later production-readiness gate (P10), not prerequisites for the structural TSIC-00 baseline itself: live deployed end-to-end execution, production identity and secret services, tenant-isolation attacks against deployed infrastructure, external sandbox verification, disaster-recovery drills, production telemetry, capacity/load tests, and operational incident-response evidence. These remain explicitly **unverified** until evidence is collected. Phase 0 may not mark them complete or imply they have passed.
 
 ## Explicit limitations of this baseline
 
