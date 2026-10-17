@@ -2,7 +2,7 @@
 
 ## Status
 
-**Audit status: IN PROGRESS — NOT CERTIFIED GREEN.**
+**Audit status: CERTIFIED GREEN for the reviewed reference baseline. Live production status remains UNVERIFIED.**
 
 This document records an evidence-bounded baseline for the Tinlance Agent System. It is not a production-readiness certificate. No claim is made here that the full live system, external infrastructure, or all cross-repository paths have been exercised.
 
@@ -180,3 +180,17 @@ A separate manually dispatched workflow, `.github/workflows/live-platform-smoke.
 The candidate now adds `catalog/phases/evidence-ledger.json`, links it from `catalog/phases/registry.json`, updates `last_reconciled` to 2026-10-17, and makes `scripts/certify_phase0.py` fail closed if any TSIC-00…TSIC-19 phase lacks a successful workflow reference on the recorded full source SHA. The ledger labels each record's scope as structural, contract, certification, or reference E2E and explicitly sets `production_claim=false`; the overall production status remains `unverified`. `tooling/validate_phase0.py` also requires the ledger to exist and parses it with the repository's JSON validation sweep.
 
 The recorded evidence is a reviewed baseline at TSIC commit `9f348bdb9f550a44490b2afb14320173f0911877`. PR #62 reruns the updated E2E workflow on its own head; those new runs, not the older ledger entries, are the acceptance evidence for the workflow changes in this PR. After merge, the ledger baseline must be refreshed to the exact merged TSIC SHA in a post-merge certification update. This avoids treating a pre-merge workflow run as proof of the merged revision.
+
+
+## Phase 0 post-merge certification — 2026-10-17
+
+- **Merged PR:** [#62](https://github.com/LloydCoder/tinlance-system-integration/pull/62)
+- **Merged TSIC SHA:** `9d4361a16ae1a5570eee49d6baf499f61e222a20`
+- **Post-merge CI:** [TSIC CI run 39063755897](https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755897) — success
+- **Post-merge Agent System E2E:** [run 39063755995](https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755995) — success
+- **Post-merge final forensic certification:** [run 39063755859](https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755859) — success
+- **Exact-head checks:** 30/30 completed successfully on the merged SHA.
+- **Evidence ledger:** refreshed to record successful per-phase workflows against the merged SHA.
+- **Production boundary:** the protected live smoke workflow remains separate; without configured environment inputs and a successful live run, production readiness remains unverified.
+
+Phase 0 is closed for the reviewed reference baseline. This is not a claim that external production infrastructure has been live-tested.
