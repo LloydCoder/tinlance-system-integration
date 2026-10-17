@@ -1,1 +1,40 @@
-{"schema_version":"1.0.0","format":"cloudevents-compatible","required":["id","source","specversion","type","time","subject","data","data_content_type"],"extensions":["tenant_id","organization_id","workspace_id","actor_id","agent_id","execution_id","trace_id","correlation_id","causation_id","schema_uri","data_classification"],"rules":{"event_id_unique":true,"schema_versioned":true,"tenant_context_immutable":true}}
+{
+  "schema_version": "1.1.0",
+  "format": "cloudevents-1.0.2-compatible",
+  "required": [
+    "id",
+    "source",
+    "specversion",
+    "type",
+    "time",
+    "subject",
+    "data",
+    "datacontenttype",
+    "tenantid",
+    "executionid",
+    "traceid",
+    "correlationid"
+  ],
+  "extensions": [
+    "tenantid",
+    "organizationid",
+    "workspaceid",
+    "actorid",
+    "agentid",
+    "executionid",
+    "traceid",
+    "correlationid",
+    "causationid",
+    "dataschema",
+    "dataclassification",
+    "idempotencykey"
+  ],
+  "rules": {
+    "event_id_unique_per_source": true,
+    "schema_versioned": true,
+    "tenant_context_immutable": true,
+    "trace_context_preserved": true,
+    "delivery_semantics": "at_least_once",
+    "unknown_extensions_rejected": true
+  }
+}
