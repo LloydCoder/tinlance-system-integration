@@ -1,1 +1,34 @@
-{"schema_version":"1.0.0","delivery":{"outbox_required_for_durable_publish":true,"inbox_required_for_idempotent_consume":true,"deduplication_key":"event.id","retry":{"exponential_backoff":true,"bounded":true},"dead_letter":true,"replay":true},"ordering":{"default":"not_guaranteed","explicit_ordering_key_required":true}}
+{
+  "schema_version": "1.1.0",
+  "delivery": {
+    "outbox_required_for_durable_publish": true,
+    "inbox_required_for_idempotent_consume": true,
+    "deduplication_key": [
+      "tenantid",
+      "consumer_id",
+      "source",
+      "id"
+    ],
+    "payload_digest_conflict_rejected": true,
+    "guarantee": "at_least_once",
+    "exactly_once_claimed": false,
+    "retry": {
+      "exponential_backoff": true,
+      "bounded": true,
+      "max_attempts_required": true,
+      "lease_expiry_recovery": true
+    },
+    "dead_letter": true,
+    "replay": true,
+    "replay_audit_required": true
+  },
+  "ordering": {
+    "default": "not_guaranteed",
+    "explicit_ordering_key_required": true,
+    "ordering_scope": "tenantid+aggregate_id"
+  },
+  "transactional_boundary": {
+    "journal_transition_and_outbox_must_share_database_transaction": true,
+    "cross_database_atomicity_claim_forbidden": true
+  }
+}
