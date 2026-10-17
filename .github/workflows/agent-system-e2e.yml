@@ -25,19 +25,19 @@ jobs:
         with: {path: tsic, persist-credentials: false}
       - name: Checkout reviewed ecosystem lock source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-agent-developer, ref: cccff78ba88dcc2b9a5e22c14bf9175fbd81d105, path: agent-developer-lock, persist-credentials: false}
+        with: {repository: LloydCoder/tinlance-agent-developer, ref: e458a2aee1e72f18c912011793769400af7ef5fe, path: agent-developer-lock, persist-credentials: false}
       - name: Checkout Agent Developer
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-agent-developer, ref: 25fac21a8912bf58f0a9fc65e6ed1cbede70bbee, path: agent-developer, persist-credentials: false}
+        with: {repository: LloydCoder/tinlance-agent-developer, ref: 818ca441d0708187152beb501ea0abe634417f07, path: agent-developer, persist-credentials: false}
       - name: Checkout Agent OS
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-agent-os, ref: 8da4aceca56ff58792b81545f3992c5e4493bda4, path: agent-os, persist-credentials: false}
+        with: {repository: LloydCoder/tinlance-agent-os, ref: fa895ac047a94e9bf87234dbaaca44d70ef43efc, path: agent-os, persist-credentials: false}
       - name: Checkout Platform SDK
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-agent-platform-sdk, ref: 615eef529831fdfbe37e050e45d9a1a8c4472291, path: agent-platform-sdk, persist-credentials: false}
+        with: {repository: LloydCoder/tinlance-agent-platform-sdk, ref: 8a41d6dce2fe778ab25c33dfa315328d06ec4908, path: agent-platform-sdk, persist-credentials: false}
       - name: Checkout Agent Platform
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-agent-platform, ref: 9125f46f526030fdeced492b6df281c4745f77e9, path: agent-platform, persist-credentials: false}
+        with: {repository: LloydCoder/tinlance-agent-platform, ref: 8ad20e37f5d559c757e360fbaf49bdf81e6e3e26, path: agent-platform, persist-credentials: false}
       - name: Setup Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with: {python-version: '3.12'}
@@ -115,6 +115,16 @@ jobs:
       - name: Post-phase forensic audit
         working-directory: tsic
         run: python scripts/forensic_audit_phase1.py
+      - name: Record reference-vs-live certification scope
+        if: always()
+        run: |
+          {
+            echo "## TSIC-01 certification scope"
+            echo "- Reference E2E: ${{ job.status == 'success' && 'reference_pass' || 'failed' }}"
+            echo "- Deployed live integration: not_run (separate protected workflow)"
+            echo "- Production readiness: unverified by this reference workflow"
+            echo "- This job uses a deterministic reference Platform with fixture identities and in-memory stores."
+          } >> "$GITHUB_STEP_SUMMARY"
       - name: Stop reference Platform
         if: always()
         run: if test -f /tmp/tsic-platform-pid; then kill $(cat /tmp/tsic-platform-pid) || true; fi
