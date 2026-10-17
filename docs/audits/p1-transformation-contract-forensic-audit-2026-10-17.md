@@ -71,3 +71,13 @@ This is a hard blocker. Do not weaken the canonical schema or fabricate provenan
 ## Verdict
 
 P1 is **not complete**. The SDK serialization gap is a hard blocker, and the OS/Platform changes remain unmerged. P2 must not start until P1 passes this gate.
+
+
+## CI evidence update — 2026-10-17
+
+- **TADL PR #48**, head `ee1619b2bf7055ecd93e546304a9c487a1984106`: CI, Security and Secret Scan passed; Ecosystem Integration failed in the full finite-phase certification gate. The failure explicitly reports the SDK serializer missing `provenance`, `declared_by`, and `recorded_at`, dropping caller-supplied constraints, and permitting `achieved=true` with a non-achieved status. CodeQL was still in progress at the time of this update.
+- **Platform PR #99**, head `98ac6151a6ab3911c14fe4e246835a1c0c5c1bf2`: CodeQL, Secret Scan, R10 Certification, and Reference Agents passed; CI failed the Ruff format check on the new transformation contract module. The formatting defect must be corrected and the complete suite rerun.
+- **Agent OS P1 branch** `phase/p1-transformation-contract-2026-10-17`: implementation and tests are present, but no PR/CI certification has been established in this evidence snapshot.
+- **SDK P1 implementation**: no change has been merged or verified. The cross-repository gate correctly remains red until this serializer is fixed.
+
+These results confirm the P1 gate is blocking for substantive reasons. No P1 implementation PR should be merged as a phase-completion claim until all four repository implementations and the ecosystem conformance gate pass.
