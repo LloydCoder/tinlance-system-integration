@@ -188,7 +188,7 @@ The recorded evidence is a reviewed baseline at TSIC commit `9f348bdb9f550a44490
 - **Merged TSIC SHA:** `9d4361a16ae1a5570eee49d6baf499f61e222a20`
 - **Post-merge CI:** [TSIC CI run 39063755897](https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755897) — success
 - **Post-merge Agent System E2E:** [run 39063755995](https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755995) — success
-- **Post-merge final forensic certification:** [run 39063755859](https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755859) — success
+- **Post-merge forensic audit:** the `Forensic audit` step in TSIC CI run 39063755897 passed.
 - **Exact-head checks:** 30/30 completed successfully on the merged SHA.
 - **Evidence ledger:** refreshed to record successful per-phase workflows against the merged SHA.
 - **Production boundary:** the protected live smoke workflow remains separate; without configured environment inputs and a successful live run, production readiness remains unverified.
