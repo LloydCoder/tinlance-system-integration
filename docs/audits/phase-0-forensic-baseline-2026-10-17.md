@@ -128,17 +128,16 @@ This document is a source-backed triage baseline, not a complete implementation 
 
 ## Additional code-level findings from Phase 0 review
 
-### Certification workflow revision drift
+### Certification workflow revision drift — remediation in this PR
 
-The current `.github/workflows/agent-system-e2e.yml` checks out these cross-repository revisions:
-- TADL: `25fac21a8912bf58f0a9fc65e6ed1cbede70bbee`
-- Agent OS: `8da4aceca56ff58792b81545f3992c5e4493bda4`
-- Platform SDK: `615eef529831fdfbe37e050e45d9a1a8c4472291`
-- Agent Platform: `9125f46f526030fdeced492b6df281c4745f77e9`
+The original `.github/workflows/agent-system-e2e.yml` checked out TADL at `25fac21a...`, Agent OS at `8da4acec...`, Platform SDK at `615eef52...`, and Agent Platform at `9125f46f...`. Those TADL and Platform revisions did not match the release revisions pinned by the reviewed TADL ecosystem lock (`4fac75ba...` and `4f524c51...`). The first test run after adding a lock assertion reproduced the mismatch: the lock embedded in the old TADL code revision itself referred to a still older set of commits.
 
-These TADL and Platform revisions differ from the TADL ecosystem lock's pinned TADL `4fac75ba...` and Platform `4f524c51...` revisions. The OS and SDK revisions match the observed lock. This creates a material reproducibility ambiguity: a green cross-repository workflow may certify a different combination from the declared ecosystem release lock.
+The workflow was then corrected on this branch to:
+1. Check out the reviewed lock source at TADL commit `25fac21a8912bf58f0a9fc65e6ed1cbede70bbee` separately from the TADL code under test.
+2. Check out TADL code at `4fac75ba9f14d438d045b877685b2695b4da2c5b`, OS at `8da4aceca56ff58792b81545f3992c5e4493bda4`, Platform SDK at `615eef529831fdfbe37e050e45d9a1a8c4472291`, and Platform at `4f524c51f24ace3fa96b5f2fbd716d0270c16aae`.
+3. Compare all four checked-out code SHAs to the lock source and fail closed on any mismatch.
 
-**Required remediation:** make the workflow consume the reviewed canonical lock (or assert its checked-out SHAs against that lock), and fail closed on drift. If a deliberately separate certification baseline is required, give it a separately versioned, reviewed manifest and explain the difference. Do not simply replace pins with branch heads.
+The lock-verification step passed in the subsequent TSIC-01 workflow run for commit `802a787b...`. The full vertical-slice test on that commit was still running when this audit update was prepared; the final candidate commit's complete workflow suite must pass before merge. This resolves the detected revision mismatch only if the final candidate's repeated checks remain green.
 
 ### Reference integration is not production integration
 
