@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "purpose": "Evidence index for the TSIC phase registry. Entries establish that the named repository/reference workflow passed on the exact recorded source revision; they do not imply live production deployment or external operational assurance.",
   "reviewed_at": "2026-10-17",
-  "reviewed_commit": "9f348bdb9f550a44490b2afb14320173f0911877",
+  "reviewed_commit": "9d4361a16ae1a5570eee49d6baf499f61e222a20",
   "source": "https://github.com/LloydCoder/tinlance-system-integration",
   "production_status": "unverified",
   "phases": [
@@ -12,10 +12,10 @@
       "evidence": [
         {
           "workflow": "TSIC CI",
-          "run_id": 39061218883,
-          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39061218883",
+          "run_id": 39063755897,
+          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755897",
           "conclusion": "success",
-          "head_sha": "9f348bdb9f550a44490b2afb14320173f0911877",
+          "head_sha": "9d4361a16ae1a5570eee49d6baf499f61e222a20",
           "scope": "structural",
           "production_claim": false
         }
@@ -27,10 +27,10 @@
       "evidence": [
         {
           "workflow": "TSIC-01 Agent System E2E",
-          "run_id": 39061218794,
-          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39061218794",
+          "run_id": 39063755995,
+          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755995",
           "conclusion": "success",
-          "head_sha": "9f348bdb9f550a44490b2afb14320173f0911877",
+          "head_sha": "9d4361a16ae1a5570eee49d6baf499f61e222a20",
           "scope": "reference_e2e",
           "production_claim": false
         }
@@ -42,10 +42,10 @@
       "evidence": [
         {
           "workflow": "TSIC-02 Intelligence to Opportunity",
-          "run_id": 39061218730,
-          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39061218730",
+          "run_id": 39063755816,
+          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755816",
           "conclusion": "success",
-          "head_sha": "9f348bdb9f550a44490b2afb14320173f0911877",
+          "head_sha": "9d4361a16ae1a5570eee49d6baf499f61e222a20",
           "scope": "reference_e2e",
           "production_claim": false
         }
@@ -57,10 +57,10 @@
       "evidence": [
         {
           "workflow": "TSIC-03 ReconOS Contract Gate",
-          "run_id": 39061218905,
-          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39061218905",
+          "run_id": 39063755913,
+          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755913",
           "conclusion": "success",
-          "head_sha": "9f348bdb9f550a44490b2afb14320173f0911877",
+          "head_sha": "9d4361a16ae1a5570eee49d6baf499f61e222a20",
           "scope": "contract_gate",
           "production_claim": false
         }
@@ -72,10 +72,10 @@
       "evidence": [
         {
           "workflow": "TSIC-04 FadeReach Acquisition E2E",
-          "run_id": 39061218851,
-          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39061218851",
+          "run_id": 39063755854,
+          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755854",
           "conclusion": "success",
-          "head_sha": "9f348bdb9f550a44490b2afb14320173f0911877",
+          "head_sha": "9d4361a16ae1a5570eee49d6baf499f61e222a20",
           "scope": "reference_e2e",
           "production_claim": false
         }
@@ -87,10 +87,10 @@
       "evidence": [
         {
           "workflow": "TSIC-05 FAS Independent Evaluation E2E",
-          "run_id": 39061218742,
-          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39061218742",
+          "run_id": 39063756008,
+          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063756008",
           "conclusion": "success",
-          "head_sha": "9f348bdb9f550a44490b2afb14320173f0911877",
+          "head_sha": "9d4361a16ae1a5570eee49d6baf499f61e222a20",
           "scope": "reference_e2e",
           "production_claim": false
         }
@@ -102,10 +102,10 @@
       "evidence": [
         {
           "workflow": "TSIC-06 Engineering Delivery Route E2E",
-          "run_id": 39061218810,
-          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39061218810",
+          "run_id": 39063755939,
+          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755939",
           "conclusion": "success",
-          "head_sha": "9f348bdb9f550a44490b2afb14320173f0911877",
+          "head_sha": "9d4361a16ae1a5570eee49d6baf499f61e222a20",
           "scope": "reference_e2e",
           "production_claim": false
         }
@@ -117,10 +117,10 @@
       "evidence": [
         {
           "workflow": "TSIC-07 FDE Mastery Engagement E2E",
-          "run_id": 39061218867,
-          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39061218867",
+          "run_id": 39063755989,
+          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755989",
           "conclusion": "success",
-          "head_sha": "9f348bdb9f550a44490b2afb14320173f0911877",
+          "head_sha": "9d4361a16ae1a5570eee49d6baf499f61e222a20",
           "scope": "reference_e2e",
           "production_claim": false
         }
@@ -132,10 +132,10 @@
       "evidence": [
         {
           "workflow": "TSIC-08 Delivery Evidence E2E",
-          "run_id": 39061218827,
-          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39061218827",
+          "run_id": 39063756014,
+          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063756014",
           "conclusion": "success",
-          "head_sha": "9f348bdb9f550a44490b2afb14320173f0911877",
+          "head_sha": "9d4361a16ae1a5570eee49d6baf499f61e222a20",
           "scope": "reference_e2e",
           "production_claim": false
         }
@@ -147,10 +147,10 @@
       "evidence": [
         {
           "workflow": "TSIC-09 ThreatFade Detection-to-Delivery E2E",
-          "run_id": 39061218754,
-          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39061218754",
+          "run_id": 39063755869,
+          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755869",
           "conclusion": "success",
-          "head_sha": "9f348bdb9f550a44490b2afb14320173f0911877",
+          "head_sha": "9d4361a16ae1a5570eee49d6baf499f61e222a20",
           "scope": "reference_e2e",
           "production_claim": false
         }
@@ -162,10 +162,10 @@
       "evidence": [
         {
           "workflow": "TSIC-10 ThreatFade Web Engine Integration E2E",
-          "run_id": 39061218897,
-          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39061218897",
+          "run_id": 39063755831,
+          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755831",
           "conclusion": "success",
-          "head_sha": "9f348bdb9f550a44490b2afb14320173f0911877",
+          "head_sha": "9d4361a16ae1a5570eee49d6baf499f61e222a20",
           "scope": "reference_e2e",
           "production_claim": false
         }
@@ -177,10 +177,10 @@
       "evidence": [
         {
           "workflow": "TSIC-11 BugFlow Integration E2E",
-          "run_id": 39061218729,
-          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39061218729",
+          "run_id": 39063755923,
+          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755923",
           "conclusion": "success",
-          "head_sha": "9f348bdb9f550a44490b2afb14320173f0911877",
+          "head_sha": "9d4361a16ae1a5570eee49d6baf499f61e222a20",
           "scope": "reference_e2e",
           "production_claim": false
         }
@@ -192,10 +192,10 @@
       "evidence": [
         {
           "workflow": "TSIC-12 Hezqara Governed Healthcare Integration E2E",
-          "run_id": 39061218825,
-          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39061218825",
+          "run_id": 39063755885,
+          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755885",
           "conclusion": "success",
-          "head_sha": "9f348bdb9f550a44490b2afb14320173f0911877",
+          "head_sha": "9d4361a16ae1a5570eee49d6baf499f61e222a20",
           "scope": "reference_e2e",
           "production_claim": false
         }
@@ -207,10 +207,10 @@
       "evidence": [
         {
           "workflow": "TSIC-13 Economic Attribution Certification",
-          "run_id": 39061218809,
-          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39061218809",
+          "run_id": 39063755928,
+          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755928",
           "conclusion": "success",
-          "head_sha": "9f348bdb9f550a44490b2afb14320173f0911877",
+          "head_sha": "9d4361a16ae1a5570eee49d6baf499f61e222a20",
           "scope": "certification",
           "production_claim": false
         }
@@ -222,10 +222,10 @@
       "evidence": [
         {
           "workflow": "TSIC-14 Closed-Loop Intelligence E2E",
-          "run_id": 39061218846,
-          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39061218846",
+          "run_id": 39063755887,
+          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755887",
           "conclusion": "success",
-          "head_sha": "9f348bdb9f550a44490b2afb14320173f0911877",
+          "head_sha": "9d4361a16ae1a5570eee49d6baf499f61e222a20",
           "scope": "reference_e2e",
           "production_claim": false
         }
@@ -237,10 +237,10 @@
       "evidence": [
         {
           "workflow": "TSIC-15 Observability E2E",
-          "run_id": 39061218922,
-          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39061218922",
+          "run_id": 39063755916,
+          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755916",
           "conclusion": "success",
-          "head_sha": "9f348bdb9f550a44490b2afb14320173f0911877",
+          "head_sha": "9d4361a16ae1a5570eee49d6baf499f61e222a20",
           "scope": "reference_e2e",
           "production_claim": false
         }
@@ -252,10 +252,10 @@
       "evidence": [
         {
           "workflow": "TSIC-16 MCP A2A Interoperability E2E",
-          "run_id": 39061218856,
-          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39061218856",
+          "run_id": 39063755853,
+          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755853",
           "conclusion": "success",
-          "head_sha": "9f348bdb9f550a44490b2afb14320173f0911877",
+          "head_sha": "9d4361a16ae1a5570eee49d6baf499f61e222a20",
           "scope": "reference_e2e",
           "production_claim": false
         }
@@ -267,10 +267,10 @@
       "evidence": [
         {
           "workflow": "TSIC-17 Production System-of-Systems E2E",
-          "run_id": 39061218741,
-          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39061218741",
+          "run_id": 39063755940,
+          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755940",
           "conclusion": "success",
-          "head_sha": "9f348bdb9f550a44490b2afb14320173f0911877",
+          "head_sha": "9d4361a16ae1a5570eee49d6baf499f61e222a20",
           "scope": "reference_e2e",
           "production_claim": false
         }
@@ -282,10 +282,10 @@
       "evidence": [
         {
           "workflow": "TSIC-18 Commercial AaaS Certification",
-          "run_id": 39061218904,
-          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39061218904",
+          "run_id": 39063756301,
+          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063756301",
           "conclusion": "success",
-          "head_sha": "9f348bdb9f550a44490b2afb14320173f0911877",
+          "head_sha": "9d4361a16ae1a5570eee49d6baf499f61e222a20",
           "scope": "certification",
           "production_claim": false
         }
@@ -297,10 +297,10 @@
       "evidence": [
         {
           "workflow": "TSIC-19 Autonomous Revenue Operating Loop E2E",
-          "run_id": 39061218779,
-          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39061218779",
+          "run_id": 39063755838,
+          "url": "https://github.com/LloydCoder/tinlance-system-integration/actions/runs/39063755838",
           "conclusion": "success",
-          "head_sha": "9f348bdb9f550a44490b2afb14320173f0911877",
+          "head_sha": "9d4361a16ae1a5570eee49d6baf499f61e222a20",
           "scope": "reference_e2e",
           "production_claim": false
         }
