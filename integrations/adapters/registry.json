@@ -91,6 +91,18 @@
       "from": "tsic",
       "to": "aurontra",
       "transport": "reference-contract"
+    },
+    {
+      "id": "agent-platform-to-web-intelligence",
+      "from": "agent-platform",
+      "to": "web-intelligence",
+      "transport": "governed-api"
+    },
+    {
+      "id": "web-intelligence-to-world-intelligence-source-evidence",
+      "from": "web-intelligence",
+      "to": "world-intelligence",
+      "transport": "contracted-api"
     }
   ]
 }
