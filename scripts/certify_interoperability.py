@@ -39,6 +39,8 @@ def main() -> None:
         "idempotency_and_replay_protection_required", "audit_required",
         "protocol_metadata_is_untrusted", "protocol_support_never_grants_execution_authority",
         "tool_arguments_are_untrusted", "remote_response_size_and_timeout_limits_required",
+        "agent_card_signature_verification_required", "remote_credentials_must_be_scoped",
+        "tenant_scoped_idempotency_required", "mcp_body_header_version_match_required",
     }
     assert required_rules <= set(rules)
     assert all(rules[key] is True for key in required_rules)
