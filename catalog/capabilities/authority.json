@@ -253,6 +253,22 @@
     {
       "capability": "it_resilience_product",
       "owner": "aurontra"
+    },
+    {
+      "capability": "web_search_and_fetch",
+      "owner": "web-intelligence"
+    },
+    {
+      "capability": "browser_capture",
+      "owner": "web-intelligence"
+    },
+    {
+      "capability": "source_evidence_acquisition",
+      "owner": "web-intelligence"
+    },
+    {
+      "capability": "source_change_monitoring",
+      "owner": "web-intelligence"
     }
   ]
 }
