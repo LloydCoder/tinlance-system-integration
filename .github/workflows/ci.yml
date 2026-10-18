@@ -1,7 +1,7 @@
 name: TSIC CI
 on:
   push:
-    branches: [main, "phase-0/**", "integration/**"]
+    branches: [main, "phase-0/**", "phase/p3-/**", "integration/**"]
   pull_request:
     branches: [main]
 permissions:
@@ -19,6 +19,10 @@ jobs:
         run: python3 scripts/certify_phase0.py
       - name: Validate TSIC conformance
         run: python3 tooling/validate_phase0.py
+      - name: P3 CloudEvents contract validation
+        run: |
+          python3 -m pip install --user jsonschema==4.25.1
+          python3 scripts/validate_event_contract.py
       - name: Reference E2E workflow
         run: python3 tooling/run_reference_workflow.py
       - name: Recovery certification
