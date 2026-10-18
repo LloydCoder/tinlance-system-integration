@@ -11,7 +11,7 @@ The integration envelope follows the CloudEvents 1.0 JSON event format. CloudEve
 - `time`: RFC 3339 timestamp.
 - `datacontenttype`: `application/json`.
 - `tenantid`: immutable tenant scope from authenticated Platform context, never trusted from event payload.
-- `executionid`: execution/run reference for consequential execution events.
+- `executionid`: optional execution/run reference when the event concerns a governed execution.
 - `traceid`: valid 32-character lowercase W3C trace identifier.
 - `correlationid`: workflow/request correlation identifier.
 - `data`: domain payload; always untrusted input to consumers.
