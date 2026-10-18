@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "contract_id": "provider-adapter-boundary",
+  "authority": "agent-platform",
+  "scope": "canonical-ecosystem-p7",
+  "endpoint_source": "trusted-operator-configuration",
+  "transport": {
+    "remote_scheme": "https-only",
+    "loopback_http": "explicit-test-only",
+    "redirects": "reject",
+    "endpoint_credentials": "forbidden",
+    "timeout": "finite-positive",
+    "request_bytes_max": 1048576,
+    "response_bytes_max": 4194304,
+    "content_type": "application/json"
+  },
+  "trace_context": {
+    "header": "traceparent",
+    "standard": "W3C Trace Context",
+    "validate_before_forwarding": true,
+    "bare_trace_id_substitute": false
+  },
+  "credentials": {
+    "injection": "credential-provider-interface",
+    "persist": "forbidden",
+    "log_or_echo": "forbidden"
+  },
+  "retry": {
+    "default": "disabled",
+    "retryability": "classified-for-governed-caller",
+    "ambiguous_billed_or_consequential_operation": "no-automatic-retry-without-proven-idempotency"
+  },
+  "privacy": {
+    "forward_tenant_id_to_external_provider": false,
+    "forward_agent_id_to_external_provider": false,
+    "provider_response_body_in_exception": false,
+    "credential_in_exception_or_log": false
+  },
+  "authority_invariants": {
+    "adapter_grants_authority": false,
+    "platform_owns_identity_authorization_policy_approval_budget_and_execution": true
+  },
+  "prohibited_behaviors": [
+    "untrusted-input-selects-provider-endpoint",
+    "redirect-following",
+    "unbounded-request-or-response",
+    "automatic-retry-of-ambiguous-billed-operation",
+    "raw-provider-response-or-secret-in-error",
+    "tenant-or-agent-authority-spoofing"
+  ]
+}

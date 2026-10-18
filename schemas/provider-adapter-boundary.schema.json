@@ -1,0 +1,195 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tinlance.com/schemas/provider-adapter-boundary.schema.json",
+  "title": "Tinlance provider adapter boundary contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "contract_id",
+    "authority",
+    "scope",
+    "endpoint_source",
+    "transport",
+    "trace_context",
+    "credentials",
+    "retry",
+    "privacy",
+    "authority_invariants",
+    "prohibited_behaviors"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "contract_id": {
+      "const": "provider-adapter-boundary"
+    },
+    "authority": {
+      "const": "agent-platform"
+    },
+    "scope": {
+      "const": "canonical-ecosystem-p7"
+    },
+    "endpoint_source": {
+      "const": "trusted-operator-configuration"
+    },
+    "transport": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "remote_scheme",
+        "loopback_http",
+        "redirects",
+        "endpoint_credentials",
+        "timeout",
+        "request_bytes_max",
+        "response_bytes_max",
+        "content_type"
+      ],
+      "properties": {
+        "remote_scheme": {
+          "const": "https-only"
+        },
+        "loopback_http": {
+          "const": "explicit-test-only"
+        },
+        "redirects": {
+          "const": "reject"
+        },
+        "endpoint_credentials": {
+          "const": "forbidden"
+        },
+        "timeout": {
+          "const": "finite-positive"
+        },
+        "request_bytes_max": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1048576
+        },
+        "response_bytes_max": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4194304
+        },
+        "content_type": {
+          "const": "application/json"
+        }
+      }
+    },
+    "trace_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "header",
+        "standard",
+        "validate_before_forwarding",
+        "bare_trace_id_substitute"
+      ],
+      "properties": {
+        "header": {
+          "const": "traceparent"
+        },
+        "standard": {
+          "const": "W3C Trace Context"
+        },
+        "validate_before_forwarding": {
+          "const": true
+        },
+        "bare_trace_id_substitute": {
+          "const": false
+        }
+      }
+    },
+    "credentials": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "injection",
+        "persist",
+        "log_or_echo"
+      ],
+      "properties": {
+        "injection": {
+          "const": "credential-provider-interface"
+        },
+        "persist": {
+          "const": "forbidden"
+        },
+        "log_or_echo": {
+          "const": "forbidden"
+        }
+      }
+    },
+    "retry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "default",
+        "retryability",
+        "ambiguous_billed_or_consequential_operation"
+      ],
+      "properties": {
+        "default": {
+          "const": "disabled"
+        },
+        "retryability": {
+          "const": "classified-for-governed-caller"
+        },
+        "ambiguous_billed_or_consequential_operation": {
+          "const": "no-automatic-retry-without-proven-idempotency"
+        }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "forward_tenant_id_to_external_provider",
+        "forward_agent_id_to_external_provider",
+        "provider_response_body_in_exception",
+        "credential_in_exception_or_log"
+      ],
+      "properties": {
+        "forward_tenant_id_to_external_provider": {
+          "const": false
+        },
+        "forward_agent_id_to_external_provider": {
+          "const": false
+        },
+        "provider_response_body_in_exception": {
+          "const": false
+        },
+        "credential_in_exception_or_log": {
+          "const": false
+        }
+      }
+    },
+    "authority_invariants": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "adapter_grants_authority",
+        "platform_owns_identity_authorization_policy_approval_budget_and_execution"
+      ],
+      "properties": {
+        "adapter_grants_authority": {
+          "const": false
+        },
+        "platform_owns_identity_authorization_policy_approval_budget_and_execution": {
+          "const": true
+        }
+      }
+    },
+    "prohibited_behaviors": {
+      "type": "array",
+      "minItems": 6,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

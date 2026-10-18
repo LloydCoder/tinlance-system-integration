@@ -1,1 +1,19 @@
-{"schema_version":"1.0.0","rules":["adapter_must_not_own_authorization","adapter_must_propagate_identity","adapter_must_emit_trace_context","adapter_must_be_idempotent_for_retriable_operations","adapter_must_validate_contract_version","adapter_must_not_store_secrets","adapter_must_emit_audit_evidence_reference"]}
+{
+  "schema_version": "1.0.0",
+  "rules": [
+    "adapter_must_not_own_authorization",
+    "adapter_must_propagate_identity",
+    "adapter_must_emit_trace_context",
+    "adapter_must_be_idempotent_for_retriable_operations",
+    "adapter_must_validate_contract_version",
+    "adapter_must_not_store_secrets",
+    "adapter_must_emit_audit_evidence_reference",
+    "adapter_endpoint_must_come_from_trusted_configuration",
+    "adapter_must_reject_redirects",
+    "adapter_must_bound_payloads_and_timeouts",
+    "adapter_must_propagate_valid_w3c_traceparent",
+    "adapter_must_not_persist_or_log_secrets",
+    "adapter_must_not_forward_tenant_or_agent_ids_to_external_model_providers_by_default",
+    "adapter_must_not_automatically_retry_ambiguous_billed_operations"
+  ]
+}
