@@ -1,0 +1,15 @@
+{
+  "id": "TSIC-TWI-001",
+  "system": "tinlance-web-intelligence",
+  "contract_version": "1.0.0",
+  "status": "required",
+  "requirements": [
+    {"id":"TSIC-TWI-001","category":"authority","statement":"TWI owns web acquisition only; Platform remains the sole identity, authorization, policy, approval, execution, evidence and audit authority.","mandatory":true},
+    {"id":"TSIC-TWI-002","category":"identity","statement":"TWI accepts Platform-issued audience-bound credentials and never trusts caller-supplied tenant or subject identifiers.","mandatory":true},
+    {"id":"TSIC-TWI-003","category":"provenance","statement":"Acquisition results preserve source URL, retrieval timestamp, content digest and source-backed quote verification.","mandatory":true},
+    {"id":"TSIC-TWI-004","category":"delivery","statement":"Job submission and World Intelligence evidence export are idempotent; retries require stable keys and conflicting replays fail closed.","mandatory":true},
+    {"id":"TSIC-TWI-005","category":"isolation","statement":"Browser execution is isolated and cannot bypass the authenticated egress proxy.","mandatory":true},
+    {"id":"TSIC-TWI-006","category":"integration","statement":"World Intelligence receives source evidence through its contracted intake; TWI does not duplicate canonical entity resolution or temporal world state.","mandatory":true},
+    {"id":"TSIC-TWI-007","category":"telemetry","statement":"Request and W3C trace context are propagated across API, worker, and integration boundaries.","mandatory":true}
+  ]
+}

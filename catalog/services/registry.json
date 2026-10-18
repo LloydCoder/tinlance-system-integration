@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.1.0",
+  "schema_version": "1.2.0",
   "authority": "tsic",
   "services": [
     {
@@ -196,6 +196,13 @@
     {
       "id": "aurontra",
       "system": "aurontra",
+      "protocols": [
+        "https"
+      ]
+    },
+    {
+      "id": "tinlance-web-intelligence",
+      "system": "tinlance-web-intelligence",
       "protocols": [
         "https"
       ]

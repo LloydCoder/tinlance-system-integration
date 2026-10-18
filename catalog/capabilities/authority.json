@@ -1,6 +1,6 @@
 {
   "$schema": "../../schemas/authority.schema.json",
-  "schema_version": "2.0.0",
+  "schema_version": "2.1.0",
   "capabilities": [
     {
       "capability": "ecosystem_integration_contracts",
@@ -253,6 +253,18 @@
     {
       "capability": "it_resilience_product",
       "owner": "aurontra"
+    },
+    {
+      "capability": "web_acquisition",
+      "owner": "tinlance-web-intelligence"
+    },
+    {
+      "capability": "source_capture_and_extraction",
+      "owner": "tinlance-web-intelligence"
+    },
+    {
+      "capability": "acquisition_provenance",
+      "owner": "tinlance-web-intelligence"
     }
   ]
 }

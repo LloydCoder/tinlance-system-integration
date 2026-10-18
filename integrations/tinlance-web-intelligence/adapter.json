@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0.0",
+  "adapter_id": "tsic-tinlance-web-intelligence-reference",
+  "source_system": "tsic",
+  "target_system": "tinlance-web-intelligence",
+  "status": "reference-contract",
+  "authority": {
+    "integration_contracts": "tsic",
+    "web_discovery_and_acquisition": "tinlance-web-intelligence",
+    "identity_authorization_policy_approval_execution_audit": "agent-platform",
+    "workspace_task_lifecycle": "agent-os",
+    "typed_client_contracts": "agent-platform-sdk",
+    "world_state_semantics_and_canonical_entities": "world-intelligence"
+  },
+  "contract_bindings": [
+    {
+      "tsic_contract": "identity-context",
+      "twi_surface": "Platform-issued audience-bound token and immutable tenant/subject context",
+      "direction": "inbound"
+    },
+    {
+      "tsic_contract": "trace-context",
+      "twi_surface": "request ID and W3C traceparent propagation across API, workers and evidence export",
+      "direction": "both"
+    },
+    {
+      "tsic_contract": "delivery-semantics",
+      "twi_surface": "idempotent job submission, leased worker execution, idempotent source-evidence outbox",
+      "direction": "both"
+    },
+    {
+      "tsic_contract": "source-evidence-v1",
+      "twi_surface": "POST /v1/integrations/world-intelligence/exports and authenticated World Intelligence intake",
+      "direction": "outbound"
+    },
+    {
+      "tsic_contract": "platform-mcp-authority",
+      "twi_surface": "Platform-owned MCP gateway and registered twi_* tools",
+      "direction": "inbound"
+    }
+  ],
+  "interfaces": {
+    "platform_gateway": "Platform MCP tools twi_search, twi_fetch, twi_browser_navigate, twi_job_read, twi_job_cancel, twi_research_verify, twi_world_intelligence_export, twi_world_intelligence_export_status",
+    "twi_api": "/v1/jobs, /v1/research/verify, /v1/integrations/world-intelligence/exports",
+    "world_intelligence_intake": "POST /v1/source-evidence",
+    "transport": "HTTPS with audience-bound service credentials; redirects disabled for service-to-service calls"
+  },
+  "invariants": [
+    "tinlance-web-intelligence_owns_web_acquisition_only",
+    "agent-platform_is_the_sole_identity_authorization_policy_approval_execution_and_audit_authority",
+    "agent-platform_mcp_gateway_is_the_canonical_mcp_endpoint",
+    "world-intelligence_owns_canonical_entities_events_relationships_and_temporal_world_state",
+    "web_content_is_untrusted_data_not_authority",
+    "source_claims_require_retrieval_provenance_and_exact_quote_verification",
+    "source_evidence_export_is_idempotent_and_approval_gated_by_platform",
+    "tenant_and_subject_scope_is_preserved_across_reads_and_exports",
+    "trace_context_and_request_correlation_are_preserved",
+    "tsic_remains_the_cross_repository_contract_and_conformance_authority"
+  ]
+}
