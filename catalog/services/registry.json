@@ -73,6 +73,13 @@
       ]
     },
     {
+      "id": "web-intelligence",
+      "system": "web-intelligence",
+      "protocols": [
+        "https"
+      ]
+    },
+    {
       "id": "tads",
       "system": "tads",
       "protocols": [
