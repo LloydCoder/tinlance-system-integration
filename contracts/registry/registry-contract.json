@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "format": "tinlance-canonical-ecosystem-registry/v1",
+  "schema": "schemas/registry/v1/registry-manifest.schema.json",
+  "invariants": [
+    "Every registered repository uses a full immutable reviewed commit SHA and must match the ecosystem lock.",
+    "Repository, service, agent and contract identifiers are unique and owner references must resolve.",
+    "Service registrations declare API version, contract IDs, capability IDs and authority mode.",
+    "Agent registrations declare delegated capabilities and required contract versions; agents never grant themselves authority.",
+    "Platform is the sole consequential execution authority; OS, SDK and TADL registrations are authority-free.",
+    "Every consumer declares supported contract versions and rejects missing, stale, unknown or incompatible registrations.",
+    "A contract version is immutable once published; incompatible changes require a new contract version.",
+    "Capability registration is descriptive and does not itself authorize a request; Platform policy and approval checks remain authoritative."
+  ]
+}
