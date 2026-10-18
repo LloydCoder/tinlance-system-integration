@@ -1,1 +1,32 @@
-{"schema_version":"1.0.0","delivery":{"outbox_required_for_durable_publish":true,"inbox_required_for_idempotent_consume":true,"deduplication_key":"event.id","retry":{"exponential_backoff":true,"bounded":true},"dead_letter":true,"replay":true},"ordering":{"default":"not_guaranteed","explicit_ordering_key_required":true}}
+{
+  "schema_version": "1.1.0",
+  "delivery": {
+    "outbox_required_for_durable_publish": true,
+    "inbox_required_for_idempotent_consume": true,
+    "deduplication_key": ["source", "id"],
+    "delivery_guarantee": "at-least-once",
+    "retry": {
+      "exponential_backoff": true,
+      "bounded": true,
+      "jitter": true
+    },
+    "dead_letter": true,
+    "replay": true,
+    "acknowledgement": "only after consumer transaction commits",
+    "lease": {
+      "owner_bound": true,
+      "expires": true,
+      "stale_ack_rejected": true
+    }
+  },
+  "ordering": {
+    "default": "not_guaranteed",
+    "explicit_ordering_key_required": true,
+    "ordering_scope": "per aggregate when configured"
+  },
+  "failure_semantics": {
+    "process_crash_after_publish_before_ack": "duplicate delivery is expected and must be deduplicated",
+    "database_commit_failure": "event and outbox row must not be partially committed",
+    "poison_event": "bounded retries then dead-letter; replay is explicit and audited"
+  }
+}
