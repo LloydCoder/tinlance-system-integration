@@ -278,6 +278,20 @@
       "authority": [
         "it_resilience_product"
       ]
+    },
+    {
+      "id": "tinlance-web-intelligence",
+      "name": "Tinlance Web Intelligence",
+      "repository": "LloydCoder/tinlance-web-intelligence",
+      "governance_role": "web_intelligence_acquisition_authority",
+      "authority": [
+        "web_search",
+        "safe_web_retrieval",
+        "isolated_browser_acquisition",
+        "content_extraction",
+        "collection_provenance",
+        "source_backed_observations"
+      ]
     }
   ]
 }

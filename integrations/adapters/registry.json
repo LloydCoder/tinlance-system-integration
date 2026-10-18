@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.5.0",
+  "schema_version": "1.6.0",
   "authority": "tsic",
   "adapters": [
     {
@@ -91,6 +91,18 @@
       "from": "tsic",
       "to": "aurontra",
       "transport": "reference-contract"
+    },
+    {
+      "id": "agent-platform-to-twi",
+      "from": "agent-platform",
+      "to": "tinlance-web-intelligence",
+      "transport": "governed-api"
+    },
+    {
+      "id": "twi-to-world-intelligence",
+      "from": "tinlance-web-intelligence",
+      "to": "world-intelligence",
+      "transport": "authenticated-idempotent-api"
     }
   ]
 }

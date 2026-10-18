@@ -19,6 +19,8 @@ jobs:
         run: python3 scripts/certify_phase0.py
       - name: Validate TSIC conformance
         run: python3 tooling/validate_phase0.py
+      - name: TWI cross-repository contract validation
+        run: python3 scripts/validate_twi_integration.py
       - name: P3 CloudEvents contract validation
         run: |
           python3 -m venv /tmp/tsic-p3-venv
