@@ -26,6 +26,10 @@
     "agent_card_signatures_are_verified",
     "remote_credentials_are_scoped",
     "idempotency_keys_are_tenant_scoped",
-    "protocol_header_body_mismatch_fails_closed"
+    "protocol_header_body_mismatch_fails_closed",
+    "remote_endpoint_resolution_rejects_non_public_addresses",
+    "outbound_transport_pins_validated_addresses_without_dns_re_resolution",
+    "outbound_transport_verifies_tls_hostname",
+    "outbound_transport_never_follows_redirects"
   ]
 }
