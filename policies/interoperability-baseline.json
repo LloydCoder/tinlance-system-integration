@@ -22,6 +22,10 @@
     "tool_calls_are_authorized_by_agent_platform",
     "remote_delegation_has_scope_and_expiry",
     "replay_and_duplicate_requests_are_idempotent",
-    "protocol_metadata_is_untrusted_input"
+    "protocol_metadata_is_untrusted_input",
+    "agent_card_signatures_are_verified",
+    "remote_credentials_are_scoped",
+    "idempotency_keys_are_tenant_scoped",
+    "protocol_header_body_mismatch_fails_closed"
   ]
 }

@@ -13,7 +13,9 @@
       "specification": "1.0.1",
       "version_negotiation_required": true,
       "authorization_authority": "agent-platform",
-      "transport_security": "TLS for production remote transports"
+      "transport_security": "TLS for production remote transports",
+      "wire_protocol_version": "1.0",
+      "http_content_type": "application/a2a+json"
     }
   },
   "boundaries": {
@@ -35,6 +37,10 @@
     "protocol_metadata_is_untrusted": true,
     "protocol_support_never_grants_execution_authority": true,
     "tool_arguments_are_untrusted": true,
-    "remote_response_size_and_timeout_limits_required": true
+    "remote_response_size_and_timeout_limits_required": true,
+    "agent_card_signature_verification_required": true,
+    "remote_credentials_must_be_scoped": true,
+    "tenant_scoped_idempotency_required": true,
+    "mcp_body_header_version_match_required": true
   }
 }
