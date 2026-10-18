@@ -10,7 +10,7 @@
     },
     "a2a": {
       "allowed": true,
-      "specification": "1.0.0",
+      "specification": "1.0.1",
       "version_negotiation_required": true,
       "authorization_authority": "agent-platform",
       "transport_security": "TLS for production remote transports"
