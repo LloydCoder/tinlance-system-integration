@@ -1,6 +1,6 @@
 {
   "$schema": "../../schemas/dependency-graph.schema.json",
-  "schema_version": "2.0.0",
+  "schema_version": "2.1.0",
   "authority": "tsic",
   "nodes": [
     {
@@ -132,6 +132,11 @@
       "system": "aurontra",
       "contract_version": "1.0.0",
       "ci_gate": "TSIC-17"
+    },
+    {
+      "system": "tinlance-web-intelligence",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-19"
     }
   ],
   "edges": [
@@ -294,6 +299,16 @@
       "from": "aurontra",
       "to": "agent-platform",
       "reason": "governed_consequential_actions"
+    },
+    {
+      "from": "agent-platform",
+      "to": "tinlance-web-intelligence",
+      "reason": "governed_web_acquisition"
+    },
+    {
+      "from": "tinlance-web-intelligence",
+      "to": "world-intelligence",
+      "reason": "source_evidence_handoff"
     }
   ]
 }
