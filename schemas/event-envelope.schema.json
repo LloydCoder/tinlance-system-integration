@@ -6,7 +6,7 @@
   "type": "object",
   "required": [
     "specversion", "id", "source", "type", "time", "datacontenttype",
-    "tenantid", "executionid", "traceid", "correlationid", "data"
+    "tenantid", "traceid", "correlationid", "data"
   ],
   "properties": {
     "specversion": { "const": "1.0" },
