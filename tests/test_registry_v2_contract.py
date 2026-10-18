@@ -6,7 +6,7 @@ from jsonschema import Draft202012Validator, FormatChecker
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA = json.loads((ROOT / "schemas/registry/v2/registry-manifest.schema.json").read_text())
-CONTRACT = json.loads((ROOT / "contracts/registry/registry-contract.json").read_text())
+CONTRACT = json.loads((ROOT / "contracts/registry/registry-contract-v2.json").read_text())
 VALIDATOR = Draft202012Validator(SCHEMA, format_checker=FormatChecker())
 
 
