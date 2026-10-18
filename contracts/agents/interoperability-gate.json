@@ -41,6 +41,10 @@
     "agent_card_signature_verification_required": true,
     "remote_credentials_must_be_scoped": true,
     "tenant_scoped_idempotency_required": true,
-    "mcp_body_header_version_match_required": true
+    "mcp_body_header_version_match_required": true,
+    "remote_endpoint_resolution_rejects_non_public_addresses": true,
+    "remote_transport_pins_validated_addresses_without_dns_re_resolution": true,
+    "remote_transport_verifies_tls_hostname": true,
+    "remote_transport_never_follows_redirects": true
   }
 }

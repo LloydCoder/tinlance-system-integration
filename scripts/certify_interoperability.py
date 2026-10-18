@@ -41,6 +41,9 @@ def main() -> None:
         "tool_arguments_are_untrusted", "remote_response_size_and_timeout_limits_required",
         "agent_card_signature_verification_required", "remote_credentials_must_be_scoped",
         "tenant_scoped_idempotency_required", "mcp_body_header_version_match_required",
+        "remote_endpoint_resolution_rejects_non_public_addresses",
+        "remote_transport_pins_validated_addresses_without_dns_re_resolution",
+        "remote_transport_verifies_tls_hostname", "remote_transport_never_follows_redirects",
     }
     assert required_rules <= set(rules)
     assert all(rules[key] is True for key in required_rules)
@@ -54,6 +57,10 @@ def main() -> None:
     assert "remote_credentials_are_scoped" in baseline["invariants"]
     assert "idempotency_keys_are_tenant_scoped" in baseline["invariants"]
     assert "protocol_header_body_mismatch_fails_closed" in baseline["invariants"]
+    assert "remote_endpoint_resolution_rejects_non_public_addresses" in baseline["invariants"]
+    assert "outbound_transport_pins_validated_addresses_without_dns_re_resolution" in baseline["invariants"]
+    assert "outbound_transport_verifies_tls_hostname" in baseline["invariants"]
+    assert "outbound_transport_never_follows_redirects" in baseline["invariants"]
 
     # Negative cases: protocol support or metadata must never create execution authority.
     assert gate["protocols"]["mcp"]["authorization_authority"] != "mcp"
