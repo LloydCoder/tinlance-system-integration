@@ -27,6 +27,8 @@ def main() -> None:
     assert gate["protocols"]["a2a"]["specification"] == baseline["a2a_specification"]
     assert gate["protocols"]["mcp"]["authorization_authority"] == "agent-platform"
     assert gate["protocols"]["a2a"]["authorization_authority"] == "agent-platform"
+    assert gate["protocols"]["a2a"]["wire_protocol_version"] == "1.0"
+    assert gate["protocols"]["a2a"]["http_content_type"] == "application/a2a+json"
     assert gate["boundaries"]["tsic"] == "ecosystem integration/certification"
     assert gate["boundaries"]["agent_platform"].startswith("identity, authorization")
     rules = gate["rules"]
@@ -46,6 +48,10 @@ def main() -> None:
     assert "tool_calls_are_authorized_by_agent_platform" in baseline["invariants"]
     assert "remote_delegation_has_scope_and_expiry" in baseline["invariants"]
     assert "protocol_metadata_is_untrusted_input" in baseline["invariants"]
+    assert "agent_card_signatures_are_verified" in baseline["invariants"]
+    assert "remote_credentials_are_scoped" in baseline["invariants"]
+    assert "idempotency_keys_are_tenant_scoped" in baseline["invariants"]
+    assert "protocol_header_body_mismatch_fails_closed" in baseline["invariants"]
 
     # Negative cases: protocol support or metadata must never create execution authority.
     assert gate["protocols"]["mcp"]["authorization_authority"] != "mcp"
