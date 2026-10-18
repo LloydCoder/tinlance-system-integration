@@ -1,0 +1,21 @@
+{
+  "specversion": "1.0",
+  "id": "event-8f8b9b8f-ff1d-4c9a-a63c-81d91e3db901",
+  "source": "https://tinlance.com/platform/runs",
+  "type": "com.tinlance.execution.completed.v1",
+  "subject": "run-00000000-0000-0000-0000-000000000001",
+  "time": "2026-10-18T04:00:00Z",
+  "datacontenttype": "application/json",
+  "tenantid": "tenant-fixture-a",
+  "workspaceid": "workspace-fixture-a",
+  "executionid": "run-00000000-0000-0000-0000-000000000001",
+  "traceid": "4bf92f3577b34da6a3ce929d0e0e4736",
+  "spanid": "00f067aa0ba902b7",
+  "correlationid": "workflow-fixture-001",
+  "causationid": "event-parent-001",
+  "dataclassification": "internal",
+  "data": {
+    "state": "succeeded",
+    "result_ref": "evidence://fixture/result-001"
+  }
+}

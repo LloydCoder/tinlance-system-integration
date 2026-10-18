@@ -1,1 +1,16 @@
-{"schema_version":"1.0.0","format":"cloudevents-compatible","required":["id","source","specversion","type","time","subject","data","data_content_type"],"extensions":["tenant_id","organization_id","workspace_id","actor_id","agent_id","execution_id","trace_id","correlation_id","causation_id","schema_uri","data_classification"],"rules":{"event_id_unique":true,"schema_versioned":true,"tenant_context_immutable":true}}
+{
+  "schema_version": "1.1.0",
+  "format": "cloudevents-1.0-json",
+  "schema": "schemas/event-envelope.schema.json",
+  "required": ["specversion", "id", "source", "type", "time", "datacontenttype", "tenantid", "traceid", "correlationid", "data"],
+  "extensions": ["tenantid", "organizationid", "workspaceid", "actorid", "agentid", "executionid", "traceid", "spanid", "correlationid", "causationid", "dataclassification"],
+  "rules": {
+    "event_identity": "source + id is unique for each distinct event",
+    "duplicate_delivery": "consumers deduplicate by source + id",
+    "schema_versioned": true,
+    "tenant_context_immutable": true,
+    "data_is_untrusted": true,
+    "event_payload_never_grants_authority": true,
+    "transport_delivery": "at-least-once; consumers must be idempotent"
+  }
+}
