@@ -1,0 +1,19 @@
+{
+  "schema_version": "2.0.0",
+  "format": "tinlance-canonical-ecosystem-registry/v2",
+  "schema": "schemas/registry/v2/registry-manifest.schema.json",
+  "invariants": [
+    "Every registered repository uses a full immutable reviewed commit SHA and must match the ecosystem lock.",
+    "Repository, service, agent and contract identifiers are unique and owner references must resolve.",
+    "Service registrations declare API version, contract IDs, capability IDs and authority mode.",
+    "Agent registrations declare delegated capabilities and required contract versions; agents never grant themselves authority.",
+    "Platform is the sole consequential execution authority; OS, SDK and TADL registrations are authority-free.",
+    "Every consumer declares supported contract versions and rejects missing, stale, unknown or incompatible registrations.",
+    "A contract version is immutable once published; incompatible changes require a new contract version.",
+    "Capability registration is descriptive and does not itself authorize a request; Platform policy and approval checks remain authoritative.",
+    "Every repository record identifies its publisher and records identity-verification state without treating identity metadata as execution authority.",
+    "Every repository, service, agent and contract has an explicit active, quarantined, revoked or deprecated lifecycle state; quarantine and revocation fail closed, and deprecation must identify a replacement.",
+    "Repository supply-chain metadata carries immutable reviewed SHA plus provenance, SBOM and signature/attestation references; verification status is explicit and pending references are not represented as verified.",
+    "Only an independently verified attestation can change supply-chain verification status to verified; registry metadata alone never establishes cryptographic trust."
+  ]
+}
