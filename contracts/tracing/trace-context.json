@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "format": "tinlance-trace-context/v1",
+  "schema": "schemas/trace-context/v1/trace-context.schema.json",
+  "standards": [
+    "W3C Trace Context",
+    "OpenTelemetry trace/span semantics",
+    "JSON Schema Draft 2020-12"
+  ],
+  "invariants": [
+    "trace_id is a non-zero 16-byte lowercase hexadecimal identifier",
+    "span_id and parent_span_id are non-zero 8-byte lowercase hexadecimal identifiers",
+    "correlation_id, request_id and tenant_id are required and immutable across a governed execution",
+    "child spans preserve trace_id and refer to a valid parent span when one exists",
+    "evidence references carry immutable SHA-256 digests and never imply evidence validity by presence alone",
+    "context carries identifiers and bounded safe attributes only; secrets, credentials, prompts and raw sensitive payloads are forbidden",
+    "trace context is observability metadata and never grants identity, tenant, policy, approval or execution authority",
+    "trace records must connect request, policy decision, approval, execution, tool call, event and evidence lineage"
+  ],
+  "sensitive_attribute_names": [
+    "authorization",
+    "cookie",
+    "password",
+    "secret",
+    "token",
+    "api_key",
+    "private_key",
+    "credential",
+    "prompt",
+    "raw_payload"
+  ]
+}
