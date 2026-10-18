@@ -1,0 +1,46 @@
+{
+  "contract": "ecosystem-p10-recovery-certification/v1",
+  "canonical_ecosystem_phase": "P10",
+  "scope": "end-to-end recovery and production certification",
+  "authority_plane": "LloydCoder/tinlance-agent-platform",
+  "conformance_authority": "LloydCoder/tinlance-system-integration",
+  "required_evidence": [
+    "exact-four-repository-lock",
+    "exact-tsic-authority-pin",
+    "durable-event-replay",
+    "bounded-idempotent-retry",
+    "recovery-objectives-rto-rpo",
+    "tenant-isolation-under-replay",
+    "evidence-provenance",
+    "budget-settlement-recovery",
+    "two-replica-identity-isolation",
+    "post-merge-ci-security-conformance"
+  ],
+  "failure_modes": [
+    "worker_crash",
+    "database_outage",
+    "queue_outage",
+    "network_partition",
+    "duplicate_delivery",
+    "provider_timeout",
+    "regional_failure"
+  ],
+  "invariants": [
+    "Platform remains the sole consequential authorization and execution authority",
+    "replay and retry never bypass policy, approval, budget, sandbox, or secret scope",
+    "recovery evidence is tenant-scoped, attributable, and immutable",
+    "RTO and RPO are measured against declared objectives",
+    "missing evidence or exceeded objectives fail certification",
+    "repository conformance does not imply deployed production readiness"
+  ],
+  "production_evidence_required": [
+    "deployed-environment-identity-and-timestamp",
+    "measured-backup-restore-integrity",
+    "observed-failover-rto-rpo",
+    "tls-oauth-jwks-issuer-audience-validation",
+    "network-egress-policy-validation",
+    "telemetry-and-alert-delivery",
+    "incident-response-owner-signoff"
+  ],
+  "phase_namespace_note": "This is canonical ecosystem P10. It does not renumber or replace TSIC-00 through TSIC-19."
+}
