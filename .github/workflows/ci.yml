@@ -36,6 +36,8 @@ jobs:
         run: python3 scripts/certify_economic_attribution.py
       - name: Interoperability certification
         run: python3 scripts/certify_interoperability.py
+      - name: TWI source-evidence integration certification
+        run: python3 scripts/certify_twi_integration.py
       - name: Acquisition system certification
         run: python3 scripts/acquisition_system_certification.py
       - name: Serial TSIC-31-41 certification
