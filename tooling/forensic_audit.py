@@ -43,7 +43,7 @@ def main():
     if len({x['id'] for x in services['services']})!=len(services['services']): raise SystemExit('FAIL duplicate service IDs')
     if any(x['system'] not in systems for x in services['services']): raise SystemExit('FAIL service references unknown system')
     contracts=load('catalog/contracts/registry.json'); cids={x['id'] for x in contracts['contracts']}
-    required={'identity-context','agent-registration','event-envelope','delivery-semantics','trace-context','model-routing-authority','agent-interoperability-gate','economic-attribution','adapter-rules','failure-matrix','ecosystem-lock','canonical-workflows','ecosystem-manifest','dependency-graph','tsic-phase-registry'}
+    required={'identity-context','agent-registration','event-envelope','delivery-semantics','trace-context','model-routing-authority','agent-interoperability-gate','economic-attribution','adapter-rules','failure-matrix','ecosystem-lock','canonical-workflows','ecosystem-manifest','dependency-graph','tsic-phase-registry','twi-source-evidence-intake'}
     if not required<=cids: raise SystemExit('FAIL incomplete contract registry')
     phases=load('catalog/phases/registry.json')['sequence']
     if [x['id'] for x in phases]!=[f'TSIC-{i:02d}' for i in range(20)]: raise SystemExit('FAIL canonical phase sequence')
