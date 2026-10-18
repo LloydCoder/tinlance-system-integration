@@ -187,7 +187,8 @@
       "title": "MCP / A2A Interoperability",
       "systems": [
         "agent-platform",
-        "tsic"
+        "tsic",
+        "web-intelligence"
       ],
       "certification_gate": "protocol_interoperability",
       "entry_condition": "previous_phase_green",
