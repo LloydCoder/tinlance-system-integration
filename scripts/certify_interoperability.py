@@ -19,7 +19,7 @@ def main() -> None:
     phases = load("catalog/phases/registry.json")
     assert baseline["authority"] == "tsic"
     assert baseline["mcp_specification"] == "2026-07-28"
-    assert baseline["a2a_specification"] == "1.0.0"
+    assert baseline["a2a_specification"] == "1.0.1"
     assert baseline["boundaries"]["mcp"] == "agent-to-tool/context integration"
     assert baseline["boundaries"]["a2a"] == "agent-to-agent communication"
     assert gate["schema_version"] == "1.1.0"
