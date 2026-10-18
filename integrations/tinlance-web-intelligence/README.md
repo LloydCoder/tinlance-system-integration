@@ -5,3 +5,7 @@ This adapter records the cross-repository contract for TWI acquisition and evide
 TWI owns public-web discovery, controlled retrieval, browser capture, extraction, collection provenance, and source-backed observations. Agent Platform remains the sole identity, authorization, policy, approval, consequential execution, evidence, and audit authority. World Intelligence owns canonical entities and temporal world state. Agent OS owns orchestration and lifecycle; the Platform SDK owns typed consumer contracts.
 
 The executable validator checks registry coverage and authority invariants. Deployment-specific network, identity, approval, and recovery behavior still requires evidence from the target environment.
+
+## Source-evidence contract
+
+The normative payload schema is [`schemas/twi-source-evidence.schema.json`](../../schemas/twi-source-evidence.schema.json). It defines candidate evidence only, requires retrieval and artifact provenance, constrains tenant references and SHA-256 digests, and rejects additional fields. CI validates the schema itself and verifies both accepted and rejected payload examples. The schema does not assert that a source claim is objectively true or promote evidence into canonical World Intelligence state.

@@ -26,6 +26,8 @@ jobs:
           python3 -m venv /tmp/tsic-p3-venv
           /tmp/tsic-p3-venv/bin/pip install jsonschema==4.25.1
           /tmp/tsic-p3-venv/bin/python scripts/validate_event_contract.py
+      - name: TWI source-evidence JSON Schema validation
+        run: /tmp/tsic-p3-venv/bin/python scripts/validate_twi_source_evidence_schema.py
       - name: Reference E2E workflow
         run: python3 tooling/run_reference_workflow.py
       - name: Recovery certification
