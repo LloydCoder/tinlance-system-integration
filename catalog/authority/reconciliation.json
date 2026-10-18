@@ -62,6 +62,10 @@
     {
       "id": "AUTH-015",
       "rule": "downstream_certification_requires_immediately_preceding_phase_green"
+    },
+    {
+      "id": "AUTH-016",
+      "rule": "web_intelligence_owns_web_acquisition_and_source_evidence_but_not_identity_execution_or_canonical_world_state"
     }
   ],
   "non_ownership": [
@@ -72,6 +76,9 @@
     "tadl.execution_authority",
     "tadl.authorization",
     "tadl.tenant_authority",
-    "tadl.secret_authority"
+    "tadl.secret_authority",
+    "web_intelligence.execution_authority",
+    "web_intelligence.identity_authority",
+    "web_intelligence.canonical_world_state_authority"
   ]
 }
