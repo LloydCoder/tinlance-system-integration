@@ -85,6 +85,18 @@
       ]
     },
     {
+      "id": "web-intelligence",
+      "name": "Tinlance Web Intelligence",
+      "repository": "LloydCoder/tinlance-web-intelligence",
+      "governance_role": "web_intelligence_acquisition_authority",
+      "authority": [
+        "web_search_and_fetch",
+        "browser_capture",
+        "source_evidence_acquisition",
+        "source_change_monitoring"
+      ]
+    },
+    {
       "id": "tads",
       "name": "Tinlance Acquisition System",
       "repository": "LloydCoder/tinlance-tads",
