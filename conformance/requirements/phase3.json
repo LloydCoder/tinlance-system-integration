@@ -45,7 +45,7 @@
     {
       "id": "P3-009",
       "severity": "high",
-      "statement": "Ordering is explicitly documented as not guaranteed unless a per-aggregate ordering key is configured."
+      "statement": "Ordering is not guaranteed by the base outbox. Any adapter advertising per-aggregate order must enforce head-of-line blocking and pass cross-worker retry/replay tests."
     },
     {
       "id": "P3-010",
