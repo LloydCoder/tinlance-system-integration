@@ -1,1 +1,57 @@
-{"phase":"TSIC-05-07","title":"Canonical event, delivery and trace fabric","requirements":[{"id":"TSIC-05-001","severity":"critical","statement":"Durable events use the canonical CloudEvents-compatible envelope."},{"id":"TSIC-06-001","severity":"critical","statement":"Durable producers implement outbox semantics."},{"id":"TSIC-06-002","severity":"critical","statement":"Consumers are idempotent and support deduplication."},{"id":"TSIC-07-001","severity":"critical","statement":"W3C trace context is preserved across boundaries."},{"id":"TSIC-07-002","severity":"high","statement":"Correlation and causation identifiers are retained for workflow reconstruction."}]}
+{
+  "phase": "TSIC-05-07",
+  "title": "Canonical event, delivery and trace fabric",
+  "requirements": [
+    {
+      "id": "P3-001",
+      "severity": "critical",
+      "statement": "Event producers serialize the reviewed CloudEvents 1.0 JSON envelope and reject unknown or non-compliant extension attributes."
+    },
+    {
+      "id": "P3-002",
+      "severity": "critical",
+      "statement": "Tenant scope is derived from authenticated execution context, immutable across delivery, and isolated for event reads, inbox receipts, retries and replay."
+    },
+    {
+      "id": "P3-003",
+      "severity": "critical",
+      "statement": "Domain state changes, event records and outbox records are committed atomically in one database transaction."
+    },
+    {
+      "id": "P3-004",
+      "severity": "critical",
+      "statement": "Outbox claiming uses expiring owner-bound leases; stale or cross-tenant acknowledgements fail closed."
+    },
+    {
+      "id": "P3-005",
+      "severity": "critical",
+      "statement": "Consumers atomically commit inbox deduplication and business effects before acknowledgement; duplicate delivery is expected and idempotently handled."
+    },
+    {
+      "id": "P3-006",
+      "severity": "high",
+      "statement": "Retries are bounded, exponential and jittered; poison events dead-letter and explicit replay is tenant-scoped and audited."
+    },
+    {
+      "id": "P3-007",
+      "severity": "high",
+      "statement": "Event payloads are untrusted data and never grant or alter execution authority."
+    },
+    {
+      "id": "P3-008",
+      "severity": "high",
+      "statement": "W3C trace and correlation identifiers are validated and preserved across supported event boundaries."
+    },
+    {
+      "id": "P3-009",
+      "severity": "high",
+      "statement": "Ordering is explicitly documented as not guaranteed unless a per-aggregate ordering key is configured."
+    },
+    {
+      "id": "P3-010",
+      "severity": "critical",
+      "statement": "Actual Platform, SDK and OS event payloads validate against the exact TSIC schema revision pinned by the candidate ecosystem lock."
+    }
+  ],
+  "canonical_ecosystem_phase": "P3"
+}
