@@ -77,6 +77,11 @@
       "id": "tsic-phase-registry",
       "version": "1.0.0",
       "kind": "certification"
+    },
+    {
+      "id": "twi-source-evidence-intake",
+      "version": "1.0.0",
+      "kind": "schema"
     }
   ]
 }
