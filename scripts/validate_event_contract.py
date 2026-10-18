@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import copy
 import json
-import sys
 from pathlib import Path
 
 from jsonschema import Draft202012Validator, FormatChecker
@@ -53,7 +52,23 @@ def main() -> None:
         raise SystemExit("FAIL durable publication requires outbox")
     if semantics.get("delivery", {}).get("inbox_required_for_idempotent_consume") is not True:
         raise SystemExit("FAIL idempotent consumers require inbox")
-    print("PASS P3 event contract: CloudEvents schema, tenant scope, trace identity, unknown-field rejection, and delivery invariants")
+    delivery = semantics.get("delivery", {})
+    retry = delivery.get("retry", {})
+    if not all(retry.get(key) is True for key in ("exponential_backoff", "bounded", "jitter")):
+        raise SystemExit("FAIL retry policy must be bounded exponential backoff with jitter")
+    if delivery.get("dead_letter") is not True or delivery.get("replay") is not True:
+        raise SystemExit("FAIL poison events require dead-letter and explicit replay semantics")
+    lease = delivery.get("lease", {})
+    if lease.get("owner_bound") is not True or lease.get("expires") is not True:
+        raise SystemExit("FAIL outbox leases must be owner-bound and expiring")
+    if lease.get("stale_ack_rejected") is not True:
+        raise SystemExit("FAIL stale lease acknowledgements must be rejected")
+    ordering = semantics.get("ordering", {})
+    if ordering.get("default") != "not_guaranteed":
+        raise SystemExit("FAIL base outbox ordering must be documented as not guaranteed")
+    if ordering.get("explicit_ordering_key_required") is not True:
+        raise SystemExit("FAIL ordered delivery requires explicit ordering metadata")
+    print("PASS P3 event contract: schema, tenant scope, trace identity, unknown-field rejection, retries, leases, and ordering semantics")
 
 
 if __name__ == "__main__":
