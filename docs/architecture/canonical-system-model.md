@@ -7,5 +7,6 @@ TSIC freezes the Tinlance system-of-systems topology. The registry is authoritat
 - Agent: Agent Developer -> Agent OS -> Platform SDK -> Agent Platform.
 - Engineering: World Intelligence -> TADS -> SDEA -> ReconOS -> FadeReach -> Sales -> FDSE -> FDE.
 - Transformation: World Intelligence -> TADS -> Transformation -> FDSE -> FDE.
+- Web intelligence: Agent Platform (governed caller) -> Tinlance Web Intelligence (web acquisition) -> World Intelligence (canonical temporal state).
 
 Routes define integration topology; they do not transfer authority between systems.

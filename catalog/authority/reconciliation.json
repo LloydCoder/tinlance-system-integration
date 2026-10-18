@@ -1,6 +1,6 @@
 {
   "$schema": "../../schemas/authority-reconciliation.schema.json",
-  "schema_version": "2.0.0",
+  "schema_version": "2.1.0",
   "authority": "tsic",
   "rules": [
     {
@@ -62,6 +62,10 @@
     {
       "id": "AUTH-015",
       "rule": "downstream_certification_requires_immediately_preceding_phase_green"
+    },
+    {
+      "id": "AUTH-016",
+      "rule": "tinlance_web_intelligence_owns_web_acquisition_only_and_never_identity_policy_approval_execution_audit_or_world_state"
     }
   ],
   "non_ownership": [
@@ -72,6 +76,9 @@
     "tadl.execution_authority",
     "tadl.authorization",
     "tadl.tenant_authority",
-    "tadl.secret_authority"
+    "tadl.secret_authority",
+    "tinlance-web-intelligence.identity_authority",
+    "tinlance-web-intelligence.execution_authority",
+    "tinlance-web-intelligence.world_state_authority"
   ]
 }

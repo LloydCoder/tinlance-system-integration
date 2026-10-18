@@ -87,7 +87,9 @@
             "product_analyst_commercial_authority",
             "commercial_surface_authority",
             "economic_attribution_authority",
-            "web_intelligence_acquisition_authority"
+            "web_intelligence_acquisition_authority",
+            "content_generation_authority",
+            "content_product_experience_authority"
           ]
         },
         "authority": {
