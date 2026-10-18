@@ -17,6 +17,8 @@ def main() -> int:
     services = read_json("catalog/services/registry.json")
     adapters = read_json("integrations/adapters/registry.json")
     schema = read_json("schemas/ecosystem-manifest.schema.json")
+    evidence_schema_path = ROOT / "schemas" / "twi-source-evidence.schema.json"
+    assert evidence_schema_path.is_file(), "versioned TWI source-evidence schema is required"
 
     assert adapter["target_system"] == "tinlance-web-intelligence"
     authority = adapter["authority"]
