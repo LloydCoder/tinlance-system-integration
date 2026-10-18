@@ -10,6 +10,7 @@
     {"id":"TSIC-TWI-004","category":"delivery","statement":"Job submission and World Intelligence evidence export are idempotent; retries require stable keys and conflicting replays fail closed.","mandatory":true},
     {"id":"TSIC-TWI-005","category":"isolation","statement":"Browser execution is isolated and cannot bypass the authenticated egress proxy.","mandatory":true},
     {"id":"TSIC-TWI-006","category":"integration","statement":"World Intelligence receives source evidence through its contracted intake; TWI does not duplicate canonical entity resolution or temporal world state.","mandatory":true},
-    {"id":"TSIC-TWI-007","category":"telemetry","statement":"Request and W3C trace context are propagated across API, worker, and integration boundaries.","mandatory":true}
+    {"id":"TSIC-TWI-007","category":"telemetry","statement":"Request and W3C trace context are propagated across API, worker, and integration boundaries.","mandatory":true},
+    {"id":"TSIC-TWI-008","category":"contract","statement":"Source evidence validates against the versioned Draft 2020-12 schema and rejects unknown properties.","mandatory":true}
   ]
 }
