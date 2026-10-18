@@ -34,6 +34,11 @@
       "ci_gate": "TSIC-02"
     },
     {
+      "system": "web-intelligence",
+      "contract_version": "1.0.0",
+      "ci_gate": "TSIC-16"
+    },
+    {
       "system": "tads",
       "contract_version": "1.0.0",
       "ci_gate": "TSIC-02"
@@ -294,6 +299,16 @@
       "from": "aurontra",
       "to": "agent-platform",
       "reason": "governed_consequential_actions"
+    },
+    {
+      "from": "agent-platform",
+      "to": "web-intelligence",
+      "reason": "governed_web_acquisition"
+    },
+    {
+      "from": "web-intelligence",
+      "to": "world-intelligence",
+      "reason": "candidate_source_evidence_intake"
     }
   ]
 }
