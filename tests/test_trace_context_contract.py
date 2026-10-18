@@ -38,5 +38,9 @@ def test_trace_context_schema_accepts_safe_linked_context_and_rejects_secret_fie
         ],
     }
     assert validator.is_valid(payload)
+    zero_trace = dict(payload, trace_id="0" * 32)
+    assert not validator.is_valid(zero_trace)
+    zero_span = dict(payload, span_id="0" * 16)
+    assert not validator.is_valid(zero_span)
     payload["authorization"] = "Bearer secret"
     assert not validator.is_valid(payload)
