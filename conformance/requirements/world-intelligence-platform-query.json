@@ -1,0 +1,56 @@
+{
+  "id": "TSIC-WI-PLATFORM-QUERY-001",
+  "system": "tinlance-world-intelligence-platform-query",
+  "contract_version": "1.0.0",
+  "status": "required",
+  "requirements": [
+    {
+      "id": "TSIC-WI-PLATFORM-QUERY-001",
+      "category": "authority",
+      "statement": "World Intelligence query tools are exposed through the Platform MCP dispatch boundary; callers cannot invoke the downstream service outside Platform policy.",
+      "mandatory": true
+    },
+    {
+      "id": "TSIC-WI-PLATFORM-QUERY-002",
+      "category": "identity",
+      "statement": "The downstream query token is short-lived, audience-bound, and signed by the Platform identity adapter; tenant and subject are derived from the authenticated Platform principal.",
+      "mandatory": true
+    },
+    {
+      "id": "TSIC-WI-PLATFORM-QUERY-003",
+      "category": "purpose",
+      "statement": "The requested purpose is normalized, authorized against the Platform principal's purpose scope, and bound into the signed downstream token.",
+      "mandatory": true
+    },
+    {
+      "id": "TSIC-WI-PLATFORM-QUERY-004",
+      "category": "telemetry",
+      "statement": "The signed request ID and W3C traceparent match the outbound headers; child spans preserve the inbound trace ID and parent-span relationship.",
+      "mandatory": true
+    },
+    {
+      "id": "TSIC-WI-PLATFORM-QUERY-005",
+      "category": "read-only",
+      "statement": "The adapter exposes only fixed-resource GET operations and cannot write canonical World Intelligence state.",
+      "mandatory": true
+    },
+    {
+      "id": "TSIC-WI-PLATFORM-QUERY-006",
+      "category": "tenant-isolation",
+      "statement": "World Intelligence independently enforces tenant query policy in PostgreSQL, records allow and deny outcomes, and fails closed when policy is absent.",
+      "mandatory": true
+    },
+    {
+      "id": "TSIC-WI-PLATFORM-QUERY-007",
+      "category": "transport",
+      "statement": "The HTTP client enforces HTTPS outside explicit loopback tests, disables redirects, bounds response bytes and timeouts, and validates response content type and shape.",
+      "mandatory": true
+    },
+    {
+      "id": "TSIC-WI-PLATFORM-QUERY-008",
+      "category": "failure-handling",
+      "statement": "Authorization failures are non-retryable; transient network and server failures are classified for bounded retry without weakening authorization.",
+      "mandatory": true
+    }
+  ]
+}
