@@ -98,6 +98,16 @@ The proposal schemas in `contracts/proposals/computer/v1/` are design artifacts,
 - RPO/RTO and availability targets are persistence-tier-specific and are not promised until measured.
 - Production acceptance requires incident response, patch SLAs, host attestation where supported, backup/restore, DR, cost attribution and security assessment.
 
+## Capacity and cost model
+
+Phase 1 defines the accounting model, not provider prices. Monthly cost per tenant/workspace must include: allocated vCPU-hours and memory-hours; host reserve/idle capacity; encrypted workspace volume GiB-month; snapshot bytes and retention; image registry/build storage; egress and artifact transfer; browser concurrency; telemetry/evidence retention; KMS/secret operations; backup/DR and on-call operations. Report both active-hour and idle-hour unit cost. Charge attribution must bind tenant, workspace, profile, instance, run and provider usage record.
+
+Capacity planning must use allocatable host resources after reserving headroom for host OS, hypervisor, control plane and failure recovery. Density is determined by the most constrained resource and measured noisy-neighbour behavior, not CPU count alone. Enforce per-tenant concurrency, resource and spend ceilings before provisioning and continuously during execution. Idle suspension thresholds and minimum warm capacity are benchmark outputs, not assumptions.
+
+## Reliability objectives to baseline
+
+Define SLOs separately for control-plane API availability, provision-to-ready latency, resume latency, lease renewal, cancellation/revocation latency, evidence durability, snapshot success, restore success and termination/deletion verification. Define RPO/RTO separately for ephemeral, workspace-durable and checkpointed persistence classes. Numeric commitments are deliberately deferred until Phase 2 measurements, cost modelling and operational ownership are available.
+
 ## Consequences
 
 **Positive:** preserves authority separation, supports provider portability, makes persistence/recovery explicit and provides a security tier for hostile workloads.
