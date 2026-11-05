@@ -108,7 +108,7 @@ jobs:
           PY
 
       - name: Install TADL
-        working-directory: /tmp/tinlance-developer
+        working-directory: agent-developer-lock
         run: npm ci --ignore-scripts && npm run build
 
       - name: Install Python integration components
@@ -119,13 +119,13 @@ jobs:
           python -m pip install -e "/tmp/tinlance-platform/reference_agents[test]" --no-deps
 
       - name: Verify canonical TSIC authority against reviewed baseline
-        working-directory: /tmp/tinlance-developer
+        working-directory: agent-developer-lock
         run: python scripts/tsic_conformance.py
 
       - name: Run Agent System end-to-end contract certification
-        working-directory: /tmp/tinlance-developer
+        working-directory: agent-developer-lock
         run: python scripts/ecosystem_conformance.py
 
       - name: Run finite-phase certification
-        working-directory: /tmp/tinlance-developer
+        working-directory: agent-developer-lock
         run: python scripts/ecosystem_phase_conformance.py
