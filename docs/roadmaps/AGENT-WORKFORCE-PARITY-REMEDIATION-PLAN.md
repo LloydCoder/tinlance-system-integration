@@ -401,7 +401,7 @@ Parity claims must be capability-specific. A feature is not “complete” until
 
 ### Phase 0 — Baseline and TSIC authority reconciliation
 
-<badge>Certified complete — TSIC main 33/33 checks green</badge>
+**Status: COMPLETE.** TSIC main `a9cdee82a81582fa98da9a4f4f92067540e2a9d0` has 33/33 successful check runs.
 
 **Evidence:** TSIC main revision `a9cdee82a81582fa98da9a4f4f92067540e2a9d0`; exact-SHA check-run set 33/33 success; TSIC-10 run `42071032720` all steps success; PR #88 merged as `e6d1c00b8db486720fe2d08ad65337bc6963804b`.
 
@@ -435,7 +435,7 @@ Parity claims must be capability-specific. A feature is not “complete” until
 - Platform, OS, SDK, TADL and TSIC ownership reviewed.
 - Security review covers OWASP agentic risks and tenant escape paths.
 - No unresolved authority-boundary violation.
-- Provider and isolation choice supported by evidence rather than preference.
+- Architecture direction and tiering approved; final provider/isolation selection is made only after Phase 2 comparative measurements.
 
 ### Phase 2 — Provider and isolation feasibility spike
 
@@ -512,9 +512,6 @@ The Phase 1 design package is authored in this branch:
 
 Forensic distinction: Platform currently has a bubblewrap-based local sandbox adapter, not a persistent cloud-computer service. OS has workspace-fabric and remote-runtime primitives, not a provider-backed VM lifecycle. Platform P6 explicitly leaves deployment-owned database, queue, object storage, KMS, isolated workers, telemetry and DR to a real deployment. The new architecture does not mislabel these primitives as cloud-computer implementation.
 
-### Phase 2 — Provider and isolation feasibility spike
-
-**Gate:** a non-production KVM-capable environment, network isolation, encrypted storage, image registry, telemetry and explicit spend ceiling are prerequisites. No production data, production credentials or production deployment. Phase 2 is not started until that environment is authorized and available.
 
 ## 9. Required test and evidence matrix
 
