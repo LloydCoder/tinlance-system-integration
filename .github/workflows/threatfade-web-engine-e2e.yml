@@ -105,7 +105,7 @@ jobs:
         run: npm run build
       - name: Install Playwright browser
         working-directory: threatfade-web
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install chromium
       - name: Run web E2E tests
         working-directory: threatfade-web
         env:
