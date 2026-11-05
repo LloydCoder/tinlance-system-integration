@@ -19,6 +19,9 @@
     },
     {
       "$ref": "#/$defs/computerEvidence"
+    },
+    {
+      "$ref": "#/$defs/computerLease"
     }
   ],
   "$defs": {
@@ -45,7 +48,9 @@
         "network_profile",
         "persistence_class",
         "data_residency",
-        "retention_class"
+        "retention_class",
+        "risk_class",
+        "data_classification"
       ],
       "properties": {
         "schema_version": {
@@ -132,6 +137,22 @@
           },
           "uniqueItems": true,
           "maxItems": 128
+        },
+        "risk_class": {
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "critical"
+          ]
+        },
+        "data_classification": {
+          "enum": [
+            "public",
+            "internal",
+            "confidential",
+            "restricted"
+          ]
         }
       }
     },
@@ -227,7 +248,9 @@
         "issued_at",
         "expires_at",
         "nonce",
-        "idempotency_key"
+        "idempotency_key",
+        "fencing_token",
+        "signature"
       ],
       "properties": {
         "schema_version": {
@@ -310,6 +333,38 @@
           "type": "string",
           "minLength": 16,
           "maxLength": 256
+        },
+        "fencing_token": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "signature": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "alg",
+            "kid",
+            "value"
+          ],
+          "properties": {
+            "alg": {
+              "enum": [
+                "EdDSA",
+                "ES256"
+              ]
+            },
+            "kid": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256
+            },
+            "value": {
+              "type": "string",
+              "minLength": 32,
+              "maxLength": 2048,
+              "pattern": "^[A-Za-z0-9_-]+$"
+            }
+          }
         }
       }
     },
@@ -456,6 +511,72 @@
         "storage_reference": {
           "type": "string",
           "maxLength": 1024
+        }
+      }
+    },
+    "computerLease": {
+      "title": "ComputerLease",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "lease_id",
+        "tenant_id",
+        "workspace_id",
+        "instance_id",
+        "owner",
+        "generation",
+        "fencing_token",
+        "issued_at",
+        "expires_at",
+        "renewal_policy"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "computer-lease.v1"
+        },
+        "lease_id": {
+          "$ref": "#/$defs/id"
+        },
+        "tenant_id": {
+          "$ref": "#/$defs/id"
+        },
+        "workspace_id": {
+          "$ref": "#/$defs/id"
+        },
+        "instance_id": {
+          "$ref": "#/$defs/id"
+        },
+        "owner": {
+          "$ref": "#/$defs/id"
+        },
+        "generation": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "fencing_token": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "issued_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "renewal_policy": {
+          "enum": [
+            "manual",
+            "automatic",
+            "non-renewable"
+          ]
+        },
+        "max_concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64
         }
       }
     }
