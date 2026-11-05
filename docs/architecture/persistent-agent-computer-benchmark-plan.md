@@ -106,3 +106,15 @@ Record active and idle cost separately, attribute every provider usage record to
 - Unit cost model includes active, idle, storage, snapshot, egress, observability and operations.
 - Architecture decision updated with measured evidence and selected candidate or an explicit no-go.
 - Environment teardown and spend reconciliation verified.
+
+## 10. Primary technical references
+
+The benchmark must validate the installed release and host configuration; documentation is a design input, not proof that a candidate is safe or compatible.
+
+- [Firecracker production host setup](https://github.com/firecracker-microvm/firecracker/blob/main/docs/prod-host-setup.md) — KVM and CPU virtualization are prerequisites; production hardening includes the jailer or equivalent restrictions, seccomp, dedicated unprivileged identities, cgroup resource limits, host patching and hardware/side-channel mitigations.
+- [Firecracker snapshot support](https://github.com/firecracker-microvm/firecracker/blob/main/docs/snapshotting/snapshot-support.md) — snapshots comprise guest memory, VM state and separately managed disks; network/vsock sessions may not survive restore; host resources and CPU/software compatibility constrain restore. The harness must test reattachment, generation changes, single-successor semantics and cross-host compatibility rather than assume portability.
+- [Firecracker snapshot versioning](https://github.com/firecracker-microvm/firecracker/blob/main/docs/snapshotting/versioning.md) — snapshot format compatibility is distinct from binary version compatibility and depends on host kernel, device model and CPU features.
+- [gVisor security architecture](https://gvisor.dev/docs/architecture_guide/intro/) and [production guide](https://gvisor.dev/docs/user_guide/production/) — gVisor is an application-kernel boundary, not a VM; platform choice and workload-specific I/O/network overhead require measurement.
+- [gVisor compatibility guide](https://gvisor.dev/docs/user_guide/compatibility/) — syscall and kernel-surface compatibility is incomplete by design; test the actual Python, Node, browser, build and developer workloads in the benchmark matrix.
+- [Kata Containers virtualization architecture](https://kata-containers.github.io/kata-containers/design/virtualization/) and [installation requirements](https://github.com/kata-containers/kata-containers/blob/main/docs/install/README.md) — Kata uses a VM boundary behind an OCI/containerd lifecycle; supported hypervisor and hardware/nested-virtualization requirements must be verified with the target host's supported diagnostic tooling.
+
