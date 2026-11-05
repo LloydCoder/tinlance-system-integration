@@ -43,6 +43,32 @@
 
 Only B2's authenticated Platform request and B3's Platform-issued grant can authorize an execution. B4-B9 are untrusted data and execution boundaries.
 
+## 2.1 Trust-boundary diagram
+
+```mermaid
+flowchart TB
+    U[User / Agent / Model] -->|intent and untrusted content| OS[Agent OS: lifecycle orchestration]
+    OS -->|authenticated request, tenant/workspace context| PL[Agent Platform: policy, approvals, grants]
+    PL -->|short-lived audience-bound grant| AD[Provider adapter: untrusted substrate]
+    AD -->|provision / lifecycle operations| HV[Host, hypervisor and isolated guest]
+    HV -->|bounded I/O through host enforcement| EG[Egress proxy and network policy]
+    HV -->|workspace data only| WV[Encrypted tenant/workspace volume]
+    HV -->|untrusted result and evidence candidate| EV[External evidence intake]
+    PL -->|authoritative audit and run evidence| AUD[Platform evidence / audit store]
+    TSIC[TSIC: canonical contracts and certification] -. validates contracts and evidence .-> PL
+    TADL[TADL: declarative profile validation] -. requests capabilities only .-> OS
+    SDK[Platform SDK: typed client] -. transports context; no authority .-> PL
+
+    classDef authority fill:#e8f3ff,stroke:#245b8a,color:#102b44;
+    classDef untrusted fill:#fff0e8,stroke:#a64b1f,color:#4a2412;
+    classDef evidence fill:#eaf7ed,stroke:#357348,color:#153b20;
+    class PL,TSIC authority;
+    class HV,AD,EG untrusted;
+    class AUD,EV evidence;
+```
+
+The provider adapter and guest are untrusted. Only Platform-issued grants authorize execution; guest output is evidence input, never authoritative audit. TSIC certifies contracts and does not provision or execute workloads.
+
 ## 3. Threat actors and assumptions
 
 - Malicious tenant with valid account attempting cross-tenant escape or resource abuse.
@@ -127,13 +153,15 @@ Phase 2 is blocked until an explicitly authorized non-production environment pro
 
 ## 9. Phase 1 review checklist
 
-- [ ] Platform sole authority; OS lifecycle only.
-- [ ] TADL cannot grant runtime privileges.
-- [ ] Provider cannot approve or authorize actions.
-- [ ] Tenant and workspace isolation defined across all planes.
-- [ ] Network and metadata protections defined outside guest.
-- [ ] Secrets and evidence kept outside guest persistence.
-- [ ] Snapshot restore revalidates identity, policy, approvals and credentials.
-- [ ] Idempotency, generation and fencing defined.
-- [ ] RPO/RTO and SLOs remain unpromised until measured.
-- [ ] Phase 2 requires explicit non-production infrastructure authorization.
+- [x] Platform sole authority; OS lifecycle only.
+- [x] TADL cannot grant runtime privileges.
+- [x] Provider cannot approve or authorize actions.
+- [x] Tenant and workspace isolation defined across all planes.
+- [x] Network and metadata protections defined outside guest.
+- [x] Secrets and evidence kept outside guest persistence.
+- [x] Snapshot restore revalidates identity, policy, approvals and credentials.
+- [x] Idempotency, generation and fencing defined.
+- [x] RPO/RTO and SLOs remain unpromised until measured.
+- [x] Phase 2 requires explicit non-production infrastructure authorization.
+
+**Review disposition (2026-11-05):** All ten design assertions were checked against the Phase 1 ADR, Platform ADR-007 and P6 deployment contract, OS remote-runtime/workspace-fabric ownership, Platform SDK authority statement, TADL immutable ecosystem lock and TSIC Agent System baseline. This is an architecture/documentation review, not a claim that Phase 2 infrastructure or runtime controls are implemented. Phase 2 remains blocked pending a separately authorized KVM-capable non-production environment and spend ceiling.
