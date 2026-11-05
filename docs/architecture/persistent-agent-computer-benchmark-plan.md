@@ -89,7 +89,15 @@ First apply hard security gates. Among candidates that pass:
 
 No weighted score can override a failed hard security gate. Publish raw data and confidence intervals; document unsupported features and sample size.
 
-## 8. Phase 2 exit criteria
+## 8. Cost and capacity model
+
+For each profile and persistence tier, calculate monthly unit cost as:
+
+\`compute_active + compute_idle + reserved_host_capacity + workspace_storage + snapshot_storage + image_storage + egress + artifact_transfer + browser_concurrency + telemetry_and_evidence + KMS_and_secret_operations + backup_DR + operations\`.
+
+Record active and idle cost separately, attribute every provider usage record to tenant/workspace/profile/instance/run, and model minimum warm capacity, idle suspension, regional reserve and peak concurrency. Capacity is bounded by allocatable CPU, memory, disk IOPS, network, browser slots and failure headroom. Do not assume nominal host capacity is fully schedulable.
+
+## 9. Phase 2 exit criteria
 
 - Reproducible benchmark harness and environment manifest.
 - At least three runs per candidate/profile with sufficient samples for p95 comparisons.
