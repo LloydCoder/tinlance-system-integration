@@ -35,6 +35,20 @@ jobs:
           path: threatfade-web
           fetch-depth: 0
           persist-credentials: false
+      - name: Verify immutable TSIC-10 revision pins
+        working-directory: tsic
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          baseline = json.loads(Path("policies/threatfade-web-baseline.json").read_text())
+          workflow = Path(".github/workflows/threatfade-web-engine-e2e.yml").read_text()
+          for system in ("engine", "web"):
+              revision = baseline[system]["ref"]
+              if len(revision) != 40 or revision not in workflow:
+                  raise SystemExit(f"TSIC-10 {system} revision is not a 40-character immutable pin in the workflow")
+          print("PASS TSIC-10 engine and web immutable pins match the canonical baseline")
+          PY
       - name: Setup Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
