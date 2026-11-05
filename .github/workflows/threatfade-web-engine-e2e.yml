@@ -31,7 +31,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: LloydCoder/tinlance-threatfade-web
-          ref: f2865a034794f706bd57e4427a4e698942c95b54
+          ref: f1c38d8ec87cd1873583af12f7a0d551aa72fe63
           path: threatfade-web
           fetch-depth: 0
           persist-credentials: false
