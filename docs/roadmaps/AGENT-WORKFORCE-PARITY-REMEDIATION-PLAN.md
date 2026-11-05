@@ -1,6 +1,6 @@
 # Agent Workforce Parity Remediation Plan
 
-**Status:** Active execution plan — Phase 0 certified green on TSIC main; Phase 1 architecture package prepared for review; Phases 2–5 remain gated  
+**Status:** Active execution plan — Phase 0 certified green; Phase 1 architecture baseline reviewed and accepted for Phase 2; Phases 2–5 remain gated  
 **Owner:** Tinlance Agent System  
 **Canonical planning authority:** Tinlance System Integration & Conformance (TSIC)  
 **Baseline inspected:** 2026-11-05  
@@ -420,6 +420,8 @@ Parity claims must be capability-specific. A feature is not “complete” until
 - No ambiguous or conflicting conformance authority.
 
 ### Phase 1 — Cloud-computer architecture approval
+
+**Status: COMPLETE — architecture and trust-boundary baseline reviewed and accepted.** The ADR, 20-scenario threat model, trust-boundary diagram, provider benchmark plan and proposal-only lifecycle schemas are reviewed in PR #92. This closes architecture approval only; it does not claim that a provider-backed computer runtime has been implemented or deployed.
 
 **Deliverables**
 - Architecture decision record.
