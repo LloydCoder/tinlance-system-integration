@@ -8,7 +8,7 @@
   },
   "web": {
     "repository": "LloydCoder/tinlance-threatfade-web",
-    "ref": "f1c38d8ec87cd1873583af12f7a0d551aa72fe63"
+    "ref": "c43df94b6a52f0881ee7f6760e1962017d20ff3b"
   },
   "authority_boundaries": {
     "engine": "detection, canonical analyst records, authorization and evidence persistence",
