@@ -1,0 +1,463 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.tinlance.com/proposals/computer/v1/computer-lifecycle.schema.json",
+  "title": "Tinlance Persistent Agent Computer Lifecycle Proposal",
+  "description": "Phase 1 proposal only. Not a canonical or production API contract until ratified by TSIC after Phase 2.",
+  "type": "object",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/computerProfile"
+    },
+    {
+      "$ref": "#/$defs/computerOperation"
+    },
+    {
+      "$ref": "#/$defs/executionGrant"
+    },
+    {
+      "$ref": "#/$defs/computerInstance"
+    },
+    {
+      "$ref": "#/$defs/computerEvidence"
+    }
+  ],
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "computerProfile": {
+      "title": "ComputerProfile",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "profile_id",
+        "isolation_tier",
+        "image_digest",
+        "resources",
+        "network_profile",
+        "persistence_class",
+        "data_residency",
+        "retention_class"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "computer-profile.v1"
+        },
+        "profile_id": {
+          "$ref": "#/$defs/id"
+        },
+        "isolation_tier": {
+          "enum": [
+            "restricted-container",
+            "gvisor",
+            "kata-vm",
+            "microvm"
+          ]
+        },
+        "image_digest": {
+          "$ref": "#/$defs/sha256"
+        },
+        "resources": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "vcpus",
+            "memory_mib",
+            "disk_gib",
+            "max_processes",
+            "wall_clock_seconds"
+          ],
+          "properties": {
+            "vcpus": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 64
+            },
+            "memory_mib": {
+              "type": "integer",
+              "minimum": 256,
+              "maximum": 262144
+            },
+            "disk_gib": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4096
+            },
+            "max_processes": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 4096
+            },
+            "wall_clock_seconds": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 604800
+            }
+          }
+        },
+        "network_profile": {
+          "$ref": "#/$defs/id"
+        },
+        "persistence_class": {
+          "enum": [
+            "ephemeral",
+            "workspace-durable",
+            "checkpointed"
+          ]
+        },
+        "data_residency": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 64
+        },
+        "retention_class": {
+          "$ref": "#/$defs/id"
+        },
+        "browser": {
+          "type": "boolean",
+          "default": false
+        },
+        "requested_capabilities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/id"
+          },
+          "uniqueItems": true,
+          "maxItems": 128
+        }
+      }
+    },
+    "computerOperation": {
+      "title": "ComputerOperation",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "operation_id",
+        "operation",
+        "tenant_id",
+        "workspace_id",
+        "request_id",
+        "idempotency_key",
+        "expected_generation",
+        "requested_by",
+        "created_at"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "computer-operation.v1"
+        },
+        "operation_id": {
+          "$ref": "#/$defs/id"
+        },
+        "operation": {
+          "enum": [
+            "provision",
+            "start",
+            "resume",
+            "suspend",
+            "snapshot",
+            "restore",
+            "renew_lease",
+            "rotate_credentials",
+            "drain",
+            "terminate",
+            "get_status"
+          ]
+        },
+        "tenant_id": {
+          "$ref": "#/$defs/id"
+        },
+        "workspace_id": {
+          "$ref": "#/$defs/id"
+        },
+        "request_id": {
+          "$ref": "#/$defs/id"
+        },
+        "idempotency_key": {
+          "type": "string",
+          "minLength": 16,
+          "maxLength": 256
+        },
+        "expected_generation": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "requested_by": {
+          "$ref": "#/$defs/id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "profile_id": {
+          "$ref": "#/$defs/id"
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 1024
+        }
+      }
+    },
+    "executionGrant": {
+      "title": "ExecutionGrant",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "grant_id",
+        "issuer",
+        "audience",
+        "tenant_id",
+        "subject_id",
+        "agent_id",
+        "workspace_id",
+        "run_id",
+        "capability",
+        "policy_revision",
+        "resource_envelope",
+        "issued_at",
+        "expires_at",
+        "nonce",
+        "idempotency_key"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "execution-grant.v1"
+        },
+        "grant_id": {
+          "$ref": "#/$defs/id"
+        },
+        "issuer": {
+          "const": "agent-platform"
+        },
+        "audience": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "tenant_id": {
+          "$ref": "#/$defs/id"
+        },
+        "subject_id": {
+          "$ref": "#/$defs/id"
+        },
+        "agent_id": {
+          "$ref": "#/$defs/id"
+        },
+        "workspace_id": {
+          "$ref": "#/$defs/id"
+        },
+        "run_id": {
+          "$ref": "#/$defs/id"
+        },
+        "capability": {
+          "$ref": "#/$defs/id"
+        },
+        "policy_revision": {
+          "$ref": "#/$defs/id"
+        },
+        "resource_envelope": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "cpu_seconds",
+            "memory_bytes",
+            "max_processes",
+            "max_output_bytes"
+          ],
+          "properties": {
+            "cpu_seconds": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "memory_bytes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_processes": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_output_bytes": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "issued_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "nonce": {
+          "type": "string",
+          "minLength": 16,
+          "maxLength": 256
+        },
+        "idempotency_key": {
+          "type": "string",
+          "minLength": 16,
+          "maxLength": 256
+        }
+      }
+    },
+    "computerInstance": {
+      "title": "ComputerInstance",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "instance_id",
+        "provider",
+        "tenant_id",
+        "workspace_id",
+        "state",
+        "generation",
+        "image_digest",
+        "profile_id",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "computer-instance.v1"
+        },
+        "instance_id": {
+          "$ref": "#/$defs/id"
+        },
+        "provider": {
+          "$ref": "#/$defs/id"
+        },
+        "provider_reference": {
+          "type": "string",
+          "maxLength": 512
+        },
+        "tenant_id": {
+          "$ref": "#/$defs/id"
+        },
+        "workspace_id": {
+          "$ref": "#/$defs/id"
+        },
+        "state": {
+          "enum": [
+            "requested",
+            "provisioning",
+            "ready",
+            "leased",
+            "running",
+            "suspending",
+            "suspended",
+            "restoring",
+            "reconciling",
+            "failed",
+            "draining",
+            "terminating",
+            "terminated",
+            "quarantined"
+          ]
+        },
+        "generation": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "image_digest": {
+          "$ref": "#/$defs/sha256"
+        },
+        "profile_id": {
+          "$ref": "#/$defs/id"
+        },
+        "attestation_reference": {
+          "type": "string",
+          "maxLength": 512
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "computerEvidence": {
+      "title": "ComputerEvidence",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "evidence_id",
+        "tenant_id",
+        "workspace_id",
+        "instance_id",
+        "run_id",
+        "trace_id",
+        "kind",
+        "digest",
+        "created_at",
+        "source"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "computer-evidence.v1"
+        },
+        "evidence_id": {
+          "$ref": "#/$defs/id"
+        },
+        "tenant_id": {
+          "$ref": "#/$defs/id"
+        },
+        "workspace_id": {
+          "$ref": "#/$defs/id"
+        },
+        "instance_id": {
+          "$ref": "#/$defs/id"
+        },
+        "run_id": {
+          "$ref": "#/$defs/id"
+        },
+        "trace_id": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "enum": [
+            "lifecycle",
+            "attestation",
+            "process",
+            "browser",
+            "artifact",
+            "snapshot",
+            "network",
+            "security-event"
+          ]
+        },
+        "digest": {
+          "$ref": "#/$defs/sha256"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "source": {
+          "const": "external-evidence-service"
+        },
+        "storage_reference": {
+          "type": "string",
+          "maxLength": 1024
+        }
+      }
+    }
+  }
+}
