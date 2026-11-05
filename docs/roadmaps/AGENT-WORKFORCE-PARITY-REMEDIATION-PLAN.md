@@ -44,7 +44,7 @@ The following immutable main-branch heads were observed during this inspection:
 
 | Repository | Inspected main SHA | Commit date (UTC) |
 |---|---|---|
-| [tinlance-system-integration](https://github.com/LloydCoder/tinlance-system-integration) | `a9cdee82a81582fa98da9a4f4f92067540e2a9d0` | 2026-11-05 |
+| [tinlance-system-integration](https://github.com/LloydCoder/tinlance-system-integration) | `b8848be64e8cd559ce315a1b521c1d1f9aa16306` | 2026-11-05 |
 | [tinlance-agent-platform](https://github.com/LloydCoder/tinlance-agent-platform) | `8a5d8d7ad00a759a96649fb0fb97adc78743788b` | 2026-11-05 |
 | [tinlance-agent-os](https://github.com/LloydCoder/tinlance-agent-os) | `eeeaf83cf35e3ba7387ec7838165862132c71204` | 2026-11-05 |
 | [tinlance-agent-platform-sdk](https://github.com/LloydCoder/tinlance-agent-platform-sdk) | `e418f9de6639779381a0cebc746991a52a8df1ce` | 2026-11-05 |
@@ -95,6 +95,8 @@ A difference between a branch head and a pinned release is not automatically a d
 ### 4.1.1 Execution findings recorded on 2026-11-05
 
 - TSIC PR [#88](https://github.com/LloydCoder/tinlance-system-integration/pull/88) merged the ThreatFade Web dependency-security and E2E remediation. Its merge commit is `e6d1c00b8db486720fe2d08ad65337bc6963804b`.
+- ThreatFade Web security PR [#99](https://github.com/LloydCoder/tinlance-threatfade-web/pull/99) was merged at `f1c38d8ec87cd1873583af12f7a0d551aa72fe63`; TSIC PR [#93](https://github.com/LloydCoder/tinlance-system-integration/pull/93) then reconciled the immutable TSIC-10 web pin and BugFlow integration baseline. PR #93 merged at `b8848be64e8cd559ce315a1b521c1d1f9aa16306`.
+- The post-merge exact-SHA check-run set for `b8848be64e8cd559ce315a1b521c1d1f9aa16306` contains 33/33 completed-success checks. TSIC-10 run `42080733666` passed all engine, web, Playwright, live API, schema/authority and forensic-audit steps; TSIC-28 transformation route run `42080733534` also passed. This supersedes the earlier `a9cdee...` 33/33 observation as the latest inspected TSIC main certification baseline.
 - TSIC main subsequently reconciled Agent System certification to the immutable TADL P10 release lock in `a9cdee82a81582fa98da9a4f4f92067540e2a9d0`. Both Agent System workflows now consume the pinned TADL lock source; the contract/finite-phase workflow verifies exact SHA equality and the live reference E2E emits a machine-readable manifest.
 - The exact TSIC main revision `a9cdee82a81582fa98da9a4f4f92067540e2a9d0` reported 33/33 check runs successful. TSIC-10 job `42071032720` passed every step, including engine security/detection tests, web format/lint/typecheck/unit tests/dependency audit, production build, Playwright E2E, live engine health/version and schema validation, TSIC authority validation and post-phase forensic audit.
 - The 12 cancelled workflow runs in the same recent history were older superseded commits; they are not failures on the certified SHA. The latest exact-SHA check-run set is the certification evidence.
@@ -401,9 +403,9 @@ Parity claims must be capability-specific. A feature is not “complete” until
 
 ### Phase 0 — Baseline and TSIC authority reconciliation
 
-**Status: COMPLETE.** TSIC main `a9cdee82a81582fa98da9a4f4f92067540e2a9d0` has 33/33 successful check runs.
+**Status: COMPLETE.** Latest inspected TSIC main baseline `b8848be64e8cd559ce315a1b521c1d1f9aa16306` has 33/33 completed-success check runs.
 
-**Evidence:** TSIC main revision `a9cdee82a81582fa98da9a4f4f92067540e2a9d0`; exact-SHA check-run set 33/33 success; TSIC-10 run `42071032720` all steps success; PR #88 merged as `e6d1c00b8db486720fe2d08ad65337bc6963804b`.
+**Evidence:** exact-SHA check-run set 33/33 success; TSIC-10 run `42080733666` and TSIC-28 run `42080733534` completed successfully; PR #93 merged as `b8848be64e8cd559ce315a1b521c1d1f9aa16306`; PR #99's reviewed ThreatFade Web security release is pinned by TSIC; Phase 1 architecture PR #92 merged as `b221315db23f7612a93255599be3afe802a36a66` and its 33 workflow runs completed successfully. Earlier `a9cdee...` evidence remains historical, not the latest baseline.
 
 **Deliverables**
 - Canonical immutable Agent System baseline.
