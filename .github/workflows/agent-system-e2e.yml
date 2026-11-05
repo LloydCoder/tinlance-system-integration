@@ -67,7 +67,7 @@ jobs:
               if actual != expected:
                   errors.append(f"{key}: expected {expected}, got {actual}")
           if errors:
-              raise SystemExit("Ecosystem lock mismatch:\\n" + "\\n".join(errors))
+              raise SystemExit("Ecosystem lock mismatch:\n" + "\n".join(errors))
           print("PASS cross-repository SHAs match the reviewed TADL ecosystem lock")
           PY
       - name: Install Platform
@@ -128,7 +128,7 @@ jobs:
       - name: Emit machine-readable Agent System certification manifest
         if: always()
         env:
-          TSIC_REVISION: ${{ github.sha }}
+          TSIC_REVISION: ${{ github.event.pull_request.head.sha || github.sha }}
           TADL_LOCK_SOURCE_REVISION: 1e6f11f0d6e4a396028c6a3475425410be2cdd71
           JOB_STATUS: ${{ job.status }}
           WORKFLOW_RUN_ID: ${{ github.run_id }}
@@ -184,7 +184,7 @@ jobs:
           }
           output = Path("certification-artifacts/agent-system-e2e.json")
           output.parent.mkdir(parents=True, exist_ok=True)
-          output.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\\n", encoding="utf-8")
+          output.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
           print(json.dumps(manifest, sort_keys=True))
           PY
       - name: Upload immutable Agent System certification evidence
