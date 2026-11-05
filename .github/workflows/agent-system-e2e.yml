@@ -125,6 +125,76 @@ jobs:
             echo "- Production readiness: unverified by this reference workflow"
             echo "- This job uses a deterministic reference Platform with fixture identities and in-memory stores."
           } >> "$GITHUB_STEP_SUMMARY"
+      - name: Emit machine-readable Agent System certification manifest
+        if: always()
+        env:
+          TSIC_REVISION: ${{ github.sha }}
+          TADL_LOCK_SOURCE_REVISION: 1e6f11f0d6e4a396028c6a3475425410be2cdd71
+          JOB_STATUS: ${{ job.status }}
+          WORKFLOW_RUN_ID: ${{ github.run_id }}
+          WORKFLOW_RUN_ATTEMPT: ${{ github.run_attempt }}
+          WORKFLOW_NAME: ${{ github.workflow }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          lock = json.loads(Path("agent-developer-lock/ecosystem.lock.json").read_text())
+          checkouts = {
+              "developer": "agent-developer",
+              "os": "agent-os",
+              "platform_sdk": "agent-platform-sdk",
+              "platform": "agent-platform",
+          }
+          repositories = {}
+          for key, path in checkouts.items():
+              actual = subprocess.check_output(["git", "-C", path, "rev-parse", "HEAD"], text=True).strip()
+              expected = lock["repositories"][key]["ref"]
+              if actual != expected:
+                  raise SystemExit(f"certification evidence pin mismatch for {key}: {actual} != {expected}")
+              repositories[key] = {
+                  "repository": lock["repositories"][key]["repository"],
+                  "expected_sha": expected,
+                  "observed_sha": actual,
+              }
+          tsic_actual = subprocess.check_output(["git", "-C", "tsic", "rev-parse", "HEAD"], text=True).strip()
+          manifest = {
+              "schema": "tinlance-agent-system-certification-evidence/v1",
+              "gate": "TSIC-01",
+              "scope": "reference-cross-repository-e2e",
+              "result": os.environ["JOB_STATUS"],
+              "baseline_id": lock["baseline_id"],
+              "tsic_revision": os.environ["TSIC_REVISION"],
+              "tsic_checkout_revision": tsic_actual,
+              "lock_source": {
+                  "repository": "LloydCoder/tinlance-agent-developer",
+                  "revision": os.environ["TADL_LOCK_SOURCE_REVISION"],
+              },
+              "integration_authority": lock["integration_authority"],
+              "repositories": repositories,
+              "workflow": os.environ["WORKFLOW_NAME"],
+              "workflow_run_id": os.environ["WORKFLOW_RUN_ID"],
+              "workflow_run_attempt": int(os.environ["WORKFLOW_RUN_ATTEMPT"]),
+              "generated_at": datetime.now(timezone.utc).isoformat(),
+              "live_deployment_verified": False,
+              "production_readiness": "unverified",
+          }
+          output = Path("certification-artifacts/agent-system-e2e.json")
+          output.parent.mkdir(parents=True, exist_ok=True)
+          output.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\\n", encoding="utf-8")
+          print(json.dumps(manifest, sort_keys=True))
+          PY
+      - name: Upload immutable Agent System certification evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: agent-system-e2e-${{ github.run_id }}-${{ github.run_attempt }}
+          path: certification-artifacts/agent-system-e2e.json
+          if-no-files-found: error
+          retention-days: 90
       - name: Stop reference Platform
         if: always()
         run: if test -f /tmp/tsic-platform-pid; then kill $(cat /tmp/tsic-platform-pid) || true; fi
