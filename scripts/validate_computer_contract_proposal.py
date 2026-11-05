@@ -140,15 +140,14 @@ def main() -> None:
         ({**examples[2], "fencing_token": 0}, "non-positive fencing token"),
         ({**examples[0], "unexpected_authority": True}, "unknown authority field"),
         ({**examples[4], "image_digest": "sha256:not-a-digest"}, "invalid image digest"),
-        ({**examples[3], "tenant_id": "tenant-b"}, "schema-valid tenant substitution is handled by authorization tests"),
     ]
-    for instance, label in invalid_cases[:-1]:
+    for instance, label in invalid_cases:
         if not list(validator.iter_errors(instance)):
             raise SystemExit(f"FAIL invalid proposal case was accepted: {label}")
 
     print(
         "PASS persistent computer proposal schema: "
-        f"schema=Draft2020-12 examples={len(examples)} negative_cases={len(invalid_cases) - 1} "
+        f"schema=Draft2020-12 examples={len(examples)} negative_cases={len(invalid_cases)} "
         "status=proposal-not-canonical"
     )
 
