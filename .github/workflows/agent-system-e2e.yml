@@ -25,19 +25,19 @@ jobs:
         with: {path: tsic, persist-credentials: false}
       - name: Checkout reviewed ecosystem lock source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-agent-developer, ref: e458a2aee1e72f18c912011793769400af7ef5fe, path: agent-developer-lock, persist-credentials: false}
+        with: {repository: LloydCoder/tinlance-agent-developer, ref: 1e6f11f0d6e4a396028c6a3475425410be2cdd71, path: agent-developer-lock, persist-credentials: false}
       - name: Checkout Agent Developer
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-agent-developer, ref: 818ca441d0708187152beb501ea0abe634417f07, path: agent-developer, persist-credentials: false}
+        with: {repository: LloydCoder/tinlance-agent-developer, ref: 74fb6f441b19966c07010d30fe94c99d3cca1a29, path: agent-developer, persist-credentials: false}
       - name: Checkout Agent OS
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-agent-os, ref: fa895ac047a94e9bf87234dbaaca44d70ef43efc, path: agent-os, persist-credentials: false}
+        with: {repository: LloydCoder/tinlance-agent-os, ref: 642d2c78810ff4eb6b9ec69e2fa1b4b5775b6b4f, path: agent-os, persist-credentials: false}
       - name: Checkout Platform SDK
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-agent-platform-sdk, ref: 8a41d6dce2fe778ab25c33dfa315328d06ec4908, path: agent-platform-sdk, persist-credentials: false}
+        with: {repository: LloydCoder/tinlance-agent-platform-sdk, ref: 9d12512bc1446133890e62ed0c3072ca28e623b7, path: agent-platform-sdk, persist-credentials: false}
       - name: Checkout Agent Platform
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-agent-platform, ref: 8ad20e37f5d559c757e360fbaf49bdf81e6e3e26, path: agent-platform, persist-credentials: false}
+        with: {repository: LloydCoder/tinlance-agent-platform, ref: c5a080c1fb4df68e45070f8cddfc30bf81edd7bb, path: agent-platform, persist-credentials: false}
       - name: Setup Python
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with: {python-version: '3.12'}
