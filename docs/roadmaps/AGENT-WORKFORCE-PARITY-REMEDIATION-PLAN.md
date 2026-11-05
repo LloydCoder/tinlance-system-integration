@@ -571,10 +571,10 @@ Reviewers are asked to approve or amend these decisions:
 
 ### External security and isolation references
 
-- [OWASP Top 10 for Agentic Applications 2026](https://genai.owasp.org/resource/top-10-for-agentic-applications/)
+- [OWASP Top 10 for Agentic Applications 2026](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/)
 - [gVisor security architecture](https://gvisor.dev/docs/architecture_guide/intro/)
 - [gVisor production guide](https://gvisor.dev/docs/user_guide/production/)
-- [CISA and partner guidance on careful adoption of agentic AI services](https://www.cisa.gov/resources-tools/resources/careful-adoption-agentic-artificial-intelligence-ai-services)
+- [CISA and partner guidance on careful adoption of agentic AI services](https://content.govdelivery.com/accounts/USDHSCISA/bulletins/41544ff)
 
 ---
 
