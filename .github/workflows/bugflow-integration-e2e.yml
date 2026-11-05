@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: LloydCoder/bugflow-elite
-          ref: c9ef8b5f7ef87aaaf23b943a498f39ce8697d07b
+          ref: 76cd80e7c799bcda9dbd18278e8136c22ff35ec7
           path: bugflow
           persist-credentials: false
       - name: Setup Python
