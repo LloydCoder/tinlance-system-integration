@@ -1,6 +1,6 @@
 # Agent Workforce Parity Remediation Plan
 
-**Status:** Active execution plan — Phase 0 remediation is in progress; no phase is certified complete solely by this document  
+**Status:** Active execution plan — Phase 0 certified green; Phase 1 architecture baseline reviewed and accepted for Phase 2; Phases 2–5 remain gated  
 **Owner:** Tinlance Agent System  
 **Canonical planning authority:** Tinlance System Integration & Conformance (TSIC)  
 **Baseline inspected:** 2026-11-05  
@@ -44,10 +44,10 @@ The following immutable main-branch heads were observed during this inspection:
 
 | Repository | Inspected main SHA | Commit date (UTC) |
 |---|---|---|
-| [tinlance-system-integration](https://github.com/LloydCoder/tinlance-system-integration) | `e6d1c00b8db486720fe2d08ad65337bc6963804b` | 2026-11-05 |
-| [tinlance-agent-platform](https://github.com/LloydCoder/tinlance-agent-platform) | `349d0626e552d34b5d29713657ece3e4e9d10bf8` | 2026-11-05 |
-| [tinlance-agent-os](https://github.com/LloydCoder/tinlance-agent-os) | `b41e065f0cef5466bc50637bb54103e2a0f14f7c` | 2026-11-05 |
-| [tinlance-agent-platform-sdk](https://github.com/LloydCoder/tinlance-agent-platform-sdk) | `0e1ab0289c0e0a50fecfca9d161322a42fc38ad7` | 2026-11-05 |
+| [tinlance-system-integration](https://github.com/LloydCoder/tinlance-system-integration) | `a9cdee82a81582fa98da9a4f4f92067540e2a9d0` | 2026-11-05 |
+| [tinlance-agent-platform](https://github.com/LloydCoder/tinlance-agent-platform) | `8a5d8d7ad00a759a96649fb0fb97adc78743788b` | 2026-11-05 |
+| [tinlance-agent-os](https://github.com/LloydCoder/tinlance-agent-os) | `eeeaf83cf35e3ba7387ec7838165862132c71204` | 2026-11-05 |
+| [tinlance-agent-platform-sdk](https://github.com/LloydCoder/tinlance-agent-platform-sdk) | `e418f9de6639779381a0cebc746991a52a8df1ce` | 2026-11-05 |
 | [tinlance-agent-developer (TADL)](https://github.com/LloydCoder/tinlance-agent-developer) | `1e6f11f0d6e4a396028c6a3475425410be2cdd71` | 2026-10-21 |
 
 These are observed branch heads, not a claim that all five revisions have passed a single mutually compatible certification run.
@@ -94,10 +94,12 @@ A difference between a branch head and a pinned release is not automatically a d
 
 ### 4.1.1 Execution findings recorded on 2026-11-05
 
-- TSIC PR [#88](https://github.com/LloydCoder/tinlance-system-integration/pull/88) merged the ThreatFade Web security/E2E pin remediation as `e6d1c00b8db486720fe2d08ad65337bc6963804b`. Its final PR revision reported 32 successful checks. This closes the specific TSIC-10 dependency/pin drift finding; it does **not** by itself certify the entire Agent Workforce programme.
-- The subsequent Dependabot update for `actions/setup-python` exposed a stale TSIC-01 forensic audit that hard-coded an older action SHA. The regression was corrected in the updated PR #86 branch by validating immutable 40-character action pins and required action identities rather than freezing third-party action revisions. The corrected candidate still requires its complete workflow suite to finish successfully before merge.
-- TSIC main and the four repositories have moved since the original baseline table. Their current heads are recorded in Section 3; these are inspection references, not yet one mutually certified release baseline.
-- The TADL lock source, TSIC Agent System baseline, and E2E workflow continue to represent distinct immutable revision sets. Their compatibility and certification authority must still be consolidated or explicitly reconciled under TSIC-R1 through TSIC-R4.
+- TSIC PR [#88](https://github.com/LloydCoder/tinlance-system-integration/pull/88) merged the ThreatFade Web dependency-security and E2E remediation. Its merge commit is `e6d1c00b8db486720fe2d08ad65337bc6963804b`.
+- TSIC main subsequently reconciled Agent System certification to the immutable TADL P10 release lock in `a9cdee82a81582fa98da9a4f4f92067540e2a9d0`. Both Agent System workflows now consume the pinned TADL lock source; the contract/finite-phase workflow verifies exact SHA equality and the live reference E2E emits a machine-readable manifest.
+- The exact TSIC main revision `a9cdee82a81582fa98da9a4f4f92067540e2a9d0` reported 33/33 check runs successful. TSIC-10 job `42071032720` passed every step, including engine security/detection tests, web format/lint/typecheck/unit tests/dependency audit, production build, Playwright E2E, live engine health/version and schema validation, TSIC authority validation and post-phase forensic audit.
+- The 12 cancelled workflow runs in the same recent history were older superseded commits; they are not failures on the certified SHA. The latest exact-SHA check-run set is the certification evidence.
+- Current branch heads listed in Section 3 are inspection references only. The P10 lock deliberately pins the reviewed compatibility set and does not silently follow branch heads.
+- Phase 0 is closed for the Agent System baseline and TSIC-10 reconciliation scope. This does not claim deployed persistent-computer production readiness or completion of the Agent Workforce parity programme.
 
 ### 4.2 Required TSIC deliverables
 
@@ -399,6 +401,10 @@ Parity claims must be capability-specific. A feature is not “complete” until
 
 ### Phase 0 — Baseline and TSIC authority reconciliation
 
+**Status: COMPLETE.** TSIC main `a9cdee82a81582fa98da9a4f4f92067540e2a9d0` has 33/33 successful check runs.
+
+**Evidence:** TSIC main revision `a9cdee82a81582fa98da9a4f4f92067540e2a9d0`; exact-SHA check-run set 33/33 success; TSIC-10 run `42071032720` all steps success; PR #88 merged as `e6d1c00b8db486720fe2d08ad65337bc6963804b`.
+
 **Deliverables**
 - Canonical immutable Agent System baseline.
 - Workflow purpose/assurance taxonomy.
@@ -415,6 +421,8 @@ Parity claims must be capability-specific. A feature is not “complete” until
 
 ### Phase 1 — Cloud-computer architecture approval
 
+**Status: COMPLETE — architecture and trust-boundary baseline reviewed and accepted.** The ADR, 20-scenario threat model, trust-boundary diagram, provider benchmark plan and proposal-only lifecycle schemas are reviewed in PR #92. This closes architecture approval only; it does not claim that a provider-backed computer runtime has been implemented or deployed.
+
 **Deliverables**
 - Architecture decision record.
 - Threat model and trust-boundary diagram.
@@ -429,7 +437,7 @@ Parity claims must be capability-specific. A feature is not “complete” until
 - Platform, OS, SDK, TADL and TSIC ownership reviewed.
 - Security review covers OWASP agentic risks and tenant escape paths.
 - No unresolved authority-boundary violation.
-- Provider and isolation choice supported by evidence rather than preference.
+- Architecture direction and tiering approved; final provider/isolation selection is made only after Phase 2 comparative measurements.
 
 ### Phase 2 — Provider and isolation feasibility spike
 
@@ -495,6 +503,17 @@ Parity claims must be capability-specific. A feature is not “complete” until
 - Security, reliability, privacy and economic controls pass.
 - User-visible parity scenarios pass on the released product.
 - Certification reports exact tested artifacts and deployed versions.
+
+## 8.1 Phase 1 architecture package (2026-11-05)
+
+The Phase 1 design package is authored in this branch:
+- `docs/architecture/decision-records/ADR-0004-persistent-agent-computer.md` — authority model, isolation tiers, persistence/snapshot semantics, lifecycle, control/data plane and acceptance gates.
+- `docs/architecture/persistent-agent-computer-threat-model.md` — assets, trust boundaries, 20 threat scenarios, fail-closed abuse cases and Phase 2 security tests.
+- `docs/architecture/persistent-agent-computer-benchmark-plan.md` — comparable Firecracker/gVisor/Kata benchmark, adversarial gates, measurement plan and decision rubric.
+- `contracts/proposals/computer/v1/computer-lifecycle.schema.json` — proposal-only typed lifecycle/profile/grant/instance/evidence shapes; explicitly not yet canonical.
+
+Forensic distinction: Platform currently has a bubblewrap-based local sandbox adapter, not a persistent cloud-computer service. OS has workspace-fabric and remote-runtime primitives, not a provider-backed VM lifecycle. Platform P6 explicitly leaves deployment-owned database, queue, object storage, KMS, isolated workers, telemetry and DR to a real deployment. The new architecture does not mislabel these primitives as cloud-computer implementation.
+
 
 ## 9. Required test and evidence matrix
 
