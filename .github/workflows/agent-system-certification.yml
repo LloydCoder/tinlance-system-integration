@@ -1,4 +1,4 @@
-name: Agent System Certification
+name: Agent System Contract and Finite-Phase Conformance
 
 on:
   push:
@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   certify:
-    name: Agent System end-to-end certification
+    name: Agent System contract and finite-phase conformance
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -34,6 +34,14 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Checkout canonical TADL lock source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: LloydCoder/tinlance-agent-developer
+          ref: 1e6f11f0d6e4a396028c6a3475425410be2cdd71
+          path: agent-developer-lock
+          persist-credentials: false
+
       - name: Read immutable Agent System baseline
         shell: bash
         run: |
@@ -42,10 +50,23 @@ jobs:
           import json
           from pathlib import Path
           baseline = json.loads(Path("policies/agent-system-baseline.json").read_text())
+          lock = json.loads(Path("agent-developer-lock/ecosystem.lock.json").read_text())
+          if lock.get("schema") != "tinlance-agent-ecosystem-lock/v1":
+              raise SystemExit("canonical TADL lock schema is invalid")
+          if baseline["baseline_id"] != lock["baseline_id"]:
+              raise SystemExit("TSIC baseline ID differs from canonical TADL lock")
+          authority = lock["integration_authority"]
+          if baseline["tsic"] != {"repository": authority["repository"], "ref": authority["ref"]}:
+              raise SystemExit("TSIC authority pin differs from canonical TADL lock")
+          if set(baseline["repositories"]) != set(lock["repositories"]):
+              raise SystemExit("TSIC and TADL repository sets differ")
           for key, item in baseline["repositories"].items():
-              if len(item["ref"]) != 40:
-                  raise SystemExit(f"invalid reviewed SHA for {key}")
-          print(f"Agent System baseline: {baseline['baseline_id']}")
+              locked = lock["repositories"][key]
+              if item["repository"] != locked["repository"] or item["ref"] != locked["ref"]:
+                  raise SystemExit(f"TSIC baseline differs from canonical TADL lock for {key}")
+              if len(item["ref"]) != 40 or any(ch not in "0123456789abcdef" for ch in item["ref"]):
+                  raise SystemExit(f"invalid immutable reviewed SHA for {key}")
+          print(f"Agent System canonical baseline: {baseline['baseline_id']} (TADL P10 release lock)")
           PY
 
       - name: Materialize reviewed Agent System repositories
@@ -57,8 +78,8 @@ jobs:
           import subprocess
           from pathlib import Path
 
-          baseline = json.loads(Path("policies/agent-system-baseline.json").read_text())
-          for name, item in baseline["repositories"].items():
+          lock = json.loads(Path("agent-developer-lock/ecosystem.lock.json").read_text())
+          for name, item in lock["repositories"].items():
               target = Path("/tmp") / f"tinlance-{name}"
               subprocess.run(
                   ["git", "clone", "--quiet", f"https://github.com/{item['repository']}.git", str(target)],
@@ -68,19 +89,26 @@ jobs:
                   ["git", "-C", str(target), "checkout", "--quiet", item["ref"]],
                   check=True,
               )
+              actual = subprocess.check_output(["git", "-C", str(target), "rev-parse", "HEAD"], text=True).strip()
+              if actual != item["ref"]:
+                  raise SystemExit(f"reviewed checkout mismatch for {name}: {actual} != {item['ref']}")
+          authority = lock["integration_authority"]
           tsic_target = Path("/tmp/tinlance-tsic")
           subprocess.run(
-              ["git", "clone", "--quiet", f"https://github.com/{baseline['tsic']['repository']}.git", str(tsic_target)],
+              ["git", "clone", "--quiet", f"https://github.com/{authority['repository']}.git", str(tsic_target)],
               check=True,
           )
           subprocess.run(
-              ["git", "-C", str(tsic_target), "checkout", "--quiet", baseline["tsic"]["ref"]],
+              ["git", "-C", str(tsic_target), "checkout", "--quiet", authority["ref"]],
               check=True,
           )
+          actual_tsic = subprocess.check_output(["git", "-C", str(tsic_target), "rev-parse", "HEAD"], text=True).strip()
+          if actual_tsic != authority["ref"]:
+              raise SystemExit(f"reviewed TSIC checkout mismatch: {actual_tsic} != {authority['ref']}")
           PY
 
       - name: Install TADL
-        working-directory: /tmp/tinlance-developer
+        working-directory: agent-developer-lock
         run: npm ci --ignore-scripts && npm run build
 
       - name: Install Python integration components
@@ -91,13 +119,79 @@ jobs:
           python -m pip install -e "/tmp/tinlance-platform/reference_agents[test]" --no-deps
 
       - name: Verify canonical TSIC authority against reviewed baseline
-        working-directory: /tmp/tinlance-developer
+        working-directory: agent-developer-lock
         run: python scripts/tsic_conformance.py
 
       - name: Run Agent System end-to-end contract certification
-        working-directory: /tmp/tinlance-developer
+        working-directory: agent-developer-lock
         run: python scripts/ecosystem_conformance.py
 
       - name: Run finite-phase certification
-        working-directory: /tmp/tinlance-developer
+        working-directory: agent-developer-lock
         run: python scripts/ecosystem_phase_conformance.py
+      - name: Emit machine-readable Agent System conformance manifest
+        if: always()
+        env:
+          TSIC_REVISION: ${{ github.event.pull_request.head.sha || github.sha }}
+          TADL_LOCK_SOURCE_REVISION: 1e6f11f0d6e4a396028c6a3475425410be2cdd71
+          JOB_STATUS: ${{ job.status }}
+          WORKFLOW_RUN_ID: ${{ github.run_id }}
+          WORKFLOW_RUN_ATTEMPT: ${{ github.run_attempt }}
+          WORKFLOW_NAME: ${{ github.workflow }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          lock = json.loads(Path("agent-developer-lock/ecosystem.lock.json").read_text())
+          repositories = {}
+          for key, item in lock["repositories"].items():
+              checkout = Path("/tmp") / f"tinlance-{key}"
+              actual = subprocess.check_output(["git", "-C", str(checkout), "rev-parse", "HEAD"], text=True).strip()
+              if actual != item["ref"]:
+                  raise SystemExit(f"certification evidence pin mismatch for {key}: {actual} != {item['ref']}")
+              repositories[key] = {
+                  "repository": item["repository"],
+                  "expected_sha": item["ref"],
+                  "observed_sha": actual,
+              }
+          tsic_actual = subprocess.check_output(
+              ["git", "-C", "/tmp/tinlance-tsic", "rev-parse", "HEAD"], text=True
+          ).strip()
+          manifest = {
+              "schema": "tinlance-agent-system-certification-evidence/v1",
+              "gate": "TSIC-01",
+              "scope": "contract-and-finite-phase-conformance",
+              "result": os.environ["JOB_STATUS"],
+              "baseline_id": lock["baseline_id"],
+              "tsic_revision": os.environ["TSIC_REVISION"],
+              "tsic_checkout_revision": tsic_actual,
+              "lock_source": {
+                  "repository": "LloydCoder/tinlance-agent-developer",
+                  "revision": os.environ["TADL_LOCK_SOURCE_REVISION"],
+              },
+              "integration_authority": lock["integration_authority"],
+              "repositories": repositories,
+              "workflow": os.environ["WORKFLOW_NAME"],
+              "workflow_run_id": os.environ["WORKFLOW_RUN_ID"],
+              "workflow_run_attempt": int(os.environ["WORKFLOW_RUN_ATTEMPT"]),
+              "generated_at": datetime.now(timezone.utc).isoformat(),
+              "live_deployment_verified": False,
+              "production_readiness": "unverified",
+          }
+          output = Path("certification-artifacts/agent-system-conformance.json")
+          output.parent.mkdir(parents=True, exist_ok=True)
+          output.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+          print(json.dumps(manifest, sort_keys=True))
+          PY
+      - name: Upload immutable Agent System conformance evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: agent-system-conformance-${{ github.run_id }}-${{ github.run_attempt }}
+          path: certification-artifacts/agent-system-conformance.json
+          if-no-files-found: error
+          retention-days: 90

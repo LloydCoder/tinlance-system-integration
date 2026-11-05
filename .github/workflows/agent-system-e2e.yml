@@ -25,19 +25,19 @@ jobs:
         with: {path: tsic, persist-credentials: false}
       - name: Checkout reviewed ecosystem lock source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-agent-developer, ref: e458a2aee1e72f18c912011793769400af7ef5fe, path: agent-developer-lock, persist-credentials: false}
+        with: {repository: LloydCoder/tinlance-agent-developer, ref: 1e6f11f0d6e4a396028c6a3475425410be2cdd71, path: agent-developer-lock, persist-credentials: false}
       - name: Checkout Agent Developer
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-agent-developer, ref: 818ca441d0708187152beb501ea0abe634417f07, path: agent-developer, persist-credentials: false}
+        with: {repository: LloydCoder/tinlance-agent-developer, ref: 74fb6f441b19966c07010d30fe94c99d3cca1a29, path: agent-developer, persist-credentials: false}
       - name: Checkout Agent OS
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-agent-os, ref: fa895ac047a94e9bf87234dbaaca44d70ef43efc, path: agent-os, persist-credentials: false}
+        with: {repository: LloydCoder/tinlance-agent-os, ref: 642d2c78810ff4eb6b9ec69e2fa1b4b5775b6b4f, path: agent-os, persist-credentials: false}
       - name: Checkout Platform SDK
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-agent-platform-sdk, ref: 8a41d6dce2fe778ab25c33dfa315328d06ec4908, path: agent-platform-sdk, persist-credentials: false}
+        with: {repository: LloydCoder/tinlance-agent-platform-sdk, ref: 9d12512bc1446133890e62ed0c3072ca28e623b7, path: agent-platform-sdk, persist-credentials: false}
       - name: Checkout Agent Platform
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-agent-platform, ref: 8ad20e37f5d559c757e360fbaf49bdf81e6e3e26, path: agent-platform, persist-credentials: false}
+        with: {repository: LloydCoder/tinlance-agent-platform, ref: c5a080c1fb4df68e45070f8cddfc30bf81edd7bb, path: agent-platform, persist-credentials: false}
       - name: Setup Python
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with: {python-version: '3.12'}
@@ -67,7 +67,7 @@ jobs:
               if actual != expected:
                   errors.append(f"{key}: expected {expected}, got {actual}")
           if errors:
-              raise SystemExit("Ecosystem lock mismatch:\\n" + "\\n".join(errors))
+              raise SystemExit("Ecosystem lock mismatch:\n" + "\n".join(errors))
           print("PASS cross-repository SHAs match the reviewed TADL ecosystem lock")
           PY
       - name: Install Platform
@@ -125,6 +125,76 @@ jobs:
             echo "- Production readiness: unverified by this reference workflow"
             echo "- This job uses a deterministic reference Platform with fixture identities and in-memory stores."
           } >> "$GITHUB_STEP_SUMMARY"
+      - name: Emit machine-readable Agent System certification manifest
+        if: always()
+        env:
+          TSIC_REVISION: ${{ github.event.pull_request.head.sha || github.sha }}
+          TADL_LOCK_SOURCE_REVISION: 1e6f11f0d6e4a396028c6a3475425410be2cdd71
+          JOB_STATUS: ${{ job.status }}
+          WORKFLOW_RUN_ID: ${{ github.run_id }}
+          WORKFLOW_RUN_ATTEMPT: ${{ github.run_attempt }}
+          WORKFLOW_NAME: ${{ github.workflow }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          lock = json.loads(Path("agent-developer-lock/ecosystem.lock.json").read_text())
+          checkouts = {
+              "developer": "agent-developer",
+              "os": "agent-os",
+              "platform_sdk": "agent-platform-sdk",
+              "platform": "agent-platform",
+          }
+          repositories = {}
+          for key, path in checkouts.items():
+              actual = subprocess.check_output(["git", "-C", path, "rev-parse", "HEAD"], text=True).strip()
+              expected = lock["repositories"][key]["ref"]
+              if actual != expected:
+                  raise SystemExit(f"certification evidence pin mismatch for {key}: {actual} != {expected}")
+              repositories[key] = {
+                  "repository": lock["repositories"][key]["repository"],
+                  "expected_sha": expected,
+                  "observed_sha": actual,
+              }
+          tsic_actual = subprocess.check_output(["git", "-C", "tsic", "rev-parse", "HEAD"], text=True).strip()
+          manifest = {
+              "schema": "tinlance-agent-system-certification-evidence/v1",
+              "gate": "TSIC-01",
+              "scope": "reference-cross-repository-e2e",
+              "result": os.environ["JOB_STATUS"],
+              "baseline_id": lock["baseline_id"],
+              "tsic_revision": os.environ["TSIC_REVISION"],
+              "tsic_checkout_revision": tsic_actual,
+              "lock_source": {
+                  "repository": "LloydCoder/tinlance-agent-developer",
+                  "revision": os.environ["TADL_LOCK_SOURCE_REVISION"],
+              },
+              "integration_authority": lock["integration_authority"],
+              "repositories": repositories,
+              "workflow": os.environ["WORKFLOW_NAME"],
+              "workflow_run_id": os.environ["WORKFLOW_RUN_ID"],
+              "workflow_run_attempt": int(os.environ["WORKFLOW_RUN_ATTEMPT"]),
+              "generated_at": datetime.now(timezone.utc).isoformat(),
+              "live_deployment_verified": False,
+              "production_readiness": "unverified",
+          }
+          output = Path("certification-artifacts/agent-system-e2e.json")
+          output.parent.mkdir(parents=True, exist_ok=True)
+          output.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+          print(json.dumps(manifest, sort_keys=True))
+          PY
+      - name: Upload immutable Agent System certification evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: agent-system-e2e-${{ github.run_id }}-${{ github.run_attempt }}
+          path: certification-artifacts/agent-system-e2e.json
+          if-no-files-found: error
+          retention-days: 90
       - name: Stop reference Platform
         if: always()
         run: if test -f /tmp/tsic-platform-pid; then kill $(cat /tmp/tsic-platform-pid) || true; fi
