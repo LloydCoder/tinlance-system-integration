@@ -1,26 +1,26 @@
 {
   "schema_version": "2.0.0",
-  "baseline_id": "tsic-01-agent-system-e2e-2026-10-08",
+  "baseline_id": "tsic-19-agent-system-p1-2026-10-17",
   "tsic": {
     "repository": "LloydCoder/tinlance-system-integration",
-    "ref": "bdb5b7f9f2295562ad8681c591a8a927500b4d8c"
+    "ref": "9f348bdb9f550a44490b2afb14320173f0911877"
   },
   "repositories": {
     "developer": {
       "repository": "LloydCoder/tinlance-agent-developer",
-      "ref": "25fac21a8912bf58f0a9fc65e6ed1cbede70bbee"
+      "ref": "818ca441d0708187152beb501ea0abe634417f07"
     },
     "os": {
       "repository": "LloydCoder/tinlance-agent-os",
-      "ref": "8da4aceca56ff58792b81545f3992c5e4493bda4"
+      "ref": "fa895ac047a94e9bf87234dbaaca44d70ef43efc"
     },
     "platform_sdk": {
       "repository": "LloydCoder/tinlance-agent-platform-sdk",
-      "ref": "615eef529831fdfbe37e050e45d9a1a8c4472291"
+      "ref": "8a41d6dce2fe778ab25c33dfa315328d06ec4908"
     },
     "platform": {
       "repository": "LloydCoder/tinlance-agent-platform",
-      "ref": "4f524c51f24ace3fa96b5f2fbd716d0270c16aae"
+      "ref": "8ad20e37f5d559c757e360fbaf49bdf81e6e3e26"
     }
   },
   "invariants": [
