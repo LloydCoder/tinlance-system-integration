@@ -31,10 +31,24 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: LloydCoder/tinlance-threatfade-web
-          ref: f2865a034794f706bd57e4427a4e698942c95b54
+          ref: 28e0ed5246ea0f749fad7a53ced5b05ec5002d19
           path: threatfade-web
           fetch-depth: 0
           persist-credentials: false
+      - name: Verify immutable TSIC-10 revision pins
+        working-directory: tsic
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          baseline = json.loads(Path("policies/threatfade-web-baseline.json").read_text())
+          workflow = Path(".github/workflows/threatfade-web-engine-e2e.yml").read_text()
+          for system in ("engine", "web"):
+              revision = baseline[system]["ref"]
+              if len(revision) != 40 or revision not in workflow:
+                  raise SystemExit(f"TSIC-10 {system} revision is not a 40-character immutable pin in the workflow")
+          print("PASS TSIC-10 engine and web immutable pins match the canonical baseline")
+          PY
       - name: Setup Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97
         with:
@@ -91,7 +105,7 @@ jobs:
         run: npm run build
       - name: Install Playwright browser
         working-directory: threatfade-web
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install chromium
       - name: Run web E2E tests
         working-directory: threatfade-web
         env:

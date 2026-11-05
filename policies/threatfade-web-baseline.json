@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0.0",
-  "baseline_id": "tsic-10-threatfade-web-engine-2026-10-09",
+  "baseline_id": "tsic-10-threatfade-web-engine-2026-11-05",
   "authority": "tsic",
   "engine": {
     "repository": "LloydCoder/tinlance-threatfade",
@@ -8,7 +8,7 @@
   },
   "web": {
     "repository": "LloydCoder/tinlance-threatfade-web",
-    "ref": "f2865a034794f706bd57e4427a4e698942c95b54"
+    "ref": "28e0ed5246ea0f749fad7a53ced5b05ec5002d19"
   },
   "authority_boundaries": {
     "engine": "detection, canonical analyst records, authorization and evidence persistence",
