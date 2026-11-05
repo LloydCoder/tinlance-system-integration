@@ -1,4 +1,4 @@
-name: Agent System Certification
+name: Agent System Contract and Finite-Phase Conformance
 
 on:
   push:
@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   certify:
-    name: Agent System end-to-end certification
+    name: Agent System contract and finite-phase conformance
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -34,6 +34,14 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Checkout canonical TADL lock source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: LloydCoder/tinlance-agent-developer
+          ref: e458a2aee1e72f18c912011793769400af7ef5fe
+          path: agent-developer-lock
+          persist-credentials: false
+
       - name: Read immutable Agent System baseline
         shell: bash
         run: |
@@ -42,10 +50,23 @@ jobs:
           import json
           from pathlib import Path
           baseline = json.loads(Path("policies/agent-system-baseline.json").read_text())
+          lock = json.loads(Path("agent-developer-lock/ecosystem.lock.json").read_text())
+          if lock.get("schema") != "tinlance-agent-ecosystem-lock/v1":
+              raise SystemExit("canonical TADL lock schema is invalid")
+          if baseline["baseline_id"] != lock["baseline_id"]:
+              raise SystemExit("TSIC baseline ID differs from canonical TADL lock")
+          authority = lock["integration_authority"]
+          if baseline["tsic"] != {"repository": authority["repository"], "ref": authority["ref"]}:
+              raise SystemExit("TSIC authority pin differs from canonical TADL lock")
+          if set(baseline["repositories"]) != set(lock["repositories"]):
+              raise SystemExit("TSIC and TADL repository sets differ")
           for key, item in baseline["repositories"].items():
-              if len(item["ref"]) != 40:
-                  raise SystemExit(f"invalid reviewed SHA for {key}")
-          print(f"Agent System baseline: {baseline['baseline_id']}")
+              locked = lock["repositories"][key]
+              if item["repository"] != locked["repository"] or item["ref"] != locked["ref"]:
+                  raise SystemExit(f"TSIC baseline differs from canonical TADL lock for {key}")
+              if len(item["ref"]) != 40 or any(ch not in "0123456789abcdef" for ch in item["ref"]):
+                  raise SystemExit(f"invalid immutable reviewed SHA for {key}")
+          print(f"Agent System canonical baseline: {baseline['baseline_id']} (TADL lock e458a2a)")
           PY
 
       - name: Materialize reviewed Agent System repositories
@@ -57,8 +78,8 @@ jobs:
           import subprocess
           from pathlib import Path
 
-          baseline = json.loads(Path("policies/agent-system-baseline.json").read_text())
-          for name, item in baseline["repositories"].items():
+          lock = json.loads(Path("agent-developer-lock/ecosystem.lock.json").read_text())
+          for name, item in lock["repositories"].items():
               target = Path("/tmp") / f"tinlance-{name}"
               subprocess.run(
                   ["git", "clone", "--quiet", f"https://github.com/{item['repository']}.git", str(target)],
@@ -68,15 +89,22 @@ jobs:
                   ["git", "-C", str(target), "checkout", "--quiet", item["ref"]],
                   check=True,
               )
+              actual = subprocess.check_output(["git", "-C", str(target), "rev-parse", "HEAD"], text=True).strip()
+              if actual != item["ref"]:
+                  raise SystemExit(f"reviewed checkout mismatch for {name}: {actual} != {item['ref']}")
+          authority = lock["integration_authority"]
           tsic_target = Path("/tmp/tinlance-tsic")
           subprocess.run(
-              ["git", "clone", "--quiet", f"https://github.com/{baseline['tsic']['repository']}.git", str(tsic_target)],
+              ["git", "clone", "--quiet", f"https://github.com/{authority['repository']}.git", str(tsic_target)],
               check=True,
           )
           subprocess.run(
-              ["git", "-C", str(tsic_target), "checkout", "--quiet", baseline["tsic"]["ref"]],
+              ["git", "-C", str(tsic_target), "checkout", "--quiet", authority["ref"]],
               check=True,
           )
+          actual_tsic = subprocess.check_output(["git", "-C", str(tsic_target), "rev-parse", "HEAD"], text=True).strip()
+          if actual_tsic != authority["ref"]:
+              raise SystemExit(f"reviewed TSIC checkout mismatch: {actual_tsic} != {authority['ref']}")
           PY
 
       - name: Install TADL
