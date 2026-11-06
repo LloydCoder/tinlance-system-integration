@@ -1,6 +1,6 @@
 # Persistent Agent Computer — Phase 2 Feasibility and Benchmark Plan
 
-**Status:** Approved test design; KVM prerequisite, Firecracker VMM API smoke and three guest boots verified on an ephemeral CI runner; jailer, comparative benchmark and recovery gates remain pending  
+**Status:** Approved test design; KVM prerequisite, direct and jailed Firecracker guest boots, and jailer process-confinement smoke verified on ephemeral CI runners; adversarial, comparative benchmark and recovery gates remain pending  
 **Date:** 2026-11-06
 
 ## 1. Objective
@@ -135,23 +135,23 @@ The benchmark must validate the installed release and host configuration; docume
 
 ### What this evidence proves — and does not prove
 
-**Proven:** the ephemeral runner exposes usable KVM prerequisites and can start the pinned Firecracker VMM sufficiently to answer its API-version request.
+**Proven:** an ephemeral KVM-capable runner exposes the required host prerequisites; pinned Firecracker v1.17.0 boots the guest both directly and through the upstream jailer; the jailed process runs under a dedicated unprivileged identity with zero effective capabilities, `NoNewPrivs`, seccomp mode 2 on every observed Firecracker thread, PID/mount namespace separation, a dedicated chroot root, and enforced cgroup v2 CPU/memory/PID limits.
 
-**Not proven:** guest kernel/rootfs boot; jailer execution or production host hardening; guest/host or cross-tenant isolation; hostile workload behavior; gVisor or Kata compatibility; browser operation; suspend/resume; snapshot/restore; lease fencing; network reattachment; density; p95 latency; unit economics; or operational recovery.
+**Not proven:** hostile guest escape resistance or cross-tenant adversarial access denial; egress/metadata/private-network policy; gVisor or Kata compatibility; browser operation; suspend/resume; snapshot/restore; lease fencing; network reattachment; density; statistically meaningful p95 latency; unit economics; or operational recovery.
 
-The probe reported `seccomp_active=false` for the runner process. The VMM smoke did not invoke the Firecracker jailer and is not a production security certification. The GitHub-hosted runner is ephemeral validation infrastructure, not an approved persistent-computer fleet.
+The host probe's `seccomp_active=false` field describes the probe/runner process, not the Firecracker VMM. The separately inspected jailed Firecracker process reported seccomp mode 2 on all four observed threads. These are smoke-level host checks, not production security certification. The GitHub-hosted runner is ephemeral validation infrastructure, not an approved persistent-computer fleet.
 
 ### Remaining Phase 2 gates
 
 1. [x] Boot a pinned, provenance-verified guest kernel and root filesystem under Firecracker; capture boot and guest-ready evidence (direct-VMM smoke only; not jailer certification).
-2. Exercise Firecracker through the intended jailer/host-hardening path, including cgroups, namespaces, seccomp, unprivileged identity and resource limits.
+2. [x] Exercise Firecracker through the upstream jailer with cgroups, namespaces, seccomp, unprivileged identity, chroot and resource limits. Evidence is a three-boot process-confinement smoke, not a production certification.
 3. Execute comparable Firecracker, gVisor and Kata workload profiles on a controlled KVM-capable environment; record at least three runs per candidate/profile and p50/p95/p99 with sample counts.
 4. Run the full adversarial suite, including tenant separation, filesystem/process escape, metadata/private-network denial, DNS/redirect/IPv6/proxy bypass, grant revocation, snapshot secret leakage and duplicate-restore fencing.
 5. Verify suspend/resume, snapshot/restore, host/worker failure recovery, network/vsock reattachment and teardown.
 6. Produce a fully attributed active/idle/storage/snapshot/egress/telemetry/operations cost model and verify environment teardown and spend reconciliation.
 7. Update ADR-0004 with measured results and an explicit go/no-go. Do not select a production provider from the host smoke alone.
 
-**Phase 2 remains OPEN.** This evidence closes only the initial KVM-host prerequisite and VMM API smoke gate.
+**Phase 2 remains OPEN.** The KVM prerequisite, direct guest-boot, and jailer host-confinement smoke gates are closed. Adversarial, comparative, recovery, cost and production go/no-go gates remain open.
 
 
 
@@ -168,3 +168,17 @@ The probe reported `seccomp_active=false` for the runner process. The VMM smoke 
 - Result: 3/3 fresh guest instances reached the explicit `TINLANCE_GUEST_READY` init marker with no virtual NIC configured and a read-only root drive. Median boot-to-marker: 1,089.4 ms; maximum: 1,092.9 ms.
 
 **Evidence interpretation:** this closes the pinned guest-boot smoke gate. It does not prove jailer execution, production host hardening, hostile-tenant isolation, cgroup enforcement under adversarial load, network policy, snapshot/restore safety, lease fencing, or provider suitability. Three samples are a smoke check and are not sufficient for p95 comparisons. The benchmark plan remains open.
+
+
+### Jailer host-confinement smoke — 2026-11-06
+
+- Agent Platform PR [#167](https://github.com/LloydCoder/tinlance-agent-platform/pull/167) merged at `a9f68a5dabf895fbb81975615e4425b42f9da01a`.
+- Tested head: `d3b5d9783a04da3fd3c2e1a59bd1573cae10c06e`; all 20 exact-head check runs completed successfully.
+- Ephemeral KVM workflow: [42173261878](https://github.com/LloydCoder/tinlance-agent-platform/actions/runs/42173261878).
+- Result: 3/3 fresh guests booted through Firecracker v1.17.0 and the upstream jailer. Median boot-to-ready: 1,158.5 ms; maximum: 1,159.0 ms.
+- Process evidence: UID 999 / GID 987; effective capabilities `0000000000000000`; `NoNewPrivs=1`; process seccomp mode 2; all four observed Firecracker threads reported seccomp mode 2; PID and mount namespaces were distinct from the host.
+- Chroot boundary was verified by matching the jailed process root inode to the dedicated chroot root (`66305:9450344`).
+- Cgroup v2 limits were read back from the live process cgroup: `cpu.max=100000 100000`, `memory.max=805306368`, `pids.max=128`.
+- The guest root drive was read-only and no virtual NIC was configured. The runner was ephemeral GitHub-hosted KVM; no AWS resources were provisioned, modified or left running.
+
+**Evidence interpretation:** this closes the upstream-jailer process-confinement smoke gate. It does not certify production host configuration or prove hostile escape resistance, cross-tenant adversarial isolation, egress policy, snapshot/restore, fencing or recovery. The three boot samples remain smoke measurements, not p95 evidence.
