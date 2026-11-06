@@ -28,7 +28,7 @@ jobs:
         with: {repository: LloydCoder/tinlance-agent-developer, ref: b8f9e6e1fe34e59352e7fae553f81865b53b9f99, path: agent-developer-lock, persist-credentials: false}
       - name: Checkout Agent Developer
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-agent-developer, ref: b8f9e6e1fe34e59352e7fae553f81865b53b9f99, path: agent-developer, persist-credentials: false}
+        with: {repository: LloydCoder/tinlance-agent-developer, ref: 74fb6f441b19966c07010d30fe94c99d3cca1a29, path: agent-developer, persist-credentials: false}
       - name: Checkout Agent OS
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with: {repository: LloydCoder/tinlance-agent-os, ref: 642d2c78810ff4eb6b9ec69e2fa1b4b5775b6b4f, path: agent-os, persist-credentials: false}
