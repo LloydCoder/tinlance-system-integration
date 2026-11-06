@@ -612,3 +612,26 @@ Reviewers are asked to approve or amend these decisions:
 ---
 
 **Review rule:** approve this plan before implementation begins. Any production implementation PR must reference the accepted plan, the approved TSIC baseline and the applicable phase acceptance criteria.
+
+
+
+## 8.2 Phase 2 execution progress — 2026-11-06
+
+**Status:** Phase 2 remains open. The first real guest-boot smoke gate is now closed; provider selection and production implementation remain blocked on the remaining security, recovery, comparison and economic evidence.
+
+- Platform host-capability gate PR [#165](https://github.com/LloydCoder/tinlance-agent-platform/pull/165) merged after all 15 exact-head checks passed. It now requires CPU virtualization, accessible KVM, supported architecture, cgroup v2 `cpu`/`memory`/`pids` controllers and seccomp-filter support before reporting microVM prerequisites ready.
+- Platform guest-boot PR [#166](https://github.com/LloydCoder/tinlance-agent-platform/pull/166) merged at `f578cca7130a079ebff7602b56af520fb1aa6db5`. Its tested head `12aed58fc2a4901e4fa28e7b8c61780faaab1b26` had 20/20 exact-head checks completed successfully.
+- Ephemeral KVM workflow [42171110389](https://github.com/LloydCoder/tinlance-agent-platform/actions/runs/42171110389) booted three fresh Firecracker v1.17.0 guest instances. Each reached the explicit `TINLANCE_GUEST_READY` init marker with no virtual NIC configured and a read-only root drive.
+- Median boot-to-ready was 1,089.4 ms; maximum was 1,092.9 ms. Kernel and rootfs digests and the upstream artifact keys are recorded in the benchmark evidence log.
+- The run used ephemeral GitHub-hosted KVM infrastructure. No AWS resource was provisioned, modified or left running.
+
+**Scope of proof:** host prerequisite detection and a repeatable, pinned, three-run direct-VMM guest boot smoke. It is not a jailer/production-isolation certification and does not prove hostile-tenant isolation, egress controls, resource enforcement under attack, snapshots, restore fencing, browser compatibility, gVisor/Kata comparison, density, p95 latency or unit economics.
+
+### Remaining Phase 2 gates
+
+1. Exercise Firecracker through the jailer with a dedicated unprivileged identity, cgroup limits, namespaces, seccomp and controlled filesystem/device access.
+2. Verify the complete isolation boundary with synthetic hostile workloads: filesystem/process escape, host socket access, cross-tenant access, metadata/private-network denial, DNS/redirect/IPv6/proxy bypass and resource exhaustion.
+3. Run equivalent W1–W6 workload profiles on Firecracker, gVisor and Kata where host/runtime prerequisites permit. Record raw measurements, sample counts and p50/p95/p99; mark unsupported combinations as explicit no-go evidence rather than silently omitting them.
+4. Implement and verify suspend/resume and snapshot/restore, including encrypted tenant-bound disks, snapshot provenance, generation/policy/approval/secret revalidation, network reattachment and single-successor fencing.
+5. Complete attributed active/idle/storage/snapshot/egress/telemetry/operations cost model and teardown reconciliation.
+6. Update ADR-0004 with comparative evidence and a reviewed go/no-go decision before Phase 3 implementation begins.
