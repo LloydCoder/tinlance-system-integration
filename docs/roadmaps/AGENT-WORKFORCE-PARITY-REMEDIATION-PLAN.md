@@ -455,6 +455,10 @@ Parity claims must be capability-specific. A feature is not “complete” until
 - Security and cost acceptance signed off.
 - Architecture decision updated with measured results.
 
+**Current evidence (2026-11-06) — Phase 2 remains OPEN.** Agent Platform PR [#163](https://github.com/LloydCoder/tinlance-agent-platform/pull/163) merged as `61c255c700594b9f6b626a7fe3254c7fd4a92213`. Its [host-feasibility run](https://github.com/LloydCoder/tinlance-agent-platform/actions/runs/42168071508) passed on an ephemeral Ubuntu 24.04.5 x86_64 runner with accessible KVM and a successful pinned Firecracker v1.17.0 VMM API-version smoke. The runner probe reported `seccomp_active=false`; no jailer or guest was booted. The existing AWS test host has no `/dev/kvm`, and no AWS resources were provisioned or modified. Full evidence and remaining gates are in the [benchmark plan](../architecture/persistent-agent-computer-benchmark-plan.md#11-execution-evidence-log--2026-11-06).
+
+This is prerequisite evidence only. It does not satisfy the prototype, comparative benchmark, adversarial, recovery, cost or teardown deliverables above. Do not promote Phase 2 to complete or select a production isolation provider until those gates pass.
+
 ### Phase 3 — Governed computer lifecycle MVP
 
 **Deliverables**
