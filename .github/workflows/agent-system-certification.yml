@@ -38,7 +38,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: LloydCoder/tinlance-agent-developer
-          ref: 1e6f11f0d6e4a396028c6a3475425410be2cdd71
+          ref: b8f9e6e1fe34e59352e7fae553f81865b53b9f99
           path: agent-developer-lock
           persist-credentials: false
 
@@ -133,7 +133,7 @@ jobs:
         if: always()
         env:
           TSIC_REVISION: ${{ github.event.pull_request.head.sha || github.sha }}
-          TADL_LOCK_SOURCE_REVISION: 1e6f11f0d6e4a396028c6a3475425410be2cdd71
+          TADL_LOCK_SOURCE_REVISION: b8f9e6e1fe34e59352e7fae553f81865b53b9f99
           JOB_STATUS: ${{ job.status }}
           WORKFLOW_RUN_ID: ${{ github.run_id }}
           WORKFLOW_RUN_ATTEMPT: ${{ github.run_attempt }}
