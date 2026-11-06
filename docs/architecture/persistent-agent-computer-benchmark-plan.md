@@ -1,7 +1,7 @@
 # Persistent Agent Computer — Phase 2 Feasibility and Benchmark Plan
 
-**Status:** Approved test design; execution requires an authorized non-production KVM-capable environment  
-**Date:** 2026-11-05
+**Status:** Approved test design; KVM prerequisite and Firecracker VMM API smoke verified on an ephemeral CI runner; guest boot and comparative benchmark remain pending  
+**Date:** 2026-11-06
 
 ## 1. Objective
 
@@ -118,3 +118,37 @@ The benchmark must validate the installed release and host configuration; docume
 - [gVisor compatibility guide](https://gvisor.dev/docs/user_guide/compatibility/) — syscall and kernel-surface compatibility is incomplete by design; test the actual Python, Node, browser, build and developer workloads in the benchmark matrix.
 - [Kata Containers virtualization architecture](https://kata-containers.github.io/kata-containers/design/virtualization/) and [installation requirements](https://github.com/kata-containers/kata-containers/blob/main/docs/install/README.md) — Kata uses a VM boundary behind an OCI/containerd lifecycle; supported hypervisor and hardware/nested-virtualization requirements must be verified with the target host's supported diagnostic tooling.
 
+
+
+## 11. Execution evidence log — 2026-11-06
+
+### Host prerequisite and VMM API smoke
+
+- Agent Platform PR [#163](https://github.com/LloydCoder/tinlance-agent-platform/pull/163) merged at `61c255c700594b9f6b626a7fe3254c7fd4a92213`.
+- Exact tested branch commit: `208e12ff871e5c7987f6e47e58c375b86ab47bba`.
+- Host-feasibility workflow run: [42168071508](https://github.com/LloydCoder/tinlance-agent-platform/actions/runs/42168071508).
+- Evidence artifact: [persistent-computer-host-feasibility-42168071508](https://github.com/LloydCoder/tinlance-agent-platform/actions/runs/42168071508/artifacts/13479114687), artifact SHA-256 `f0a9614dce876fc69010f5dd341a10131deef71edf1d9272762619213cda6c5a`.
+- Runner: ephemeral GitHub-hosted Ubuntu 24.04.5, x86_64, kernel `7.0.0-1017-azure`.
+- Probe: KVM device present and accessible; CPU virtualization present; cgroup v2, unprivileged user namespaces and seccomp filter support present; container-sandbox prerequisites reported ready; `seccomp_active=false` for the probe process.
+- Firecracker: release v1.17.0 archive SHA-256 `06094a1108ae9e82aa4c23a775aa92758f53f1175d422270d9d6162cb9ade558` verified; VMM API socket responded to `GET /version` with the expected v1.17.0 version.
+- No AWS resources were provisioned or modified. The existing AWS test host inspected for this programme does not expose `/dev/kvm` and is not a valid Firecracker host.
+
+### What this evidence proves — and does not prove
+
+**Proven:** the ephemeral runner exposes usable KVM prerequisites and can start the pinned Firecracker VMM sufficiently to answer its API-version request.
+
+**Not proven:** guest kernel/rootfs boot; jailer execution or production host hardening; guest/host or cross-tenant isolation; hostile workload behavior; gVisor or Kata compatibility; browser operation; suspend/resume; snapshot/restore; lease fencing; network reattachment; density; p95 latency; unit economics; or operational recovery.
+
+The probe reported `seccomp_active=false` for the runner process. The VMM smoke did not invoke the Firecracker jailer and is not a production security certification. The GitHub-hosted runner is ephemeral validation infrastructure, not an approved persistent-computer fleet.
+
+### Remaining Phase 2 gates
+
+1. Boot a pinned, provenance-verified guest kernel and root filesystem under Firecracker; capture boot and guest-ready evidence.
+2. Exercise Firecracker through the intended jailer/host-hardening path, including cgroups, namespaces, seccomp, unprivileged identity and resource limits.
+3. Execute comparable Firecracker, gVisor and Kata workload profiles on a controlled KVM-capable environment; record at least three runs per candidate/profile and p50/p95/p99 with sample counts.
+4. Run the full adversarial suite, including tenant separation, filesystem/process escape, metadata/private-network denial, DNS/redirect/IPv6/proxy bypass, grant revocation, snapshot secret leakage and duplicate-restore fencing.
+5. Verify suspend/resume, snapshot/restore, host/worker failure recovery, network/vsock reattachment and teardown.
+6. Produce a fully attributed active/idle/storage/snapshot/egress/telemetry/operations cost model and verify environment teardown and spend reconciliation.
+7. Update ADR-0004 with measured results and an explicit go/no-go. Do not select a production provider from the host smoke alone.
+
+**Phase 2 remains OPEN.** This evidence closes only the initial KVM-host prerequisite and VMM API smoke gate.
