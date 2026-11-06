@@ -123,6 +123,14 @@ Define SLOs separately for control-plane API availability, provision-to-ready la
 - Phase 3: versioned TSIC contracts and full cross-repository E2E with tenant isolation, grant revocation, replay, recovery and evidence gates.
 - Phase 5: deployed production, load/DR, security assessment and operational certification.
 
+## Phase 2 evidence update — 2026-11-06
+
+The initial host prerequisite and Firecracker VMM API smoke have passed on an ephemeral GitHub-hosted KVM runner. Evidence is recorded in the [Phase 2 benchmark plan](../persistent-agent-computer-benchmark-plan.md#11-execution-evidence-log--2026-11-06).
+
+This does **not** change the architecture decision or select a production provider. No guest boot, jailer execution, hostile-tenant test, snapshot/restore, comparative gVisor/Kata benchmark, cost model or production host certification has been completed. The available existing AWS test host lacks `/dev/kvm`; no AWS resources were provisioned or modified.
+
+The architecture direction therefore remains accepted, while Phase 2 remains open. The next decision must be based on guest-boot, hardened-jailer, adversarial, lifecycle/recovery and comparative benchmark evidence—not the API smoke alone.
+
 ## References
 
 - Platform ADR-007: `docs/adr/ADR-007-sandbox.md`
