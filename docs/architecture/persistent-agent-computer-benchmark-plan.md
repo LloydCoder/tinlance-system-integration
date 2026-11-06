@@ -182,3 +182,16 @@ The host probe's `seccomp_active=false` field describes the probe/runner process
 - The guest root drive was read-only and no virtual NIC was configured. The runner was ephemeral GitHub-hosted KVM; no AWS resources were provisioned, modified or left running.
 
 **Evidence interpretation:** this closes the upstream-jailer process-confinement smoke gate. It does not certify production host configuration or prove hostile escape resistance, cross-tenant adversarial isolation, egress policy, snapshot/restore, fencing or recovery. The three boot samples remain smoke measurements, not p95 evidence.
+
+
+### Guest-init isolation repair and repeatable smoke — 2026-11-06
+
+- Agent Platform PR [#169](https://github.com/LloydCoder/tinlance-agent-platform/pull/169) merged at `d375a343e3d114dccf110931a9b60dc1bd2cf04c`; tested head `f7394b6bee0d26ec8c69e2e6d330dc6a7173a4bd` passed 17/17 exact-head checks. Post-merge main workflows and commit checks completed successfully (6/6 workflows; 14/14 commit checks).
+- Guest-init regression tests now require a write probe to fail on the root filesystem and reject every network interface except `lo`; the readiness marker is emitted only after both checks pass. The root drive is attached read-only and no virtual NIC is configured.
+- [Direct guest-boot workflow 42174204969](https://github.com/LloydCoder/tinlance-agent-platform/actions/runs/42174204969): Firecracker v1.17.0, 3/3 guest boots; median 1,032.6 ms; maximum 1,038.0 ms.
+- [Host feasibility workflow 42174204949](https://github.com/LloydCoder/tinlance-agent-platform/actions/runs/42174204949): KVM/CPU virtualization, cgroup v2 and seccomp-filter prerequisites passed; VMM API version smoke passed.
+- [Jailer workflow 42174204996](https://github.com/LloydCoder/tinlance-agent-platform/actions/runs/42174204996): 3/3 jailed guest boots; median 1,068.0 ms; maximum 1,095.4 ms. Process isolation evidence: UID 999/GID 987; effective capabilities `0000000000000000`; `NoNewPrivs=1`; seccomp mode 2 on all four observed threads; PID/mount namespace isolation; cgroup v2 `cpu.max=100000 100000`, `memory.max=805306368`, `pids.max=128`.
+- The host-feasibility workflow's privileged log redirection was repaired by performing redirection inside the privileged shell. The earlier test-only PR #168 was closed as superseded by #169.
+- Ephemeral GitHub-hosted KVM runners only. No AWS resources were provisioned, modified or left running. The jailer workflow removed its temporary identity and chroot during cleanup.
+
+**Interpretation:** these runs close the guest-init regression, host-feasibility smoke and jailer process-confinement smoke gates. They do not prove production isolation or hostile-tenant security. The comparative gVisor/Kata suite, adversarial tests, browser compatibility, snapshots/restore, fencing, recovery, density and full cost model remain open. Phase 2 remains OPEN.
