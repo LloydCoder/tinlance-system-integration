@@ -617,7 +617,7 @@ Reviewers are asked to approve or amend these decisions:
 
 ## 8.2 Phase 2 execution progress — 2026-11-06
 
-**Status:** Phase 2 remains open. The first real guest-boot smoke gate is now closed; provider selection and production implementation remain blocked on the remaining security, recovery, comparison and economic evidence.
+**Status:** Phase 2 remains open. KVM prerequisite, direct guest boot and upstream-jailer host-confinement smoke gates are closed; provider selection and production implementation remain blocked on adversarial, comparative, recovery and economic evidence.
 
 - Platform host-capability gate PR [#165](https://github.com/LloydCoder/tinlance-agent-platform/pull/165) merged after all 15 exact-head checks passed. It now requires CPU virtualization, accessible KVM, supported architecture, cgroup v2 `cpu`/`memory`/`pids` controllers and seccomp-filter support before reporting microVM prerequisites ready.
 - Platform guest-boot PR [#166](https://github.com/LloydCoder/tinlance-agent-platform/pull/166) merged at `f578cca7130a079ebff7602b56af520fb1aa6db5`. Its tested head `12aed58fc2a4901e4fa28e7b8c61780faaab1b26` had 20/20 exact-head checks completed successfully.
@@ -629,9 +629,21 @@ Reviewers are asked to approve or amend these decisions:
 
 ### Remaining Phase 2 gates
 
-1. Exercise Firecracker through the jailer with a dedicated unprivileged identity, cgroup limits, namespaces, seccomp and controlled filesystem/device access.
+1. [x] Exercise Firecracker through the upstream jailer with a dedicated unprivileged identity, cgroup limits, namespaces, seccomp, chroot and controlled filesystem/device access. See Platform PR #167 and workflow 42173261878.
 2. Verify the complete isolation boundary with synthetic hostile workloads: filesystem/process escape, host socket access, cross-tenant access, metadata/private-network denial, DNS/redirect/IPv6/proxy bypass and resource exhaustion.
 3. Run equivalent W1–W6 workload profiles on Firecracker, gVisor and Kata where host/runtime prerequisites permit. Record raw measurements, sample counts and p50/p95/p99; mark unsupported combinations as explicit no-go evidence rather than silently omitting them.
 4. Implement and verify suspend/resume and snapshot/restore, including encrypted tenant-bound disks, snapshot provenance, generation/policy/approval/secret revalidation, network reattachment and single-successor fencing.
 5. Complete attributed active/idle/storage/snapshot/egress/telemetry/operations cost model and teardown reconciliation.
 6. Update ADR-0004 with comparative evidence and a reviewed go/no-go decision before Phase 3 implementation begins.
+
+
+## 8.3 Jailer host-confinement smoke — 2026-11-06
+
+- Agent Platform PR [#167](https://github.com/LloydCoder/tinlance-agent-platform/pull/167) merged at `a9f68a5dabf895fbb81975615e4425b42f9da01a`; tested head `d3b5d9783a04da3fd3c2e1a59bd1573cae10c06e` passed 20/20 exact-head checks.
+- Workflow [42173261878](https://github.com/LloydCoder/tinlance-agent-platform/actions/runs/42173261878) booted 3/3 Firecracker v1.17.0 guests through the upstream jailer; median 1,158.5 ms, max 1,159.0 ms.
+- Live process evidence: UID 999/GID 987; effective capabilities all zero; `NoNewPrivs=1`; seccomp mode 2 on the process and all four observed threads; PID and mount namespaces isolated; chroot root inode verified.
+- Live cgroup v2 readback: `cpu.max=100000 100000`, `memory.max=805306368`, `pids.max=128`.
+- Guest root drive read-only, no virtual NIC configured. Ephemeral GitHub-hosted KVM only; no AWS resources provisioned or modified.
+
+**Interpretation:** this proves a repeatable jailer guest-boot/process-confinement smoke on the CI host. It is not a production isolation certification or an adversarial escape test. Phase 2 remains open for hostile workloads, tenant separation, network/metadata denial, gVisor/Kata comparison, snapshots/restore/fencing, recovery and cost/density.
+
