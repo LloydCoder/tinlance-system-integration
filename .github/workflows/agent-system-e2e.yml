@@ -25,7 +25,7 @@ jobs:
         with: {path: tsic, persist-credentials: false}
       - name: Checkout reviewed ecosystem lock source
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-agent-developer, ref: 1e6f11f0d6e4a396028c6a3475425410be2cdd71, path: agent-developer-lock, persist-credentials: false}
+        with: {repository: LloydCoder/tinlance-agent-developer, ref: b8f9e6e1fe34e59352e7fae553f81865b53b9f99, path: agent-developer-lock, persist-credentials: false}
       - name: Checkout Agent Developer
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with: {repository: LloydCoder/tinlance-agent-developer, ref: 74fb6f441b19966c07010d30fe94c99d3cca1a29, path: agent-developer, persist-credentials: false}
@@ -37,7 +37,7 @@ jobs:
         with: {repository: LloydCoder/tinlance-agent-platform-sdk, ref: 9d12512bc1446133890e62ed0c3072ca28e623b7, path: agent-platform-sdk, persist-credentials: false}
       - name: Checkout Agent Platform
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
-        with: {repository: LloydCoder/tinlance-agent-platform, ref: c5a080c1fb4df68e45070f8cddfc30bf81edd7bb, path: agent-platform, persist-credentials: false}
+        with: {repository: LloydCoder/tinlance-agent-platform, ref: dc07315a4e0efc332c9aae701eb2c82560e70df0, path: agent-platform, persist-credentials: false}
       - name: Setup Python
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with: {python-version: '3.12'}
@@ -129,7 +129,7 @@ jobs:
         if: always()
         env:
           TSIC_REVISION: ${{ github.event.pull_request.head.sha || github.sha }}
-          TADL_LOCK_SOURCE_REVISION: 1e6f11f0d6e4a396028c6a3475425410be2cdd71
+          TADL_LOCK_SOURCE_REVISION: b8f9e6e1fe34e59352e7fae553f81865b53b9f99
           JOB_STATUS: ${{ job.status }}
           WORKFLOW_RUN_ID: ${{ github.run_id }}
           WORKFLOW_RUN_ATTEMPT: ${{ github.run_attempt }}
