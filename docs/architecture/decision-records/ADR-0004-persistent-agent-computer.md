@@ -125,11 +125,18 @@ Define SLOs separately for control-plane API availability, provision-to-ready la
 
 ## Phase 2 evidence update — 2026-11-06
 
-The initial host prerequisite and Firecracker VMM API smoke have passed on an ephemeral GitHub-hosted KVM runner. Evidence is recorded in the [Phase 2 benchmark plan](../persistent-agent-computer-benchmark-plan.md#11-execution-evidence-log--2026-11-06).
+The initial host prerequisite and Firecracker VMM API smoke have been superseded by additional evidence recorded in the [Phase 2 benchmark plan](../persistent-agent-computer-benchmark-plan.md#11-execution-evidence-log--2026-11-06) and the Platform [persistent-computer runtime benchmark](https://github.com/LloydCoder/tinlance-agent-platform/blob/main/docs/production-runtime/PERSISTENT-COMPUTER-RUNTIME-BENCHMARK.md).
 
-This does **not** change the architecture decision or select a production provider. No guest boot, jailer execution, hostile-tenant test, snapshot/restore, comparative gVisor/Kata benchmark, cost model or production host certification has been completed. The available existing AWS test host lacks `/dev/kvm`; no AWS resources were provisioned or modified.
+**Closed feasibility gates (CI-hosted, ephemeral KVM runners):**
+- Pinned Firecracker v1.17.0 guest boots reached the explicit ready marker in 3/3 samples, with read-only root drive and no non-loopback network interface.
+- Upstream-jailer smoke completed 3/3 jailed boots. The evidence recorded a dedicated unprivileged UID/GID, zero effective capabilities, `NoNewPrivs`, seccomp mode 2 on all observed VMM threads, PID/mount namespace separation, dedicated chroot identity and live cgroup v2 CPU/memory/PID limits.
+- An aligned non-root W1 comparison completed 30 samples each for Firecracker, gVisor and Kata. It is a feasibility/startup-cost signal, not a controlled cross-runtime performance ranking.
 
-The architecture direction therefore remains accepted, while Phase 2 remains open. The next decision must be based on guest-boot, hardened-jailer, adversarial, lifecycle/recovery and comparative benchmark evidence—not the API smoke alone.
+**Phase 2 remains OPEN.** These CI results are not production isolation certification and do not establish hostile-tenant escape resistance, cross-tenant isolation, egress/metadata denial, browser compatibility, W2–W6 workload compatibility, snapshot/restore correctness, single-successor fencing, host-failure recovery, capacity/density, statistically controlled performance or production unit economics. The benchmark plan is the source of truth for exact workflow IDs, artifact digests, limitations and remaining gates.
+
+The existing AWS test host previously inspected does not expose `/dev/kvm`. Read-only account inspection on 2026-11-06 found an active promotional AWS credit with USD 28.32 remaining and EC2 among its applicable services; this is not a spend authorization or proof that every required ancillary service is covered. The connected AWS identity resolves to the account root principal. **No AWS resources were provisioned or modified.** Do not use root credentials to provision the compute fleet; a least-privilege deployment identity, explicit cost cap/budget, network design and teardown control are required before cloud infrastructure can be created.
+
+The architecture direction remains accepted and provider-neutral. Do not select a production provider or begin Phase 3 until the remaining Phase 2 hard security, lifecycle/recovery, comparative workload and economic gates are closed and ADR-0004 records a reviewed go/no-go decision.
 
 ## References
 
