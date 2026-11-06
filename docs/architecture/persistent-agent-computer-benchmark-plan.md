@@ -1,6 +1,6 @@
 # Persistent Agent Computer — Phase 2 Feasibility and Benchmark Plan
 
-**Status:** Approved test design; KVM prerequisite and Firecracker VMM API smoke verified on an ephemeral CI runner; guest boot and comparative benchmark remain pending  
+**Status:** Approved test design; KVM prerequisite, Firecracker VMM API smoke and three guest boots verified on an ephemeral CI runner; jailer, comparative benchmark and recovery gates remain pending  
 **Date:** 2026-11-06
 
 ## 1. Objective
@@ -143,7 +143,7 @@ The probe reported `seccomp_active=false` for the runner process. The VMM smoke 
 
 ### Remaining Phase 2 gates
 
-1. Boot a pinned, provenance-verified guest kernel and root filesystem under Firecracker; capture boot and guest-ready evidence.
+1. [x] Boot a pinned, provenance-verified guest kernel and root filesystem under Firecracker; capture boot and guest-ready evidence (direct-VMM smoke only; not jailer certification).
 2. Exercise Firecracker through the intended jailer/host-hardening path, including cgroups, namespaces, seccomp, unprivileged identity and resource limits.
 3. Execute comparable Firecracker, gVisor and Kata workload profiles on a controlled KVM-capable environment; record at least three runs per candidate/profile and p50/p95/p99 with sample counts.
 4. Run the full adversarial suite, including tenant separation, filesystem/process escape, metadata/private-network denial, DNS/redirect/IPv6/proxy bypass, grant revocation, snapshot secret leakage and duplicate-restore fencing.
@@ -152,3 +152,19 @@ The probe reported `seccomp_active=false` for the runner process. The VMM smoke 
 7. Update ADR-0004 with measured results and an explicit go/no-go. Do not select a production provider from the host smoke alone.
 
 **Phase 2 remains OPEN.** This evidence closes only the initial KVM-host prerequisite and VMM API smoke gate.
+
+
+
+### Guest boot smoke — 2026-11-06
+
+- Agent Platform PR [#166](https://github.com/LloydCoder/tinlance-agent-platform/pull/166) merged at `f578cca7130a079ebff7602b56af520fb1aa6db5`.
+- Tested PR head: `12aed58fc2a4901e4fa28e7b8c61780faaab1b26`; all 20 exact-head check runs completed successfully, including Python 3.12/3.13/3.14, quality, R10 adversarial certification, TSIC conformance, SQL, CodeQL, secret scanning, Reference Agents and the KVM guest-boot workflow.
+- Guest boot workflow run: [42171110389](https://github.com/LloydCoder/tinlance-agent-platform/actions/runs/42171110389).
+- Evidence artifact: [firecracker-guest-boot-42171110389](https://github.com/LloydCoder/tinlance-agent-platform/actions/runs/42171110389/artifacts).
+- Runner: ephemeral GitHub-hosted Ubuntu 24.04, x86_64, KVM-capable; no persistent AWS resource was provisioned or modified.
+- Firecracker release: v1.17.0; release archive SHA-256 `06094a1108ae9e82aa4c23a775aa92758f53f1175d422270d9d6162cb9ade558`.
+- Guest kernel source key: `firecracker-ci/20261105-6ea6634994fa-0/x86_64/vmlinux-6.18.56`; SHA-256 `af348226aa2a25b846156150d5cdb5dae3bf2a022f1db176e3a2b9a3249817bf`.
+- Guest rootfs source key: `firecracker-ci/20261105-6ea6634994fa-0/x86_64/ubuntu-24.04.squashfs`; source squashfs SHA-256 is pinned in `tests/fixtures/firecracker-guest-assets.json`; generated ext4 rootfs SHA-256 for this run: `19901f0f56f796e4bf5918f3ad95149cd10ece9faabf213b17bb2ef0c7a367c2`.
+- Result: 3/3 fresh guest instances reached the explicit `TINLANCE_GUEST_READY` init marker with no virtual NIC configured and a read-only root drive. Median boot-to-marker: 1,089.4 ms; maximum: 1,092.9 ms.
+
+**Evidence interpretation:** this closes the pinned guest-boot smoke gate. It does not prove jailer execution, production host hardening, hostile-tenant isolation, cgroup enforcement under adversarial load, network policy, snapshot/restore safety, lease fencing, or provider suitability. Three samples are a smoke check and are not sufficient for p95 comparisons. The benchmark plan remains open.
