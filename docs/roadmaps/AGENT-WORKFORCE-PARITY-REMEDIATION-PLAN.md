@@ -631,7 +631,7 @@ Reviewers are asked to approve or amend these decisions:
 
 1. [x] Exercise Firecracker through the upstream jailer with a dedicated unprivileged identity, cgroup limits, namespaces, seccomp, chroot and controlled filesystem/device access. See Platform PR #167 and workflow 42173261878.
 2. Verify the complete isolation boundary with synthetic hostile workloads: filesystem/process escape, host socket access, cross-tenant access, metadata/private-network denial, DNS/redirect/IPv6/proxy bypass and resource exhaustion.
-3. Run equivalent W1–W6 workload profiles on Firecracker, gVisor and Kata where host/runtime prerequisites permit. Record raw measurements, sample counts and p50/p95/p99; mark unsupported combinations as explicit no-go evidence rather than silently omitting them.
+3. [x] Establish aligned non-root W1 feasibility evidence across Firecracker, gVisor and Kata (30 samples each; raw artifacts and p50/p95/p99 recorded in Platform's runtime benchmark). [ ] Extend the same controlled workload contract to W2–W6 where host/runtime prerequisites permit; record unsupported combinations as explicit no-go evidence.
 4. Implement and verify suspend/resume and snapshot/restore, including encrypted tenant-bound disks, snapshot provenance, generation/policy/approval/secret revalidation, network reattachment and single-successor fencing.
 5. Complete attributed active/idle/storage/snapshot/egress/telemetry/operations cost model and teardown reconciliation.
 6. Update ADR-0004 with comparative evidence and a reviewed go/no-go decision before Phase 3 implementation begins.
@@ -659,3 +659,21 @@ Reviewers are asked to approve or amend these decisions:
 - No AWS resources were provisioned or modified. KVM execution used disposable GitHub-hosted runners, and the jailer identity/chroot were removed by the workflow cleanup step.
 
 **Interpretation:** the direct guest init now verifies read-only rootfs and no non-loopback NIC before readiness; the separate jailer smoke verifies process confinement and resource-control readback. These results close the missing guest-init and CI defects and establish a stronger repeatable KVM/jailer feasibility baseline. They do not demonstrate production tenant separation, adversarial escape resistance, egress/metadata denial, snapshot/restore fencing, host-failure recovery, comparative gVisor/Kata performance or production unit economics. Phase 2 remains OPEN.
+
+## 8.5 Aligned non-root W1 parity evidence — 2026-11-06
+
+**Status:** W1 comparative feasibility gate closed. Phase 2 remains OPEN.
+
+- Agent Platform PR [#179](https://github.com/LloydCoder/tinlance-agent-platform/pull/179) merged the shared OCI non-root profile for gVisor and Kata. Both candidates execute as UID/GID 65532, require a read-only rootfs, only loopback networking, and a 64 MiB owned tmpfs. The workflows ran 30 accepted samples each.
+- Agent Platform PR [#180](https://github.com/LloydCoder/tinlance-agent-platform/pull/180) merged the equivalent non-root W1 profile for Firecracker. The guest image creates a deterministic UID/GID 65532 account, executes the W1 payload via `setpriv`, and requires explicit non-root, read-only-rootfs, no-NIC and workload-success markers before guest readiness.
+- Firecracker W1 workflow [42199684589](https://github.com/LloydCoder/tinlance-agent-platform/actions/runs/42199684589): 30/30 guest boots completed; p50 1,064.4 ms, p95 1,072.1 ms, p99 1,081.0 ms. All 30 machine-readable guest assertions passed.
+- gVisor workflow [42190204241](https://github.com/LloydCoder/tinlance-agent-platform/actions/runs/42190204241): 30/30 workloads passed; p50 143.3 ms, p95 196.2 ms, p99 286.9 ms.
+- Kata workflow [42190204278](https://github.com/LloydCoder/tinlance-agent-platform/actions/runs/42190204278): 30/30 workloads passed; p50 7,164.0 ms, p95 7,227.3 ms, p99 7,246.7 ms.
+- Separate Firecracker jailer smoke [42199684509](https://github.com/LloydCoder/tinlance-agent-platform/actions/runs/42199684509) passed 3/3 jailed boots and read back UID/GID 999/987, zero effective capabilities, `NoNewPrivs=1`, seccomp mode 2 on all observed threads, isolated PID/mount namespaces and cgroup v2 CPU/memory/PID limits. Ephemeral jailer identity/chroot cleanup completed.
+- The Firecracker W1 change exposed a CodeQL clear-text-storage dataflow because the first implementation rewrote existing passwd entries. It was corrected to append only the constant `x`-placeholder account/group records. The final SARIF for the reviewed source head contained zero findings; exact-head CI, R10, CodeQL, Secret Scan, Reference Agents, TSIC conformance, guest boot and jailer smoke all passed before merge.
+- All work ran on ephemeral GitHub-hosted infrastructure. No AWS resources were provisioned or modified.
+
+**Evidence boundary:** W1 parity now demonstrates that the same minimum agent workload can be started and complete under each candidate's distinct isolation boundary with a common non-root identity and filesystem/network assertions. It is not a controlled head-to-head benchmark: the candidates ran on separate hosts, Firecracker's guest kernel and launch path differ from OCI candidates, and the observed timings are only initial startup-cost signals. It does not prove hostile-tenant escape resistance, cross-tenant isolation, metadata/egress denial, resource exhaustion resistance, snapshot/restore fencing, recovery, W2–W6 compatibility, density or production unit economics.
+
+**Remaining Phase 2 work:** adversarial isolation and tenant-separation matrix; W2–W6 equivalent workload profiles; suspend/resume and encrypted snapshot/restore with generation/policy/approval/secret revalidation and single-successor fencing; host-failure recovery and measured RTO/RPO; cost/density attribution and teardown reconciliation; ADR-0004 go/no-go review. Phase 3 remains blocked until those gates and independent production security review pass.
+
