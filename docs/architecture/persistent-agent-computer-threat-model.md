@@ -1,7 +1,7 @@
 # Persistent Agent Computer — Threat Model
 
-**Status:** Phase 1 design baseline  
-**Date:** 2026-11-05  
+**Status:** Phase 1 design baseline; Phase 2 implementation and evidence in progress  
+**Updated:** 2026-11-07  
 **Scope:** Multi-tenant persistent agent computers, browser/terminal execution, workspace storage, provider control plane and recovery.
 
 ## 1. Security objectives
@@ -142,7 +142,7 @@ All test subjects and credentials must be synthetic. No customer data, productio
 
 Residual risks include hypervisor/host/firmware vulnerabilities, hardware side channels, provider operator access, snapshot implementation defects and external network abuse. These require documented risk acceptance, defense in depth and operational controls; they cannot be eliminated by application-level tests.
 
-Phase 2 is blocked until an explicitly authorized non-production environment provides KVM-capable compute, isolated networking, encrypted storage, image registry and controlled cost ceilings. No infrastructure is created by this design document.
+W2 feasibility has been exercised on ephemeral GitHub-hosted KVM runners. Full Phase 2 remains blocked until a separately authorized persistent non-production environment provides controlled KVM-capable compute, isolated networking, encrypted storage, image registry, lifecycle/recovery facilities and explicit spend ceilings. No cloud infrastructure is created by this design document.
 
 ## 8. Standards and source mapping
 
@@ -165,3 +165,44 @@ Phase 2 is blocked until an explicitly authorized non-production environment pro
 - [x] Phase 2 requires explicit non-production infrastructure authorization.
 
 **Review disposition (2026-11-05):** All ten design assertions were checked against the Phase 1 ADR, Platform ADR-007 and P6 deployment contract, OS remote-runtime/workspace-fabric ownership, Platform SDK authority statement, TADL immutable ecosystem lock and TSIC Agent System baseline. This is an architecture/documentation review, not a claim that Phase 2 infrastructure or runtime controls are implemented. Phase 2 remains blocked pending a separately authorized KVM-capable non-production environment and spend ceiling.
+
+## 10. Phase 2 implementation evidence and residual controls — 2026-11-07
+
+This section maps the design threats to the current implementation evidence. It does not change the authority model or claim production certification.
+
+### Implemented or merged evidence
+
+- **PC-01 / PC-17 (guest-to-host and management-socket boundary):** PR #185 merged the Firecracker W2 developer-workspace baseline. PR #187 merged deterministic rootfs normalization and unsafe archive/path/link rejection. A separate W1 jailer smoke passed 3/3 boots and its artifact showed a dedicated non-root UID/GID, chroot identity, PID/mount namespace isolation, cgroup v2 limits, `NoNewPrivs=1`, zero effective capabilities and seccomp mode 2 on every observed Firecracker thread. This is W1 process evidence, not W2 jailer evidence.
+- **PC-10 / PC-11 (image and artifact supply chain):** PR #187 merged the W2 rootfs normalizer, archive traversal/link/special-file rejection and package provenance. The inspected PR #187 archive contained 37,809 entries and no traversal paths, unsafe relative symlink escapes, device nodes or FIFOs. However, independent PR #190 builds with identical pinned inputs produced different normalized digests because `var/cache/ldconfig/aux-cache` is volatile and not yet excluded. The normalizer therefore does not yet prove independent-build reproducibility; a regression test and second no-cache build comparison are required. This is also not yet the hostile archive/fuzz suite required by W4.
+- **W2 cross-runtime reproducibility:** PR #187 Firecracker, gVisor and Kata artifacts each recorded 30 samples and the same normalized rootfs tar SHA-256: `5fe52e36993c349610d45abd968ac7522618e8d63abc5b7a3f48c24c99657cdf`. This is the PR #187 baseline. PR #190 adds a local offline npm fixture package, so its rebuilt rootfs digest is expected to change and must be compared from the new exact-run artifacts.
+- **PC-13 (resource exhaustion):** the W1 jailer artifact records `memory.max=805306368`, `pids.max=128`, and `cpu.max=100000 100000`. This proves configured limits for that smoke, not multi-tenant noisy-neighbour enforcement or production capacity.
+
+### W2 gate currently in progress
+
+[PR #190](https://github.com/LloydCoder/tinlance-agent-platform/pull/190) implements W2 through the upstream Firecracker jailer. Exact-head workflows and artifact review remain pending. The W2 acceptance job requires 3/3 jailed developer-workspace executions using the exact normalized rootfs artifact from the same workflow run.
+
+The W2 workload now performs Git operations, Python tests, Node tests and a local-package `npm ci --offline`. Its npm lockfile is generated during the immutable image build with networking disabled. W2 runtime execution through the jailer has passed 3/3 on the current exact-head run, and direct Firecracker and gVisor have each passed 30 workloads; Kata W2 is still running at this evidence snapshot. However, W2 rootfs reproducibility remains blocked by the independent-build `aux-cache` difference described above. Guest evidence validates non-empty Git/Python/Node/npm versions and 64-character lowercase SHA-256 values for both the dpkg package manifest and npm lockfile.
+
+The jailed Firecracker process joins a dedicated root-owned loopback-only network namespace through the upstream Jailer `--netns` option. The workflow rejects symlink namespace handles and verifies the handle and parent directory are root-owned and not group/world writable. Process evidence must show a network namespace inode distinct from the host and only `lo` in `/proc/<pid>/net/dev`, in addition to per-thread seccomp, no-new-privileges, zero capabilities, UID/GID, PID/mount namespaces, chroot and cgroup evidence. The guest itself has no NIC.
+
+The PR #187 direct-VMM W2 report has `jailer_executed=false`; it is not W2 jailer acceptance. The host probe's `seccomp_active=false` is a host capability fact and must not be interpreted as proof that the Firecracker process lacks a filter. The W2 jailer artifact must independently show seccomp mode 2 on every observed thread.
+
+### Remaining threat controls and phase gates
+
+- **W3 / PC-03 / PC-04:** browser isolation, proxy-enforced egress, DNS rebinding, redirects, IPv4/IPv6, private/loopback/link-local/metadata denial, and per-connect destination validation are not complete. W2's no-NIC/offline package model is not evidence of browser egress safety.
+- **W4 / PC-01 / PC-02 / PC-10 / PC-11 / PC-13 / PC-14:** hostile archive and parser fuzzing, escape probes, cross-tenant process/filesystem/network/IPC isolation, malicious browser artifacts, evidence tamper resistance and concurrent noisy-neighbour testing remain open.
+- **W5 / PC-08 / PC-12 / PC-13 / PC-16:** no genuine continuous eight-hour persistence, lease-expiry/revocation soak, crash recovery, quota enforcement or audit continuity evidence exists yet.
+- **W6 / PC-08 / PC-09 / PC-12 / PC-15 / PC-20:** snapshot/restore, storage reattachment, stale-worker fencing, credential refresh, duplicate restore prevention, secret non-resurrection and deletion evidence remain open.
+- **Production / PC-18:** production host kernel, firmware and microcode patching, hardware placement policy, bounded serial logging, monitoring and incident response require a selected and authorized environment.
+- **Independent review:** a separate reviewer must inspect the threat model, implementation, artifacts, residual-risk register and ADR-0004 go/no-go. Internal test success is not independent sign-off.
+
+### Upstream constraints incorporated
+
+- [Firecracker jailer documentation](https://github.com/firecracker-microvm/firecracker/blob/main/docs/jailer.md) describes trusted input paths, chroot, privilege dropping, cgroups and namespace controls. [Firecracker seccomp documentation](https://github.com/firecracker-microvm/firecracker/blob/main/docs/seccomp.md) documents restrictive per-thread filters. [Production host setup](https://github.com/firecracker-microvm/firecracker/blob/main/docs/prod-host-setup.md) requires host/guest kernel and microcode patching; guest-controlled serial output must be bounded or disabled where possible.
+- [gVisor's security model](https://github.com/google/gvisor/blob/master/g3doc/architecture_guide/security.md) still requires host cgroups for resource-exhaustion controls and container-level network policy.
+- [Kata Containers architecture](https://kata-containers.io/docs/) adds a guest-kernel boundary but does not by itself establish multi-tenancy; network, storage and control-plane isolation remain separate requirements.
+- [Linux `no_new_privs` documentation](https://docs.kernel.org/userspace-api/no_new_privs.html) explains that it prevents certain `execve()` privilege gains but is not a replacement for seccomp, capability removal, namespaces, cgroups, IPC/FD controls or host hardening.
+
+### Environment and certification status
+
+Only ephemeral GitHub-hosted KVM runners have been used for these feasibility and acceptance workflows. No AWS resources were provisioned, modified or left running. A persistent non-production environment, explicit spend ceiling, full W3-W6 implementation, production economics and independent review are still required. Phase 2 remains **OPEN**; no production isolation or multi-tenant certification is claimed.

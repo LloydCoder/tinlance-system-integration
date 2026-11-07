@@ -138,6 +138,46 @@ The existing AWS test host previously inspected does not expose `/dev/kvm`. Read
 
 The architecture direction remains accepted and provider-neutral. Do not select a production provider or begin Phase 3 until the remaining Phase 2 hard security, lifecycle/recovery, comparative workload and economic gates are closed and ADR-0004 records a reviewed go/no-go decision.
 
+## Phase 2 evidence update — 2026-11-07
+
+### Merged W2 implementation
+
+- **PR #185** merged to `LloydCoder/tinlance-agent-platform` main: Firecracker W2 developer-workspace baseline. Merge commit: `c351b15e9c3ff7dfc200bcca017f8336dfb9c2cd`.
+- **PR #187** merged to main: normalized W2 rootfs pipeline, archive/path/link validation, package provenance and corrected CA bootstrap. Merge commit: `eed697eea29e6cfb5a55a8dd1674b5611d592535`. A subsequent independent-build audit found one remaining nondeterministic cache file; full reproducibility acceptance is therefore still open.
+- PR #187 exact-head CI, CodeQL, Secret Scan, R10, TSIC conformance, Firecracker W2, gVisor W2, Kata W2 and Reference Agents workflows passed before merge.
+
+The PR #187 baseline artifacts reported the same normalized rootfs tar SHA-256 across Firecracker, gVisor and Kata:
+`5fe52e36993c349610d45abd968ac7522618e8d63abc5b7a3f48c24c99657cdf`.
+Each runtime produced 30 workload samples from the same uploaded artifact. **This proves cross-runtime artifact identity, not independent-build reproducibility.** The package-manifest SHA-256 was `3901a70e7d468e7691397dff18b05e30e666e9ec9725f71fb09f305da8bc79d7`. An independent archive inspection counted 37,809 entries and found no traversal paths, unsafe relative symlink escapes, device nodes or FIFOs.
+
+**These are PR #187 baseline results.** PR #190 adds a local offline npm dependency to the W2 fixture, so its normalized rootfs digest differs. A forensic comparison of two PR #190 builds with identical fixture/Dockerfile inputs produced different normalized digests: `1a9cda7544bf42ba8b065516531a96122533b06c2cdff2c57e02dc0e1b796300` and `ce324ca95c7c77bf526fa3019fce86f7d9aad7c1ea0b238aacba9f3f3748d91c`. The only differing archive member was `var/cache/ldconfig/aux-cache`; its content changes between builds. The normalizer currently does not drop this volatile cache file. PR #190 therefore has a **reproducibility blocker**: add a regression test, exclude the cache path, and prove two independent no-cache image builds normalize to the same digest. Do not declare reproducible-rootfs acceptance complete until that gate passes. Afterward, the final digest must also match across direct Firecracker, jailed Firecracker, gVisor and Kata W2 jobs.
+
+### Current W2 acceptance gate
+
+**PR #190** is the open W2 jailer-path and reproducibility-fix implementation: [Firecracker W2 developer workspace through jailer](https://github.com/LloydCoder/tinlance-agent-platform/pull/190). Its exact-head workflows and artifacts are still pending; W2 is not yet closed.
+
+The W2 gate requires (1) two independent no-cache image builds with byte-identical normalized rootfs output, (2) 3/3 actual Firecracker-jailer W2 executions using the exact normalized rootfs artifact from the same workflow run, and (3) identical rootfs digest consumption by direct Firecracker, jailed Firecracker, gVisor and Kata. It includes:
+
+- A real Git/Python/Node developer workload, local-package `npm ci --offline`, Node tests, host-surface probes and guest readiness markers.
+- A lockfile generated during the immutable image build with networking disabled; valid 64-character SHA-256 evidence for the dpkg package manifest and npm lockfile; non-empty Git/Python/Node/npm version markers.
+- A dedicated root-owned network-namespace handle passed through the upstream Jailer `--netns` option. The handle and parent directory must not be symlinks or group/world writable; the Firecracker process namespace inode must differ from the host and expose only loopback.
+- Per-run process/thread seccomp mode 2, `NoNewPrivs=1`, zero effective capabilities, dedicated non-root UID/GID, chroot identity, PID/mount/network namespace isolation and cgroup v2 resource limits.
+- Read-only guest rootfs, no guest NIC, bounded workspace tmpfs, host device/socket denial and denied privilege escalation/mount operations.
+
+A separate W1 jailer smoke has passed 3/3 executions and showed seccomp mode 2 on all observed Firecracker threads, no-new-privileges, zero effective capabilities, PID/mount namespace isolation, chroot identity and configured cgroup limits. **This W1 result is not W2 jailer evidence.**
+
+### Evidence limitations and remaining phases
+
+- The PR #187 Firecracker W2 30-sample artifact is direct-VMM ephemeral execution, with `jailer_executed=false`; it does not establish jailed W2 acceptance.
+- The host probe's `seccomp_active=false` is a host capability fact; it must not be conflated with process-level Firecracker seccomp. PR #190 must prove seccomp mode 2 for every jailed Firecracker thread.
+- The W2 guest has no network interface. Package installation is deliberately offline from a local fixture package; package acquisition occurs in the pinned image-build stage. Networked browser access and SSRF/metadata/DNS-rebinding controls remain W3 requirements.
+- Serial-console output is retained in the acceptance harness for guest markers. Production must bound/rate-limit guest-controlled serial output or disable the serial device where possible.
+- Runtime smoke and rootfs reproducibility do not prove production isolation, multi-tenant safety, 8-hour persistence, snapshot/restore correctness or production economics.
+
+The remaining serial gates are W2 exact-head jailer acceptance and forensic audit; W3 browser/egress; W4 adversarial and cross-tenant isolation; W5 genuine eight-hour persistence; W6 snapshot/restore and fencing; controlled production economics; and independent security review with ADR-0004 go/no-go. Phase 2 remains **OPEN**. No production provider is selected, no production certification is claimed, and no cloud resources have been provisioned.
+
+The implementation-side acceptance record is [phase2-persistent-computer-acceptance.md](https://github.com/LloydCoder/tinlance-agent-platform/blob/main/docs/runtime/phase2-persistent-computer-acceptance.md). The canonical TSIC tracker is [issue #102](https://github.com/LloydCoder/tinlance-system-integration/issues/102).
+
 ## References
 
 - Platform ADR-007: `docs/adr/ADR-007-sandbox.md`
