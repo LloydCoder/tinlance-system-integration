@@ -103,6 +103,7 @@ Record active and idle cost separately, attribute every provider usage record to
 
 - Reproducible benchmark harness and environment manifest.
 - At least 30 samples per candidate/profile for p50/p95/p99 reporting, plus at least three independent runs. Three jailed W2 executions are a functional isolation gate, not a statistically sufficient performance comparison.
+- Reproducible-rootfs acceptance requires two independent no-cache image builds from identical pinned inputs to produce byte-identical normalized tar files; cross-runtime consumers sharing one artifact do not satisfy this criterion.
 - Adversarial suite passes for the selected candidate; all findings triaged.
 - Restore/recovery behavior is understood and safe.
 - Unit cost model includes active, idle, storage, snapshot, egress, observability and operations.
@@ -207,11 +208,20 @@ The host probe's `seccomp_active=false` field describes the probe/runner process
 - PR #185 merged the Firecracker W2 developer-workspace baseline (`c351b15e9c3ff7dfc200bcca017f8336dfb9c2cd`).
 - PR #187 merged deterministic normalized rootfs handling, unsafe archive/path/link rejection, package provenance and corrected CA bootstrap (`eed697eea29e6cfb5a55a8dd1674b5611d592535`).
 - PR #187 exact-head CI, CodeQL, Secret Scan, R10, TSIC conformance, Firecracker W2, gVisor W2, Kata W2 and Reference Agents workflows passed before merge.
-- The three PR #187 runtime artifacts each reported 30 workload samples and the same normalized rootfs tar SHA-256: `5fe52e36993c349610d45abd968ac7522618e8d63abc5b7a3f48c24c99657cdf`.
+- The three PR #187 runtime artifacts each reported 30 workload samples and the same normalized rootfs tar SHA-256: `5fe52e36993c349610d45abd968ac7522618e8d63abc5b7a3f48c24c99657cdf`. All three consumed the same uploaded artifact; this proves cross-runtime artifact identity, not independent-build reproducibility.
 - The dpkg package-manifest SHA-256 was `3901a70e7d468e7691397dff18b05e30e666e9ec9725f71fb09f305da8bc79d7`.
 - The inspected normalized archive contained 37,809 entries (5,199 directories, 31,411 regular files and 1,199 symlinks), with no traversal paths, unsafe relative symlink escapes, device nodes or FIFOs.
 
 The PR #187 digest is a historical baseline. PR #190 adds an offline npm fixture package and lockfile generation, so its rebuilt rootfs digest is expected to differ. The exact PR #190 artifact must be compared across direct Firecracker, jailed Firecracker, gVisor and Kata; do not compare it to the old digest as if the fixture were unchanged.
+
+### Independent-build reproducibility blocker
+
+A forensic comparison of two PR #190 image builds with identical Dockerfile, fixture, base-image digest and apt snapshot found different normalized rootfs SHA-256 values:
+
+- Build A: `1a9cda7544bf42ba8b065516531a96122533b06c2cdff2c57e02dc0e1b796300`
+- Build B: `ce324ca95c7c77bf526fa3019fce86f7d9aad7c1ea0b238aacba9f3f3748d91c`
+
+A member-by-member archive comparison found exactly one content difference: `var/cache/ldconfig/aux-cache`. All other member names, types, modes, ownership, timestamps, payload hashes and link targets matched. This auxiliary cache is volatile and not required by the guest runtime. The rootfs normalizer must exclude it, a regression test must prove different aux-cache payloads normalize identically, and the W2 workflow must rebuild the image independently with `--no-cache` and compare the normalized tar byte-for-byte. Until that test and workflow gate pass, PR #187's reproducible-rootfs claim is only partially validated and W2 reproducibility remains **OPEN**.
 
 ### Jailer evidence and W2 acceptance
 
@@ -225,7 +235,7 @@ The PR #187 digest is a historical baseline. PR #190 adds an offline npm fixture
 
 ### Interpretation and remaining gates
 
-The PR #187 runs demonstrate W2 rootfs reproducibility and runtime workload compatibility. They are not a controlled same-host performance comparison and do not justify a runtime ranking or p95 claim. The W2 host probe reports `seccomp_active=false`; this is a host fact, not proof that the Firecracker process lacks seccomp. The process-level W2 evidence must prove seccomp mode 2 on all observed threads.
+The PR #187 runs demonstrate cross-runtime compatibility with one shared rootfs artifact, not independent-build reproducibility. The PR #190 comparison found a volatile ldconfig auxiliary cache that changes the normalized digest; the normalizer and workflow rebuild gate must be fixed before W2 reproducibility is accepted. The runtime runs are not a controlled same-host performance comparison and do not justify a runtime ranking or p95 claim. The W2 host probe reports `seccomp_active=false`; this is a host fact, not proof that the Firecracker process lacks seccomp. The process-level W2 evidence must prove seccomp mode 2 on all observed threads.
 
 W3 browser/egress, W4 adversarial and cross-tenant isolation, W5 genuine continuous eight-hour persistence, W6 snapshot/restore and fencing, production economics, and independent security review remain open. Serial-console output is retained for test evidence; production must bound/rate-limit guest-controlled output or disable the serial device where possible. No production provider is selected and no cloud resources have been provisioned. Phase 2 remains **OPEN**.
 
