@@ -142,7 +142,7 @@ All test subjects and credentials must be synthetic. No customer data, productio
 
 Residual risks include hypervisor/host/firmware vulnerabilities, hardware side channels, provider operator access, snapshot implementation defects and external network abuse. These require documented risk acceptance, defense in depth and operational controls; they cannot be eliminated by application-level tests.
 
-Phase 2 is blocked until an explicitly authorized non-production environment provides KVM-capable compute, isolated networking, encrypted storage, image registry and controlled cost ceilings. No infrastructure is created by this design document.
+W2 feasibility has been exercised on ephemeral GitHub-hosted KVM runners. Full Phase 2 remains blocked until a separately authorized persistent non-production environment provides controlled KVM-capable compute, isolated networking, encrypted storage, image registry, lifecycle/recovery facilities and explicit spend ceilings. No cloud infrastructure is created by this design document.
 
 ## 8. Standards and source mapping
 
@@ -198,10 +198,10 @@ The PR #187 direct-VMM W2 report has `jailer_executed=false`; it is not W2 jaile
 
 ### Upstream constraints incorporated
 
-- Firecracker's default restrictive seccomp filters are per-thread; the jailer provides chroot, privilege dropping, cgroups and namespace controls. Production host/guest kernels and host microcode must be patched. Guest-controlled serial output must be bounded or disabled where possible.
-- gVisor still requires host cgroups for resource-exhaustion controls and container-level network policy.
-- Kata's guest-kernel boundary does not by itself establish multi-tenancy; network, storage and control-plane isolation remain separate requirements.
-- Linux `no_new_privs` prevents certain `execve()` privilege gains but is not a replacement for seccomp, capability removal, namespaces, cgroups, IPC/FD controls or host hardening.
+- [Firecracker jailer documentation](https://github.com/firecracker-microvm/firecracker/blob/main/docs/jailer.md) describes trusted input paths, chroot, privilege dropping, cgroups and namespace controls. [Firecracker seccomp documentation](https://github.com/firecracker-microvm/firecracker/blob/main/docs/seccomp.md) documents restrictive per-thread filters. [Production host setup](https://github.com/firecracker-microvm/firecracker/blob/main/docs/prod-host-setup.md) requires host/guest kernel and microcode patching; guest-controlled serial output must be bounded or disabled where possible.
+- [gVisor's security model](https://github.com/google/gvisor/blob/master/g3doc/architecture_guide/security.md) still requires host cgroups for resource-exhaustion controls and container-level network policy.
+- [Kata Containers architecture](https://kata-containers.io/docs/) adds a guest-kernel boundary but does not by itself establish multi-tenancy; network, storage and control-plane isolation remain separate requirements.
+- [Linux `no_new_privs` documentation](https://docs.kernel.org/userspace-api/no_new_privs.html) explains that it prevents certain `execve()` privilege gains but is not a replacement for seccomp, capability removal, namespaces, cgroups, IPC/FD controls or host hardening.
 
 ### Environment and certification status
 
