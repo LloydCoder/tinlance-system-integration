@@ -35,11 +35,13 @@ Compare Firecracker-class microVMs, gVisor and Kata Containers for Tinlance pers
 | Profile | CPU / memory | Workload | Network |
 |---|---:|---|---|
 | W1 minimal agent | 1 vCPU / 512 MiB | shell, small Python/Node task, filesystem | denied |
-| W2 developer workspace | 2 vCPU / 2 GiB | package install, build, unit tests, git operations | allowlisted package mirror only |
+| W2 developer workspace | 2 vCPU / 2 GiB | Git, Python, Node build/tests and local-package installation | no guest NIC; offline package install |
 | W3 browser research | 2 vCPU / 2 GiB | Chromium, 5 tabs, DOM capture and bounded downloads | proxy allowlist |
 | W4 hostile artifact | 2 vCPU / 2 GiB | untrusted archive/parser/build script and fuzz corpus | denied or controlled sink |
 | W5 long-lived session | 2 vCPU / 4 GiB | persistent terminal/browser state over 8 hours | proxy allowlist |
 | W6 recovery | same as W2/W3 | forced worker/host termination, snapshot and restore | re-established after restore |
+
+**W2 network boundary:** the current W2 guest has no network interface. Its npm dependency is a local fixture package installed with `npm ci --offline`; the lockfile is generated during the immutable image build with networking disabled. Base-image package acquisition occurs in the controlled build stage from a pinned signed Ubuntu snapshot. This does not prove browser egress policy. Networked browser access, allowlisted proxy behavior, SSRF, metadata and DNS-rebinding controls are W3 acceptance gates.
 
 ## 5. Measurements
 
@@ -100,7 +102,7 @@ Record active and idle cost separately, attribute every provider usage record to
 ## 9. Phase 2 exit criteria
 
 - Reproducible benchmark harness and environment manifest.
-- At least three runs per candidate/profile with sufficient samples for p95 comparisons.
+- At least 30 samples per candidate/profile for p50/p95/p99 reporting, plus at least three independent runs. Three jailed W2 executions are a functional isolation gate, not a statistically sufficient performance comparison.
 - Adversarial suite passes for the selected candidate; all findings triaged.
 - Restore/recovery behavior is understood and safe.
 - Unit cost model includes active, idle, storage, snapshot, egress, observability and operations.
@@ -111,6 +113,8 @@ Record active and idle cost separately, attribute every provider usage record to
 
 The benchmark must validate the installed release and host configuration; documentation is a design input, not proof that a candidate is safe or compatible.
 
+- [Firecracker jailer documentation](https://github.com/firecracker-microvm/firecracker/blob/main/docs/jailer.md) — trusted input paths, chroot, UID/GID dropping, cgroups and PID/network namespaces.
+- [Firecracker seccomp documentation](https://github.com/firecracker-microvm/firecracker/blob/main/docs/seccomp.md) — default per-thread filters.
 - [Firecracker production host setup](https://github.com/firecracker-microvm/firecracker/blob/main/docs/prod-host-setup.md) — KVM and CPU virtualization are prerequisites; production hardening includes the jailer or equivalent restrictions, seccomp, dedicated unprivileged identities, cgroup resource limits, host patching and hardware/side-channel mitigations.
 - [Firecracker snapshot support](https://github.com/firecracker-microvm/firecracker/blob/main/docs/snapshotting/snapshot-support.md) — snapshots comprise guest memory, VM state and separately managed disks; network/vsock sessions may not survive restore; host resources and CPU/software compatibility constrain restore. The harness must test reattachment, generation changes, single-successor semantics and cross-host compatibility rather than assume portability.
 - [Firecracker snapshot versioning](https://github.com/firecracker-microvm/firecracker/blob/main/docs/snapshotting/versioning.md) — snapshot format compatibility is distinct from binary version compatibility and depends on host kernel, device model and CPU features.
@@ -195,3 +199,33 @@ The host probe's `seccomp_active=false` field describes the probe/runner process
 - Ephemeral GitHub-hosted KVM runners only. No AWS resources were provisioned, modified or left running. The jailer workflow removed its temporary identity and chroot during cleanup.
 
 **Interpretation:** these runs close the guest-init regression, host-feasibility smoke and jailer process-confinement smoke gates. They do not prove production isolation or hostile-tenant security. The comparative gVisor/Kata suite, adversarial tests, browser compatibility, snapshots/restore, fencing, recovery, density and full cost model remain open. Phase 2 remains OPEN.
+
+## 12. Execution evidence update — 2026-11-07
+
+### Merged W2 baseline
+
+- PR #185 merged the Firecracker W2 developer-workspace baseline (`c351b15e9c3ff7dfc200bcca017f8336dfb9c2cd`).
+- PR #187 merged deterministic normalized rootfs handling, unsafe archive/path/link rejection, package provenance and corrected CA bootstrap (`eed697eea29e6cfb5a55a8dd1674b5611d592535`).
+- PR #187 exact-head CI, CodeQL, Secret Scan, R10, TSIC conformance, Firecracker W2, gVisor W2, Kata W2 and Reference Agents workflows passed before merge.
+- The three PR #187 runtime artifacts each reported 30 workload samples and the same normalized rootfs tar SHA-256: `5fe52e36993c349610d45abd968ac7522618e8d63abc5b7a3f48c24c99657cdf`.
+- The dpkg package-manifest SHA-256 was `3901a70e7d468e7691397dff18b05e30e666e9ec9725f71fb09f305da8bc79d7`.
+- The inspected normalized archive contained 37,809 entries (5,199 directories, 31,411 regular files and 1,199 symlinks), with no traversal paths, unsafe relative symlink escapes, device nodes or FIFOs.
+
+The PR #187 digest is a historical baseline. PR #190 adds an offline npm fixture package and lockfile generation, so its rebuilt rootfs digest is expected to differ. The exact PR #190 artifact must be compared across direct Firecracker, jailed Firecracker, gVisor and Kata; do not compare it to the old digest as if the fixture were unchanged.
+
+### Jailer evidence and W2 acceptance
+
+- The separate W1 jailer smoke passed 3/3 boots. Its inspected artifact showed seccomp mode 2 on every observed Firecracker thread, `NoNewPrivs=1`, zero effective capabilities, non-root UID/GID, PID/mount namespace isolation, chroot identity and cgroup v2 limits. This is W1 evidence only.
+- [PR #190](https://github.com/LloydCoder/tinlance-agent-platform/pull/190) adds W2-through-jailer acceptance and remains gated on exact-head workflows and artifact inspection.
+- PR #190 requires 3/3 W2 jailed runs using the exact normalized rootfs artifact from the same workflow. The guest runs local-package `npm ci --offline`, Python and Node tests, and host-surface probes without a guest NIC.
+- The W2 jailer process joins a dedicated root-owned loopback-only network namespace through Jailer `--netns`; the handle and parent directory must not be symlinks or group/world writable. Evidence must show a distinct host/process network-namespace inode and only `lo` in `/proc/<pid>/net/dev`.
+- Each run must retain process/thread seccomp mode 2, `NoNewPrivs=1`, zero effective capabilities, non-root UID/GID, chroot identity, PID/mount/network namespace isolation and cgroup limits. The guest must prove read-only rootfs, no guest NIC, denied host device/socket and privilege-escalation probes, and bounded workspace tmpfs.
+- The guest verifier requires non-empty Git/Python/Node/npm version markers and valid 64-character lowercase SHA-256 values for both the dpkg package manifest and npm lockfile.
+- W2 is not closed until the PR #190 exact-head CI, direct W2, jailed W2, gVisor W2, Kata W2, W1 jailer regression and security workflows are green and the artifacts are independently inspected.
+
+### Interpretation and remaining gates
+
+The PR #187 runs demonstrate W2 rootfs reproducibility and runtime workload compatibility. They are not a controlled same-host performance comparison and do not justify a runtime ranking or p95 claim. The W2 host probe reports `seccomp_active=false`; this is a host fact, not proof that the Firecracker process lacks seccomp. The process-level W2 evidence must prove seccomp mode 2 on all observed threads.
+
+W3 browser/egress, W4 adversarial and cross-tenant isolation, W5 genuine continuous eight-hour persistence, W6 snapshot/restore and fencing, production economics, and independent security review remain open. Serial-console output is retained for test evidence; production must bound/rate-limit guest-controlled output or disable the serial device where possible. No production provider is selected and no cloud resources have been provisioned. Phase 2 remains **OPEN**.
+
