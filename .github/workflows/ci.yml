@@ -21,11 +21,12 @@ jobs:
         run: python3 tooling/validate_phase0.py
       - name: TWI cross-repository contract validation
         run: python3 scripts/validate_twi_integration.py
-      - name: P3 CloudEvents contract validation
+      - name: Install pinned CI dependencies
         run: |
           python3 -m venv /tmp/tsic-p3-venv
-          /tmp/tsic-p3-venv/bin/pip install jsonschema==4.25.1
-          /tmp/tsic-p3-venv/bin/python scripts/validate_event_contract.py
+          /tmp/tsic-p3-venv/bin/pip install --requirement requirements-ci.txt
+      - name: P3 CloudEvents contract validation
+        run: /tmp/tsic-p3-venv/bin/python scripts/validate_event_contract.py
       - name: TWI source-evidence JSON Schema validation
         run: /tmp/tsic-p3-venv/bin/python scripts/validate_twi_source_evidence_schema.py
       - name: Persistent computer proposal schema validation
@@ -44,5 +45,5 @@ jobs:
         run: python3 scripts/certify_interoperability.py
       - name: Acquisition system certification
         run: python3 scripts/acquisition_system_certification.py
-      - name: Serial TSIC-31-41 certification
+      - name: Canonical TSIC-00..19 serial certification
         run: python3 scripts/final_certification.py

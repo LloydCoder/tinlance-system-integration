@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Final TSIC-41 forensic certification."""
+"""Final canonical TSIC-00..19 system-of-systems forensic certification."""
 from __future__ import annotations
 import json,re,subprocess,sys
 from pathlib import Path
@@ -54,5 +54,5 @@ def forensic_scan():
 def main():
  for script in PHASE_SCRIPTS: run(script)
  forensic_scan()
- print("PASS TSIC-31..41 FINAL SYSTEM-OF-SYSTEMS FORENSIC CERTIFICATION")
+ print("PASS canonical TSIC-00..19 FINAL SYSTEM-OF-SYSTEMS FORENSIC CERTIFICATION")
 if __name__=="__main__": main()

@@ -1,29 +1,28 @@
 # Support
 
-## Where to ask
+## Choose the right channel
 
-| Need | Use |
+| Request | Channel |
 |---|---|
-| Bug or reproducible defect | [Bug report](.github/ISSUE_TEMPLATE/bug_report.yml) |
-| Feature or contract proposal | [Feature request](.github/ISSUE_TEMPLATE/feature_request.yml) |
-| General usage question | GitHub Issues with the `question` label when available |
-| Security vulnerability | [SECURITY.md](SECURITY.md), not a public issue |
-| Conduct concern | [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) and private contact |
+| Reproducible defect in a validator, contract, workflow, or document | [Bug report](.github/ISSUE_TEMPLATE/bug_report.yml) |
+| New capability or integration-contract proposal | [Feature request](.github/ISSUE_TEMPLATE/feature_request.yml) |
+| General project question | [GitHub Issues](https://github.com/LloydCoder/tinlance-system-integration/issues) |
+| Security vulnerability | Follow [SECURITY.md](SECURITY.md); do not use a public issue |
+| Conduct concern | Follow [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) and contact the maintainer privately |
 
-## Before opening an issue
+## Include useful diagnostic information
 
-Please include:
+When opening a non-sensitive support issue, include:
 
-- repository commit or version;
-- exact command or workflow;
-- expected behavior;
-- observed behavior;
-- relevant CI output;
-- a minimal reproduction where possible.
+- Exact repository commit or version.
+- Operating system and Python version, if relevant.
+- Exact command, workflow, or file involved.
+- Expected and observed behavior.
+- Relevant sanitized error output.
+- A minimal deterministic reproduction.
 
-TSIC is intentionally deterministic. The output from the failing validation script is usually the fastest diagnostic starting point.
+Do not include credentials, private keys, personal data, customer information, PHI, or confidential infrastructure details.
 
-## Scope
+## Project scope
 
-Support covers the repository's contracts, schemas, documentation, conformance tooling, and canonical workflows. It does not provide operational support for unrelated Tinlance systems or customer deployments.
-
+Support covers TSIC's public contracts, registries, schemas, conformance tooling, documentation, and repository workflows. It does not provide operational support for unrelated Tinlance systems, customer deployments, or third-party services.

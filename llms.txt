@@ -1,37 +1,67 @@
-# Tinlance System Integration & Conformance
+# Tinlance System Integration & Conformance (TSIC)
 
 > TSIC is the canonical integration control plane for defining, validating, and certifying interoperability across the Tinlance system-of-systems.
 
-## Start here
+TSIC owns system registries, integration contracts, compatibility policy, conformance tooling, and certification evidence. It does not own domain runtime execution, agent authorization, or application business logic.
 
-- [README](README.md): Product positioning, quick start, repository map, and usage.
-- [Documentation index](docs/README.md): Navigation across tutorials, how-to guides, explanation, and reference.
-- [Governance](GOVERNANCE.md): Ownership boundaries and authority rules.
-- [Security](SECURITY.md): Vulnerability reporting and security controls.
-- [Contributing](CONTRIBUTING.md): Contribution, compatibility, and verification requirements.
+## Canonical entry points
 
-## Architecture
+- [README](README.md): Product scope, architecture, quick start, usage, and configuration.
+- [Documentation index](docs/README.md): Tutorial, how-to, explanation, and reference navigation.
+- [Governance](GOVERNANCE.md): Authority boundaries and maintainer decision process.
+- [Contributing](CONTRIBUTING.md): Fork, branch, validation, and pull request process.
+- [Security](SECURITY.md): Private vulnerability reporting and response targets.
+- [Support](SUPPORT.md): Issue routing and diagnostic information.
+- [Changelog](CHANGELOG.md): Versioned repository changes.
 
-- [Canonical system model](docs/architecture/canonical-system-model.md): Authoritative system and path model.
-- [Authority model](docs/architecture/authority-model.md): Capability ownership and boundaries.
+## Architecture and authority
+
+- [Architecture overview](docs/architecture/overview.md): TSIC scope and integration control-plane model.
+- [Canonical system model](docs/architecture/canonical-system-model.md): Canonical routes and authority boundaries.
+- [Authority model](docs/architecture/authority-model.md): Domain and platform ownership.
+- [Authority reconciliation](docs/architecture/authority-reconciliation.md): Resolution of overlapping ownership.
 - [Integration topology](docs/architecture/integration-topology.md): System-to-system relationships.
-- [Identity and agent registration](docs/architecture/identity-and-agent-registration.md): Identity propagation and registration contracts.
-- [Model and agent interoperability](docs/architecture/model-and-agent-interoperability.md): Routing and interoperability controls.
+- [Identity and agent registration](docs/architecture/identity-and-agent-registration.md): Identity propagation and registration.
+- [Model and agent interoperability](docs/architecture/model-and-agent-interoperability.md): Interoperability controls.
+- [Trust boundaries](docs/architecture/trust-boundaries.md): Trust and execution boundaries.
+- [Persistent Agent Computer ADR](docs/architecture/decision-records/ADR-0004-persistent-agent-computer.md): Persistent compute authority placement.
+- [Persistent Agent Computer threat model](docs/architecture/persistent-agent-computer-threat-model.md): Threat scenarios and mitigations.
+- [Persistent Agent Computer benchmark plan](docs/architecture/persistent-agent-computer-benchmark-plan.md): Runtime feasibility and acceptance plan.
 
-## Contracts and verification
+## Contracts, adapters, and operations
 
-- [Event and trace fabric](docs/contracts/event-and-trace-fabric.md): Event envelope, delivery, and trace concepts.
-- [Adapter fabric](docs/integrations/adapter-fabric.md): Cross-system adapter rules.
-- [End-to-end integration](docs/operations/e2e-integration.md): Canonical executable workflows.
-- [Failure and recovery certification](docs/operations/failure-recovery-certification.md): Recovery scenarios and certification.
-- [Production system-of-systems certification](docs/certification/production-system-of-systems.md): Repository-level certification boundary.
+- [Event and trace fabric](docs/contracts/event-and-trace-fabric.md): Event envelope and trace semantics.
+- [Service and contract registry](docs/architecture/service-contract-registry.md): Service and contract catalog.
+- [Adapter fabric](docs/integrations/adapter-fabric.md): Adapter governance.
+- [End-to-end integration](docs/operations/e2e-integration.md): Reference integration execution.
+- [Failure and recovery certification](docs/operations/failure-recovery-certification.md): Failure and recovery checks.
+- [Security threat model](docs/security/threat-model.md): Repository/system threat model.
+- [2026 standards baseline](docs/standards/2026-baseline.md): Standards and engineering baseline.
 
-## Machine-readable surfaces
+## Machine-readable normative surfaces
 
-- [Ecosystem manifest](manifests/ecosystem.json): Registered systems and authorities.
+- [Ecosystem manifest](manifests/ecosystem.json): System identities and governance roles.
 - [Capability authority catalog](catalog/capabilities/authority.json): Capability ownership.
-- [Contract registry](catalog/contracts/registry.json): Versioned normative contracts.
-- [Service registry](catalog/services/registry.json): Registered services and protocols.
-- [Dependency graph](catalog/dependencies/graph.json): Canonical dependencies.
-- [Canonical workflows](workflows/canonical.json): Integration paths.
-- [Ecosystem lock](policies/ecosystem-lock.json): Enforcement policy.
+- [Phase registry](catalog/phases/registry.json): Canonical TSIC-00 through TSIC-19 sequence.
+- [Contract registry](catalog/contracts/registry.json): Contract identifiers and versions.
+- [Service registry](catalog/services/registry.json): Service identities and protocol declarations.
+- [Dependency graph](catalog/dependencies/graph.json): System dependencies.
+- [Canonical workflows](workflows/canonical.json): Canonical integration paths.
+- [Ecosystem lock](policies/ecosystem-lock.json): Ecosystem invariants.
+- [Conformance requirements](conformance/requirements/): Phase acceptance requirements.
+
+## Historical and evidence records
+
+- [Historical TSIC-31–41 numbering note](docs/architecture/serial-integration-31-41.md): Superseded numbering context.
+- [Historical TSIC-31–41 certification record](docs/certification/TSIC-31-41-certification-record.md): Retained historical evidence; not the canonical phase registry.
+- [Phase evidence ledger](catalog/phases/evidence-ledger.json): Reviewed historical baseline; reference evidence does not establish production deployment.
+- [Current main evidence audit](docs/audits/current-main-evidence-2026-11-07.md): Current repository CI and Scorecard snapshot.
+
+## Machine interpretation rules
+
+1. Treat `catalog/phases/registry.json` as the sole canonical TSIC phase sequence.
+2. Treat files under `catalog/`, `contracts/`, `schemas/`, `manifests/`, `workflows/`, `policies/`, and `conformance/` as normative only where their local documentation or schema says so.
+3. Historical certification records are evidence, not current authority.
+4. Distinguish implemented, tested, integrated, verified, and production-deployed states.
+5. Do not infer production certification from a passing GitHub Actions workflow.
+6. Agent Platform remains the sole generic consequential execution authority; TSIC is not an execution runtime.
