@@ -143,20 +143,20 @@ The architecture direction remains accepted and provider-neutral. Do not select 
 ### Merged W2 implementation
 
 - **PR #185** merged to `LloydCoder/tinlance-agent-platform` main: Firecracker W2 developer-workspace baseline. Merge commit: `c351b15e9c3ff7dfc200bcca017f8336dfb9c2cd`.
-- **PR #187** merged to main: deterministic normalized W2 rootfs, archive/path/link validation, reproducible package provenance and corrected CA bootstrap. Merge commit: `eed697eea29e6cfb5a55a8dd1674b5611d592535`.
+- **PR #187** merged to main: normalized W2 rootfs pipeline, archive/path/link validation, package provenance and corrected CA bootstrap. Merge commit: `eed697eea29e6cfb5a55a8dd1674b5611d592535`. A subsequent independent-build audit found one remaining nondeterministic cache file; full reproducibility acceptance is therefore still open.
 - PR #187 exact-head CI, CodeQL, Secret Scan, R10, TSIC conformance, Firecracker W2, gVisor W2, Kata W2 and Reference Agents workflows passed before merge.
 
 The PR #187 baseline artifacts reported the same normalized rootfs tar SHA-256 across Firecracker, gVisor and Kata:
 `5fe52e36993c349610d45abd968ac7522618e8d63abc5b7a3f48c24c99657cdf`.
-Each runtime produced 30 workload samples. The package-manifest SHA-256 was `3901a70e7d468e7691397dff18b05e30e666e9ec9725f71fb09f305da8bc79d7`. An independent archive inspection counted 37,809 entries and found no traversal paths, unsafe relative symlink escapes, device nodes or FIFOs.
+Each runtime produced 30 workload samples from the same uploaded artifact. **This proves cross-runtime artifact identity, not independent-build reproducibility.** The package-manifest SHA-256 was `3901a70e7d468e7691397dff18b05e30e666e9ec9725f71fb09f305da8bc79d7`. An independent archive inspection counted 37,809 entries and found no traversal paths, unsafe relative symlink escapes, device nodes or FIFOs.
 
-**These are PR #187 baseline results.** PR #190 adds a local offline npm dependency to the W2 fixture, so its normalized rootfs digest is expected to differ. The final PR #190 digest must be read from its exact-run artifact and must match across the direct Firecracker, jailed Firecracker, gVisor and Kata W2 jobs. Do not carry the PR #187 digest forward as the new fixture's final digest.
+**These are PR #187 baseline results.** PR #190 adds a local offline npm dependency to the W2 fixture, so its normalized rootfs digest differs. A forensic comparison of two PR #190 builds with identical fixture/Dockerfile inputs produced different normalized digests: `1a9cda7544bf42ba8b065516531a96122533b06c2cdff2c57e02dc0e1b796300` and `ce324ca95c7c77bf526fa3019fce86f7d9aad7c1ea0b238aacba9f3f3748d91c`. The only differing archive member was `var/cache/ldconfig/aux-cache`; its content changes between builds. The normalizer currently does not drop this volatile cache file. PR #190 therefore has a **reproducibility blocker**: add a regression test, exclude the cache path, and prove two independent no-cache image builds normalize to the same digest. Do not declare reproducible-rootfs acceptance complete until that gate passes. Afterward, the final digest must also match across direct Firecracker, jailed Firecracker, gVisor and Kata W2 jobs.
 
 ### Current W2 acceptance gate
 
-**PR #190** is the open W2 jailer-path implementation: [Firecracker W2 developer workspace through jailer](https://github.com/LloydCoder/tinlance-agent-platform/pull/190). Its exact-head workflows and artifacts are still pending; W2 is not yet closed.
+**PR #190** is the open W2 jailer-path and reproducibility-fix implementation: [Firecracker W2 developer workspace through jailer](https://github.com/LloydCoder/tinlance-agent-platform/pull/190). Its exact-head workflows and artifacts are still pending; W2 is not yet closed.
 
-The W2 gate requires 3/3 actual Firecracker-jailer W2 executions using the exact normalized rootfs artifact from the same workflow run. It includes:
+The W2 gate requires (1) two independent no-cache image builds with byte-identical normalized rootfs output, (2) 3/3 actual Firecracker-jailer W2 executions using the exact normalized rootfs artifact from the same workflow run, and (3) identical rootfs digest consumption by direct Firecracker, jailed Firecracker, gVisor and Kata. It includes:
 
 - A real Git/Python/Node developer workload, local-package `npm ci --offline`, Node tests, host-surface probes and guest readiness markers.
 - A lockfile generated during the immutable image build with networking disabled; valid 64-character SHA-256 evidence for the dpkg package manifest and npm lockfile; non-empty Git/Python/Node/npm version markers.
