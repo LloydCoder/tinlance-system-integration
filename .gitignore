@@ -4,16 +4,20 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.hypothesis/
+.tox/
 .venv/
 venv/
 ENV/
 env/
 
-# Build and coverage
+# Build, packaging, and coverage
 dist/
 build/
 coverage/
 htmlcov/
+.coverage
+.coverage.*
 *.egg-info/
 reports/generated/
 
@@ -24,8 +28,10 @@ reports/generated/
 *.pem
 *.key
 *.crt
+*.p12
+*.pfx
 
-# OS/editor
+# OS and editor
 .DS_Store
 Thumbs.db
 .idea/

@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   acquisition:
-    name: TSIC-25 Acquisition System certification
+    name: Cross-phase acquisition system certification
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

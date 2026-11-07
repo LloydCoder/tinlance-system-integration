@@ -7,7 +7,7 @@ permissions:
   contents: read
 jobs:
   final:
-    name: TSIC-38 final forensic certification
+    name: TSIC-17 Production System-of-Systems certification
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
