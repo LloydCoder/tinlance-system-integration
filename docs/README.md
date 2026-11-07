@@ -26,6 +26,8 @@ This index organizes the repository using a practical Diátaxis model while pres
 - [Ecosystem conformance authority](architecture/decision-records/ADR-0003-ecosystem-conformance-authority.md)
 - [Identity and agent registration](architecture/identity-and-agent-registration.md)
 - [Integration topology](architecture/integration-topology.md)
+- [Canonical system model](architecture/canonical-system-model.md)
+- [TSIC architecture overview](architecture/overview.md)
 - [Trust boundaries](architecture/trust-boundaries.md)
 - [Persistent Agent Computer threat model](architecture/persistent-agent-computer-threat-model.md)
 - [Persistent Agent Computer architecture — ADR-0004](architecture/decision-records/ADR-0004-persistent-agent-computer.md)
