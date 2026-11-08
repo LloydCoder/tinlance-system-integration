@@ -320,3 +320,39 @@ Platform PR [#207](https://github.com/LloydCoder/tinlance-agent-platform/pull/20
 - FCP-02: active; W2–W4 accepted only for ephemeral CI feasibility; W5 implementation slices merged, eight-hour soak outstanding; W6 not started.
 - FCP-03–FCP-10: not started under the serial programme sequence.
 - TSIC #102 remains open and is the canonical acceptance tracker. Green repository CI does not close the controlled-host soak, production qualification or independent security-review gates.
+
+
+## 7. FCP-00 post-merge verification refresh — 2026-11-08
+
+This is the latest programme snapshot after Platform PRs #210 and #211 and TSIC PR #113 merged. It supersedes Section 6's observed-main-head table for present-state tracking; Section 6 remains the historical snapshot taken before those merges.
+
+### Verified default-branch heads
+
+| Repository | `main` SHA | Verified head |
+|---|---|---|
+| Agent Platform | `b130013c702ca70d711153e9824b2d4e955ce2c8` | W5 thread-safe exec-guard implementation and acceptance documentation merged |
+| Agent OS | `aafce0b0d8029e6bac1cf335af24d3da8c6455e0` | Remote endpoint network policy fails closed |
+| Platform SDK | `e418f9de6639779381a0cebc746991a52a8df1ce` | PyPI publishing action dependency update |
+| TADL / Agent Developer | `409a0bda27ba3db48e696f665bda7d4e6355e4d3` | FCP-02 trusted supervisor baseline pinned |
+| TSIC | `e8ee021bc06f1032b0ecc29c4828c4bd50a9ecdf` | FCP-00 live reconciliation and W5 evidence record merged |
+| TADS (adjacent) | `be242dd29335e3e74b4b80176ea073f7b7f74d56` | Separate intelligence product; excluded from FCP core sequence |
+
+### Post-merge workflow verification
+
+- Platform PR [#210](https://github.com/LloydCoder/tinlance-agent-platform/pull/210), merge SHA `255b4ea75e9d6a8d231fbb60f2c7d3165aea5b6f`: all 14 post-merge check runs passed, including Python 3.12–3.14, quality/coverage, R10, SQL, TSIC conformance, CodeQL, Secret Scan, host feasibility and attestation.
+- Platform PR [#211](https://github.com/LloydCoder/tinlance-agent-platform/pull/211), merge SHA `b130013c702ca70d711153e9824b2d4e955ce2c8`: all 14 post-merge check runs passed.
+- TSIC PR [#113](https://github.com/LloydCoder/tinlance-system-integration/pull/113), merge SHA `e8ee021bc06f1032b0ecc29c4828c4bd50a9ecdf`: all 34 post-merge check runs passed.
+
+### Core open-work inventory after merges
+
+- Agent Platform, Agent OS, Platform SDK and TADL: no open PRs or issues observed.
+- TSIC: no open PRs; issue [#102](https://github.com/LloydCoder/tinlance-system-integration/issues/102) remains open as the single canonical Phase 2 acceptance tracker.
+- TADS: two open development-dependency PRs (#43 mypy and #44 pytest); these are outside the Agent Systems FCP boundary and are not prerequisites for FCP progression.
+
+### FCP-00 disposition and FCP-02 gate
+
+**FCP-00 baseline/reconciliation is complete for this snapshot.** The six repository heads, core open-work inventory, merged implementation evidence and post-merge workflow results are recorded above.
+
+FCP-01 remains accepted. FCP-02 remains active and incomplete: W5 has merged durable lease, trusted-supervisor, parent-death containment and thread-safe exec-guard implementation slices, but the required uninterrupted eight-hour controlled-host soak has not been run or independently inspected. The infrastructure audit found no dedicated Agent Platform soak host; the existing FusionOps, ThreatFade and Tinlyt hosts remain out of scope. AWS budget configuration was empty and promotional-credit coverage could not be verified, so no compute was provisioned.
+
+W6 remains gated behind W5 acceptance. FCP-03 through FCP-10 remain unstarted in the serial sequence. Green CI and merged code are necessary but do not replace the controlled-host soak, production qualification, independent security review or formal go/no-go evidence.
