@@ -280,3 +280,43 @@ FCP is complete only when all three are true:
 - **Independent assurance:** cross-repository conformance, security, recovery, economics, operations and release evidence are independently accepted and TSIC publishes final certification.
 
 A green workflow is necessary but insufficient. Final completion is not claimed by this baseline document.
+
+
+## 6. FCP-00 live reconciliation addendum — 2026-11-08
+
+This addendum supersedes the baseline's point-in-time repository-head and open-work inventory for current programme tracking. The original baseline SHAs above remain historical evidence and are not rewritten.
+
+### Current observed default-branch heads
+
+| Repository | Current `main` SHA | Current head summary |
+|---|---|---|
+| Agent Platform | `ced3b972087186e4d9d448d5bd2080e8c02bb3cd` | W5 supervisor crash-containment follow-up merged (#207) |
+| Agent OS | `aafce0b0d8029e6bac1cf335af24d3da8c6455e0` | Remote endpoint network policy fails closed |
+| Platform SDK | `e418f9de6639779381a0cebc746991a52a8df1ce` | PyPI publishing action dependency update |
+| TADL / Agent Developer | `409a0bda27ba3db48e696f665bda7d4e6355e4d3` | FCP-02 trusted supervisor baseline pinned (#107) |
+| TSIC | `4248f5c048c09284edb03d917b7955c28adff04a` | FCP-01 acceptance recorded; FCP-02 active (#112) |
+| TADS (adjacent) | `be242dd29335e3e74b4b80176ea073f7b7f74d56` | Separate intelligence product; not an FCP core repository |
+
+### Current open-work inventory
+
+Repository-scoped GitHub searches observed:
+- Agent Platform: 0 open PRs; 0 open issues.
+- Agent OS: 0 open PRs; 0 open issues.
+- Platform SDK: 0 open PRs; 0 open issues.
+- TADL / Agent Developer: 0 open PRs; 0 open issues.
+- TSIC: 0 open PRs; 1 open umbrella acceptance issue, [#102](https://github.com/LloydCoder/tinlance-system-integration/issues/102).
+- TADS: 2 open dependency PRs (#43 pytest and #44 mypy); TADS is adjacent and is not part of the FCP core implementation sequence.
+
+### W5 supervisor evidence refresh
+
+Platform PR [#207](https://github.com/LloydCoder/tinlance-agent-platform/pull/207) merged to Platform `main` as `ced3b972087186e4d9d448d5bd2080e8c02bb3cd`. It adds Linux parent-death signal containment (`PR_SET_PDEATHSIG=SIGKILL`) and a parent-PID race check, with regression coverage proving that a child command cannot continue its delayed side effect after forced supervisor termination. Exact-head CI (Python 3.12–3.14, SQL, TSIC conformance), CodeQL, Secret Scan, R10, Reference Agents and host-feasibility passed. All six observed post-merge workflows—CI, CodeQL, Secret Scan, R10, Reference Agents and Supply Chain Attestation—passed on the merge SHA.
+
+**W5 remains unaccepted.** The trusted supervisor implementation is now merged, but the continuous eight-hour controlled-host soak remains outstanding. The infrastructure audit found no dedicated Agent Platform soak host; existing FusionOps, ThreatFade and Tinlyt instances remain out of scope. AWS budget configuration is absent and estimated Cost Explorer data does not prove promotional-credit coverage. No compute was provisioned. W6 must remain sequenced after verified W5 soak evidence.
+
+### Current programme disposition
+
+- FCP-00: baseline and live repository reconciliation recorded; continue updating evidence when repository heads or open-work state changes.
+- FCP-01: accepted per TSIC #112.
+- FCP-02: active; W2–W4 accepted only for ephemeral CI feasibility; W5 implementation slices merged, eight-hour soak outstanding; W6 not started.
+- FCP-03–FCP-10: not started under the serial programme sequence.
+- TSIC #102 remains open and is the canonical acceptance tracker. Green repository CI does not close the controlled-host soak, production qualification or independent security-review gates.
