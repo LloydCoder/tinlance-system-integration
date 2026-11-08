@@ -85,6 +85,18 @@ Complete independent penetration/red-team assessment, tenant-isolation and autho
 
 Adjacent product: `LloydCoder/tinlance-tads` is Target / Account / Demand Signal Intelligence, not a core Agent Systems implementation repository.
 
+### Exact default-branch baseline SHAs
+
+These are the observed `main` heads before the FCP-00 documentation PRs:
+
+| Repository | Observed `main` SHA |
+|---|---|
+| Agent Platform | `bf115673a7250fca082d9e81d45ab9eb4208fd6b` |
+| Agent OS | `aafce0b0d8029e6bac1cf335af24d3da8c6455e0` |
+| Platform SDK | `e418f9de6639779381a0cebc746991a52a8df1ce` |
+| TADL / Agent Developer | `b8f9e6e1fe34e59352e7fae553f81865b53b9f99` |
+| TSIC | `b490b761fed638232bd47bea3b3792e0c2695a18` |
+
 ### Live open-work inventory
 
 At the baseline audit, live repository-scoped searches returned no open PRs or ordinary open issues in Agent Platform, Agent OS, Platform SDK or TADL. TSIC has one open umbrella issue: [#102](https://github.com/LloydCoder/tinlance-system-integration/issues/102). TADS has two open dependency PRs, #43 (pytest) and #44 (mypy); they are tracked separately and are not FCP blockers.
