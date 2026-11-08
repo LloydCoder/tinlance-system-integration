@@ -5,7 +5,7 @@
 **Baseline:** 2026-11-08  
 **Programme authority:** TSIC (system-of-systems programme governance and conformance evidence)  
 **Execution authority:** Tinlance Agent Platform  
-**Status:** FCP-00 accepted; FCP-01 is the next eligible phase. Overall programme completion and production certification remain outstanding.
+**Status:** FCP-00 and FCP-01 accepted; FCP-02 (persistent computers and durable execution) is active. Overall programme completion and production certification remain outstanding.
 
 ## 1. Mission
 
@@ -169,7 +169,62 @@ PR-head validation was also green: Platform 5/5, TADL 5/5 and TSIC 33/33 workflo
 
 **Disposition:** FCP-00 complete. Proceed serially to FCP-01. This closeout does not claim W5/W6, production certification, product completion or final FCP completion.
 
-## 7. Requirements-to-repository ownership
+## 7. FCP-01 closeout record — accepted 2026-11-08
+
+FCP-01 reconciled the exact reviewed repository references, canonical ecosystem lock, manifest, registry provenance and cross-repository conformance checks. The phase was merged only after the complete exact-head CI, security, secret-scan, CodeQL and ecosystem integration workflows passed. Post-merge mainline checks were then inspected.
+
+### Merged implementation and reconciliation
+
+| Repository | Change | Merge commit | Post-merge validation |
+|---|---|---|---|
+| Agent Platform | [PR #204](https://github.com/LloydCoder/tinlance-agent-platform/pull/204) aligns reference-agent SDK dependency to the exact locked SDK SHA | `b2b5d61c7094ca3f31121ce33a4222d3fe994835` | 6/6 workflows successful |
+| TADL / Agent Developer | [PR #106](https://github.com/LloydCoder/tinlance-agent-developer/pull/106) refreshes exact pins, aligns manifest and registry provenance, and corrects conformance expectations to the canonical Platform contract | `0b27b6bad966884961fb0e90055ca58837a87558` | 8/8 workflows successful |
+| Tinlyt / TWI | [PR #154](https://github.com/LloydCoder/tinlance-web-intelligence/pull/154) aligns OpenTelemetry API, SDK and OTLP exporter to 1.45.2 | `48a89f64a77d125e07ac9816b73738e4e6106dc8` | 2/2 workflows successful |
+
+TADL PR #106's complete exact-head gate passed: CI, Security, Secret Scan, CodeQL and Ecosystem Integration. The cross-repository integration job exercised the pinned TADL, Agent OS, SDK, Platform, TWI and World Intelligence revisions, including P0–P10 conformance and P10 recovery. The first run exposed two real drift defects: stale idempotency error casing in P2 conformance and stale repository/provenance SHAs in the P5 registry. Both were corrected against the canonical Platform contract and immutable ecosystem lock; the final exact-head workflow set was fully green before merge.
+
+Platform PR #204's exact-head Reference Agents, R10 Certification, CI, CodeQL and Secret Scan workflows all passed. The post-merge Platform mainline had 6/6 successful workflows. TWI PR #154's post-merge CI and OpenSSF Scorecard workflows both passed.
+
+### Reviewed immutable integration baseline
+
+| Component | Reviewed SHA |
+|---|---|
+| Agent Platform | `b2b5d61c7094ca3f31121ce33a4222d3fe994835` |
+| Agent OS | `aafce0b0d8029e6bac1cf335af24d3da8c6455e0` |
+| Platform SDK | `e418f9de6639779381a0cebc746991a52a8df1ce` |
+| TADL / Agent Developer | `0b27b6bad966884961fb0e90055ca58837a87558` |
+| TSIC authority | `f021d09cddd68d731c88cd5209c33789e78b4ae5` |
+| Tinlyt / TWI | `48a89f64a77d125e07ac9816b73738e4e6106dc8` |
+| World Intelligence | `57d326553c0bbebe4d0ad5cb947e7cab38f947ab` |
+
+The TADL registry's repository reviewed SHAs, supply-chain reviewed SHAs and commit provenance URIs now match the immutable dependency lock. The P10 manifest retains its contract-surface meaning and explicitly distinguishes repository/reference-scope certification from deployed production assurance. The Platform reference-agent package metadata now pins the same SDK commit as the ecosystem lock.
+
+### FCP-01 exit checklist
+
+- [x] Exact immutable references inspected across Platform, OS, SDK, TADL, TSIC, TWI and World Intelligence.
+- [x] Platform reference-agent SDK pin reconciled with the ecosystem lock.
+- [x] TADL ecosystem lock and manifest aligned.
+- [x] P2 conformance assertions aligned with canonical Platform error semantics.
+- [x] P5 registry reviewed SHAs, supply-chain SHAs and provenance URIs aligned with the lock.
+- [x] P0–P10 and P10 recovery cross-repository conformance passed on the final exact PR head.
+- [x] Required CI, security, CodeQL, secret-scan and integration workflows green before merge.
+- [x] Platform PR #204, TADL PR #106 and TWI PR #154 merged.
+- [x] Post-merge mainline validation green for the three affected repositories.
+- [x] No open PRs or ordinary open issues remain in Platform, OS, SDK, TADL or TSIC at the closeout check; TSIC #102 remains the open W5/W6 and production acceptance tracker.
+
+**Disposition:** FCP-01 complete for repository/reference-scope contracts and ecosystem conformance. This does not certify deployed production infrastructure, W5 eight-hour persistence, W6 snapshot/restore, or final product experience.
+
+## 8. FCP-02 execution record — active
+
+FCP-02 begins with W5 because W2–W4 are already accepted for ephemeral CI feasibility. Platform PRs #201 and #202 have merged the durable PostgreSQL workspace-lease implementation and NULL-safe fencing correction. The database layer now provides tenant-scoped leases, forced RLS, append-only lease events, monotonic fencing tokens, and acquire/renew/assert/revoke/release procedures.
+
+**W5 remains open.** The trusted supervisor has not yet been evidenced enforcing the current fencing token at every consequential command boundary and terminating/reaping stale workers. The genuine continuous eight-hour soak has not been run or independently inspected. It must use a dedicated controlled persistent host or registered self-hosted runner; the GitHub-hosted job limit is insufficient. It must cover real browser/profile persistence across process and supervisor restarts, lease renewal/expiry/revocation, stale-worker fencing, quota behavior, audit continuity, crash recovery and cleanup.
+
+**Infrastructure constraint:** existing production instances for FusionOps, ThreatFade and Tinlyt are out of scope and must not be repurposed. No new paid AWS resource is to be created without verified credit coverage and a bounded cost plan. The W5 host must be separately tagged, least-privilege and isolated from existing product infrastructure.
+
+W6 must not begin until W5 acceptance is complete. Production security, economics and independent assurance remain later gates.
+
+## 9. Requirements-to-repository ownership
 
 | Capability | Primary owner | Required conformance |
 |---|---|---|
@@ -179,7 +234,7 @@ PR-head validation was also green: Platform 5/5, TADL 5/5 and TSIC 33/33 workflo
 | Agent declarations, schemas, skills, authoring and packaging | TADL | Platform + OS + SDK + TSIC |
 | System contracts, lock, compatibility, integration and certification | TSIC | All in-scope repositories |
 
-## 8. Competitive acceptance scenarios
+## 10. Competitive acceptance scenarios
 
 Validate the four benchmarks with reproducible end-to-end tasks:
 
@@ -201,7 +256,7 @@ Validate the four benchmarks with reproducible end-to-end tasks:
 
 Every scenario records exact code/model/configuration, permissions, expected and actual result, evidence, security outcome, latency, cost, and failure/recovery behavior. No unsupported superiority claims.
 
-## 9. Serial execution and release protocol
+## 11. Serial execution and release protocol
 
 1. Only the first uncertified FCP phase may be active.
 2. Inspect exact current repository and dependency SHAs before implementation.
@@ -216,7 +271,7 @@ Every scenario records exact code/model/configuration, permissions, expected and
 
 A missing provider attestation, physical host, independent reviewer or production service is a blocked gate, not a reason to substitute mocks or claim completion.
 
-## 10. Definition of final completion
+## 12. Definition of final completion
 
 FCP is complete only when all three are true:
 
