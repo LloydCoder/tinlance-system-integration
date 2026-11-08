@@ -158,6 +158,10 @@ Change normative artifacts deliberately. Update their schemas, validators, compa
 | Evidence ledger | Exact-commit workflow evidence with production-claim boundaries |
 | Interoperability | MCP/A2A contract and authority boundary documentation |
 
+## Programme governance
+
+The cross-repository completion baseline is maintained in the [Tinlance Agent Systems — Final Completion Programme](docs/programmes/FINAL-COMPLETION-PROGRAMME.md). It crosswalks the Platform M0–M29 roadmap, ecosystem P0–P10 matrix, TSIC-00…TSIC-19 certification sequence and persistent-computer W2–W6 acceptance without conflating their numbering or completion criteria.
+
 ## Canonical architecture and phase sequence
 
 The master ecosystem sequence is **TSIC-00 through TSIC-19**, defined by [catalog/phases/registry.json](catalog/phases/registry.json). The registry is the machine-readable source of truth.
