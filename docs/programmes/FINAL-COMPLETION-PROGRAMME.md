@@ -5,7 +5,7 @@
 **Baseline:** 2026-11-08  
 **Programme authority:** TSIC (system-of-systems programme governance and conformance evidence)  
 **Execution authority:** Tinlance Agent Platform  
-**Status:** Baseline reconciliation in progress; no claim of final completion.
+**Status:** FCP-00 accepted; FCP-01 is the next eligible phase. Overall programme completion and production certification remain outstanding.
 
 ## 1. Mission
 
@@ -131,7 +131,45 @@ At the baseline audit, live repository-scoped searches returned no open PRs or o
 
 W2–W4 ephemeral acceptance does not close these production residuals. W5 PR merges do not constitute the eight-hour soak. P0–P10 and M0–M29 repository completion do not establish a deployed production service.
 
-## 6. Requirements-to-repository ownership
+## 6. FCP-00 closeout record — accepted 2026-11-08
+
+FCP-00 is accepted after the live baseline audit, documentation reconciliation, issue correction, exact-head validation, merge and post-merge verification.
+
+### Reconciliation changes
+
+| Repository | PR | Merge commit | Post-merge workflows |
+|---|---|---|---:|
+| Agent Platform | [#203](https://github.com/LloydCoder/tinlance-agent-platform/pull/203) | `15caa3ebd65e5f569347aa5db01bb90af6e65c6a` | 6/6 successful |
+| TADL | [#105](https://github.com/LloydCoder/tinlance-agent-developer/pull/105) | `5e28c5f0b923b3eeef44f3714dfacea1c1c49220` | 8/8 successful |
+| TSIC | [#110](https://github.com/LloydCoder/tinlance-system-integration/pull/110) | `dd5de47d0f0cf33379273bbe50073ec97934f25c` | 34/34 successful |
+
+PR-head validation was also green: Platform 5/5, TADL 5/5 and TSIC 33/33 workflows. The TSIC PR included the cross-repository integration and certification workflows. No failed workflow was observed on these exact heads or the listed merge commits.
+
+### Canonical records reconciled
+
+- Platform persistent-computer acceptance now records W4 as merged/accepted for ephemeral CI feasibility and W5 lease implementation PRs #201/#202 as merged, while retaining the eight-hour soak as outstanding.
+- TADL phase matrix now consistently records P0–P10 as repository/reference-scope certified, including P10 recovery. External production deployment remains unverified.
+- TSIC issue [#102](https://github.com/LloydCoder/tinlance-system-integration/issues/102) now reflects W2–W4 ephemeral acceptance, W5 implementation versus soak distinction, W6 outstanding work and production residuals.
+- This master programme is linked from the TSIC README and is the cross-repository FCP reference.
+
+### FCP-00 exit checklist
+
+- [x] All five core repositories identified and accessible.
+- [x] Exact pre-reconciliation default-branch baseline SHAs recorded.
+- [x] Open PR and issue inventory completed.
+- [x] W3/W4/W5 merge dispositions verified.
+- [x] W5 eight-hour soak explicitly retained as outstanding.
+- [x] W6 and production residuals explicitly retained as outstanding.
+- [x] Platform, TADL and TSIC documentation inconsistencies reconciled.
+- [x] TSIC issue #102 updated without falsely closing acceptance.
+- [x] Required PR-head workflows green.
+- [x] All three documentation PRs merged.
+- [x] Post-merge mainline workflows green: Platform 6/6, TADL 8/8, TSIC 34/34.
+- [x] Core repositories have no remaining open PRs; TSIC #102 remains the open persistent-computer acceptance tracker.
+
+**Disposition:** FCP-00 complete. Proceed serially to FCP-01. This closeout does not claim W5/W6, production certification, product completion or final FCP completion.
+
+## 7. Requirements-to-repository ownership
 
 | Capability | Primary owner | Required conformance |
 |---|---|---|
@@ -141,7 +179,7 @@ W2–W4 ephemeral acceptance does not close these production residuals. W5 PR me
 | Agent declarations, schemas, skills, authoring and packaging | TADL | Platform + OS + SDK + TSIC |
 | System contracts, lock, compatibility, integration and certification | TSIC | All in-scope repositories |
 
-## 7. Competitive acceptance scenarios
+## 8. Competitive acceptance scenarios
 
 Validate the four benchmarks with reproducible end-to-end tasks:
 
@@ -163,7 +201,7 @@ Validate the four benchmarks with reproducible end-to-end tasks:
 
 Every scenario records exact code/model/configuration, permissions, expected and actual result, evidence, security outcome, latency, cost, and failure/recovery behavior. No unsupported superiority claims.
 
-## 8. Serial execution and release protocol
+## 9. Serial execution and release protocol
 
 1. Only the first uncertified FCP phase may be active.
 2. Inspect exact current repository and dependency SHAs before implementation.
@@ -178,7 +216,7 @@ Every scenario records exact code/model/configuration, permissions, expected and
 
 A missing provider attestation, physical host, independent reviewer or production service is a blocked gate, not a reason to substitute mocks or claim completion.
 
-## 9. Definition of final completion
+## 10. Definition of final completion
 
 FCP is complete only when all three are true:
 
