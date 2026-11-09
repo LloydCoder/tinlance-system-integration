@@ -694,3 +694,27 @@ A fresh read-only IAM inventory was performed after PR #262. The AWS API calls c
 - No AWS resources, account settings, or existing Tinlyt/FusionOps/ThreatFade infrastructure were modified.
 
 **Disposition:** This closes a static NACL inventory fail-open only. It does not provide live Network Firewall/DNS Firewall packet and flow enforcement evidence. The current read-only account inventory still shows no Network Firewall deployment or Route 53 Resolver DNS Firewall association; the AWS API caller remains root and no dedicated FCP-03 identity exists. FCP-03 remains active/incomplete; FCP-04–FCP-10 remain gated.
+
+
+## 20. FCP-03 ENI/firewall-mapping inventory hardening and existing-infrastructure census — 2026-11-09
+
+### Agent Platform PR #266
+- [PR #266](https://github.com/LloydCoder/tinlance-agent-platform/pull/266) merged as `e1a7644249e7ec94fb6799ba223813ebead5d1f0`.
+- The collector previously filtered malformed IPv6 address members from ENI responses. A malformed address could disappear from the snapshot and be mistaken for an empty IPv6 inventory. The collector now preserves incomplete ENI/IPv6 data as an explicit fail-closed signal.
+- The collector previously filtered malformed Network Firewall subnet-mapping records while resolving a fallback subnet from the remaining mappings. It now refuses to resolve the firewall subnet from an incomplete mapping collection.
+- Regression tests cover malformed IPv6 address data and a malformed firewall subnet mapping alongside a valid mapping.
+- Exact PR-head workflows: 14/14 successful. Exact post-merge Agent Platform mainline check-runs: 14/14 successful on merge SHA `e1a7644249e7ec94fb6799ba223813ebead5d1f0`.
+- No AWS resources or existing product infrastructure were modified.
+
+### Read-only existing-infrastructure census
+A fresh read-only EC2/VPC inventory covered all 17 enabled regions. All API calls succeeded; no infrastructure was created or modified.
+
+- Four EC2 instances are running in total: three in `eu-north-1` (FusionOps production, ThreatFade, and Tinlyt API production) and one in `eu-west-1` (Tinlyt test runtime).
+- Every running instance is associated with an existing product/service. There is no identified spare or isolated FCP-03 worker host.
+- Zero NAT Gateways and zero VPC endpoints were returned in all 17 enabled regions.
+- The separate all-region Network Firewall and Route 53 Resolver DNS Firewall inventory still shows zero firewall deployments and zero DNS Firewall associations.
+- The existing Tinlyt test runtime is product test infrastructure, not a dedicated FCP-03 worker; the controller/product instances must not be repurposed or modified for this lab.
+
+**Cost and isolation disposition:** The user's constraint remains USD 0 in new AWS charges and use of existing infrastructure only. The current account has no spare isolated compute, NAT gateway, VPC endpoint, Network Firewall or DNS Firewall deployment from which to build and validate the required production egress chain. Repurposing the four running product instances would violate the product-isolation boundary. Provisioning the missing network/compute resources would violate the no-new-AWS-charge constraint. Consequently, live AWS packet/flow enforcement remains blocked; static CI and collector hardening do not substitute for production packet-level evidence.
+
+FCP-03 remains active/incomplete. FCP-04–FCP-10 remain gated.
