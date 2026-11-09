@@ -425,3 +425,45 @@ GitHub repository-scoped searches observed no open PRs in Agent Platform, Agent 
 - FCP-04–FCP-10: remain sequenced and unstarted until preceding gates are accepted.
 
 A green workflow or merged implementation is necessary but insufficient for production qualification or final completion.
+
+
+## 9. FCP-03 egress architecture forensic correction — 2026-11-09
+
+This addendum records the post-ADR-018 AWS documentation review and supersedes the egress-policy implementation details in Section 8 where more precise AWS service prerequisites are now known.
+
+### Platform documentation correction
+
+- Platform PR [#229](https://github.com/LloydCoder/tinlance-agent-platform/pull/229) merged as `a3290f237961507a64d2d565636c96a2bfc00cf5`.
+- PR head `fd5e563ea2e9e5cb66fa3f65af1a690cdc5f9c37`: all 14 check runs passed, including Python 3.12–3.14, quality/coverage, SQL, TSIC conformance, R10 adversarial certification, CodeQL and TruffleHog.
+- Post-merge mainline on `a3290f237961507a64d2d565636c96a2bfc00cf5`: all 14 check runs passed, including Supply Chain Attestation. The five observed post-merge workflows (CI, Secret Scan, Reference Agents, R10 Certification and CodeQL) also succeeded.
+- Platform `main` is now `a3290f237961507a64d2d565636c96a2bfc00cf5`.
+
+### Additional AWS resolved-IP validation requirements
+
+The original ADR-018 described `AWS_ROUTE_53_RESOLVED_DOMAIN` rule matching but omitted mandatory deployment prerequisites and important scope semantics. The merged correction now requires:
+
+1. Network Firewall policy-level `Route53ResolvedIPValidation` with the exact `DNSFirewallRuleGroupId`; rule-level resolved-domain rules are inactive without it and can surface `ROUTE53_RESOLVED_IP_VALIDATION_MISSING`.
+2. The referenced Route 53 Resolver DNS Firewall rule group must be associated with the worker VPCs, and worker DNS must use the VPC Resolver. The rule group must be dedicated to one firewall/policy-isolation domain: all associated VPCs contribute to a shared resolved-IP pool, so an address resolved in one associated VPC can be treated as resolved for the others.
+3. Resolved-IP cache is Availability-Zone scoped. Worker traffic must reach its same-AZ firewall endpoint. Unsupported AZ flows must be observed using `DnsAzUnavailableFlows`; resolved-domain rules can drop in unsupported AZs even when policy-level validation is in alert mode.
+4. Start policy-level validation in `ALERT` mode for approximately 24 hours, monitor `route53_resolved_ip`, `DnsUnresolvedFlows`, `DnsResolutionErrorFlows` and `DnsAzUnavailableFlows`, then promote to `DROP` or explicitly approved `REJECT`. DNS expiry behavior must not silently continue in the enforced profile.
+5. Explicitly scope `SourceIPRanges`; an empty list disables policy-level source validation. Enabling/disabling resolved-IP validation or changing the DNS Firewall rule-group ID may restart the stateful engine, so connection-drain/stream-exception behavior is part of rollout acceptance.
+
+These details are based on current AWS Network Firewall and Route 53 Resolver documentation:
+- https://docs.aws.amazon.com/network-firewall/latest/developerguide/route53-resolved-ip-validation.html
+- https://docs.aws.amazon.com/network-firewall/latest/developerguide/route53-resolved-ip-validation-policy-setting.html
+- https://docs.aws.amazon.com/network-firewall/latest/developerguide/route53-resolved-ip-validation-how-it-works.html
+- https://docs.aws.amazon.com/network-firewall/latest/developerguide/route53-resolved-ip-validation-troubleshooting.html
+- https://docs.aws.amazon.com/network-firewall/latest/developerguide/route53-resolved-ip-validation-recommendations.html
+
+### Cost-gate verification
+
+Read-only Billing/Cost Explorer checks found zero configured AWS Budgets. Cost Explorer showed approximately `-$14.4186 USD` of credit-type records applied during 2026-11-01 to 2026-11-10; this is not a remaining-credit balance, proof of eligible service coverage, or evidence of credit expiry. The remaining-credit balance must be verified from the AWS Billing Credits page. The AWS Price List API returned EU (Ireland) base meters of $0.395 per Network Firewall endpoint-hour, $0.065/GB processing, $0.489 per advanced-inspection endpoint-hour, and $0.16 per DNS Firewall Advanced association-hour, before ancillary costs.
+
+**Provisioning gate remains BLOCKED.** No disposable VPC, Network Firewall, NAT Gateway, DNS Firewall association, KMS key, S3 bucket or other paid resource was created. Verified remaining eligible credit, expiry, a hard spend ceiling, budget alarms and automated teardown are still required before the disposable VPC experiment. No production resource or adjacent FusionOps, ThreatFade or Tinlyt service was modified.
+
+### Current disposition
+
+- FCP-00 and FCP-01 remain accepted.
+- FCP-02 W5 controlled-host functional soak and W6 repository implementation remain accepted within their stated scope; production qualification remains open.
+- FCP-03 remains active and blocked at the paid disposable-network-test gate pending verified credit coverage and cost controls. ADR-018 is an architecture decision, not deployment evidence.
+- FCP-04–FCP-10 remain strictly sequenced behind prior phase acceptance.
