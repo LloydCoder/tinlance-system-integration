@@ -579,10 +579,27 @@ TSIC documentation PR [#119](https://github.com/LloydCoder/tinlance-system-integ
 
 ### Zero-spend budget configuration — 2026-11-09
 
-- AWS Budgets pricing documentation states that budget monitoring and notifications are free of charge. No action-enabled budget was created.
+- AWS Budgets monitoring and notifications are free of charge according to the [official AWS Budgets pricing page](https://aws.amazon.com/aws-cost-management/aws-budgets/pricing/). No action-enabled budget was created.
 - A monthly cost budget, `Tinlance-Strict-Zero-Spend`, was created and verified through `DescribeBudgets`, `DescribeNotificationsForBudget` and `DescribeSubscribersForNotification`.
 - AWS rejected a literal USD 0.00 `BudgetLimit` (`budget limit must be larger than 0`). The smallest accepted configured limit was USD 0.01. Both actual and forecast notifications use an absolute USD 0.00 threshold (`GREATER_THAN`), with credits and discounts excluded so promotional credits do not mask gross usage.
-- Subscriber address is `hello@tinlance.com`. Read-after-write verification reports both actual and forecast notifications in `ALARM` state because gross costs/forecast exceed the zero threshold. AWS documentation says newly added email subscribers must verify the address before receiving notifications; confirmation is not visible in the available API response and remains unverified.
+- Subscriber address is `hello@tinlance.com`. Read-after-write verification reports both actual and forecast notifications in `ALARM` state because gross costs/forecast exceed the zero threshold. Latest `DescribeBudgets` reports gross actual spend of USD 15.005 and gross forecast of USD 29.746 (credits and discounts excluded). Cost Explorer for 2026-11-01 through 2026-11-10 (estimated) groups approximately USD 15.004548 of usage and USD -15.004548 of credits, leaving net cost approximately USD -0.00000004. Latest `GetCredits` reports an initial USD 100.00 promotion, remainingAmount USD 28.32 and conservative estimatedAmount USD 13.32; credit application is after discounts. The gross forecast and estimated credit balance are not a hard guarantee that future charges remain covered. AWS documentation says newly added email subscribers must verify the address before receiving notifications; confirmation is not visible in the available API response and remains unverified.
 - No budget actions, SNS topics, AWS compute, networking, KMS, S3 or other billable resources were created. This budget does not enforce a hard spending ceiling and does not authorize any AWS spend.
 
 **Disposition unchanged:** FCP-03 remains active and incomplete. The zero-spend alert is a governance improvement only; it does not resolve root-principal access, missing alternate contacts, unverified email delivery, live packet/flow evidence or production qualification.
+
+
+## 13. FCP-03 incomplete security-group ingress inventory correction — merged 2026-11-09
+
+Agent Platform PR [#254](https://github.com/LloydCoder/tinlance-agent-platform/pull/254) was merged as `8a9e872cdb3ccee935baf9d7095154b2bb4f4141`.
+
+- Final PR head: `acabffae5f07230f6bdeb78cec5ea6c367aadcb2`.
+- Test-first evidence on head `6217ac26576d671f20e0e08f08c5bd92374a417b`: 2 expected failures and 937 passes. The missing-`IpPermissions` test proved that incomplete AWS inventory had been silently treated as an empty ingress list; the malformed-string test exposed an unhandled `AttributeError`.
+- The collector now returns an invalid/incomplete inventory result for missing or malformed security-group permissions, malformed nested source collections, and permission records with no recognizable source. The preflight therefore fails closed rather than treating unknown ingress as no ingress.
+- Regression coverage verifies IPv6 CIDRs, prefix-list references, security-group references, missing permissions and malformed permissions. The fixture now models a valid no-ingress security group with explicit `IpPermissions: []`.
+- Exact PR-head check-runs: 27/27 completed successfully. Required CI, CodeQL, Secret Scan, R10 Certification and Reference Agents workflows all passed.
+- Exact post-merge Agent Platform mainline checks: 14/14 completed successfully.
+- No AWS resources or account settings were modified by PR #254.
+
+**Account governance confirmation (read-only, 2026-11-09):** the connected AWS caller remains the account root principal; no dedicated least-privilege FCP-03 deployment identity is established. Existing Tinlyt-specific identities are not reused or modified. AWS Account Management `GetAlternateContact` access is denied because trusted access is not enabled, so Billing/Operations/Security alternate contacts could not be verified. The required accountable contact details are not present in the project record; no contact values were invented or written.
+
+**Live AWS inventory confirmation (read-only, 2026-11-09):** `DescribeRegions` returned 17 enabled regions. Across all 17, `ListFirewalls` returned zero AWS Network Firewall deployments and `ListFirewallRuleGroupAssociations` returned zero Route 53 Resolver DNS Firewall associations. No disposable egress lab is deployed. **Acceptance boundary:** this is merged fail-closed inventory hardening. It does not prove live packet/flow enforcement, DNS Firewall behavior, bypass resistance, cross-tenant isolation or production qualification. FCP-03 remains active and incomplete; FCP-04–FCP-10 remain gated.
