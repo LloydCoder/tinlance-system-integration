@@ -488,7 +488,9 @@ The worker route evaluator rejected routes whose targets bypassed the firewall, 
 - Implementation now requires exactly the VPC primary CIDR local route plus the default IPv4 route to the same-AZ firewall endpoint, rejects duplicate entries and fails closed on extra/missing routes.
 - The inventory fixture was corrected to include the VPC local route returned by AWS.
 - The first implementation CI run exposed this fixture mismatch and then a Ruff formatting issue; both were corrected before final validation.
-- Current PR: [Agent Platform #249](https://github.com/LloydCoder/tinlance-agent-platform/pull/249), head `0a31978300e8ae65bbb4a79213630254606b1c04`. The latest workflow set is still running at the time of this addendum. Do not merge or count this change as accepted until all required exact-head checks are green and post-merge checks pass.
+- Agent Platform PR [#249](https://github.com/LloydCoder/tinlance-agent-platform/pull/249) merged as `4e9148c08891df7b9bf684e038e6741a70a7aba1`.
+- Final PR head `c9df400634608978c38d59ce3b3b3d0aac533a21`: all 14/14 checks passed, including Python 3.12–3.14, quality/coverage, SQL, TSIC conformance, R10 adversarial certification, CodeQL and TruffleHog.
+- Post-merge mainline validation on `4e9148c08891df7b9bf684e038e6741a70a7aba1` has been queued and remains pending at the time of this documentation update. Do not count the post-merge gate as green until all checks complete successfully.
 
 ### Read-only AWS governance recheck
 
