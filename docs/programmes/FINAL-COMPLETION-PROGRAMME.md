@@ -646,3 +646,18 @@ A fresh read-only IAM inventory was performed after PR #262. The AWS API calls c
 - The existing Tinlyt OIDC provider and roles were not reused, modified or expanded. No IAM resource was created or changed during this inventory.
 
 **Disposition:** FCP-03 still lacks an independent workload/deployment identity. Creating a dedicated identity must preserve the Tinlyt boundary and use a separately approved trust design; do not broaden the Tinlyt trust policy, reuse its release role, or fall back to root credentials. IAM identity setup itself is not the same as live proof-of-possession, production key custody, or live AWS egress acceptance. FCP-03 remains active; FCP-04–FCP-10 remain gated.
+
+
+## 17. FCP-03 malformed inventory collection fail-closed hardening — 2026-11-09
+
+### Agent Platform PR #263
+- [PR #263](https://github.com/LloydCoder/tinlance-agent-platform/pull/263) merged as `906ae5df82c149a09a2cc70798819a5c80b6c832`.
+- Forensic review found that the topology preflight's string-collection helper silently filtered malformed members. For example, an inventory list containing a valid subnet ID plus a non-string value could be reduced to the valid subset and incorrectly accepted.
+- The helper now rejects the entire collection when any member is non-string or empty; it no longer turns incomplete/malformed source data into an apparently valid allowlist, route-table association, source-range set, target-type set, or status set.
+- Repeated completion statuses remain supported because AWS legitimately reports one COMPLETE status per associated rule/domain-list resource; duplicate strings are not treated as malformed.
+- Five regression cases cover malformed worker/firewall subnet associations, stateful target types, DNS allowlist domains, and Route 53 resolved-IP source ranges.
+- Exact PR-head checks: 14/14 successful. Exact post-merge mainline checks: 14/14 successful.
+- Full quality matrix includes Python 3.12, 3.13 and 3.14; Ruff, formatting, mypy, full pytest and 85% coverage gate, pip-audit, CycloneDX SBOM, SQL isolation, TSIC conformance, R10 adversarial certification, CodeQL, secret scan and attestation.
+- Full platform test suite: 950 passed, 36 warnings; coverage threshold met.
+
+**Disposition:** This closes a static inventory parser fail-open. It does not establish live AWS packet/flow enforcement or create a dedicated production identity. The live network inventory remains without Network Firewall deployments or Route 53 Resolver DNS Firewall associations; account caller remains root and no FCP-03-specific role exists. FCP-03 remains active/incomplete; FCP-04–FCP-10 remain gated.
