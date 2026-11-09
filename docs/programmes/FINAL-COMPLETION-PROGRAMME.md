@@ -679,3 +679,18 @@ A fresh read-only IAM inventory was performed after PR #262. The AWS API calls c
 - Full platform suite: 955 passed, 36 warnings; coverage gate passed. Python 3.12/3.13/3.14, Ruff, formatting, mypy, pip-audit, CycloneDX SBOM, SQL isolation, TSIC conformance, R10 adversarial certification, CodeQL, secret scan and attestation all green.
 
 **Disposition:** This hardens the read-only collector and normalized inventory path; it does not provision or verify production enforcement. FCP-03 remains active/incomplete because live AWS Network Firewall/DNS Firewall enforcement, a dedicated least-privilege identity, production host isolation/attestation, durable production services/DR, operational acceptance and independent security review remain outstanding. FCP-04–FCP-10 remain gated.
+
+
+## 19. FCP-03 Network ACL inventory fail-closed hardening — merged 2026-11-09
+
+### Agent Platform PR #265
+- [PR #265](https://github.com/LloydCoder/tinlance-agent-platform/pull/265) merged as `78ec89166bfc6c93983cd92276307cd053900cd1`.
+- Forensic review found that the read-only NACL collector skipped non-mapping records while searching a subnet-scoped DescribeNetworkAcls response. If one valid matching ACL appeared alongside a malformed record, the malformed record could be silently ignored and the valid ACL accepted.
+- The collector now fails closed on any malformed ACL record, missing/non-list association inventory, or malformed association member in the subnet-scoped response. It does not select a valid-looking ACL from an incomplete result set.
+- A missing `Entries` property is now treated as incomplete inventory, not normalized to an empty list. A present empty list remains a real empty ruleset and is rejected by the topology policy because it does not match the required NACL rules.
+- Regression tests cover a malformed ACL record alongside a valid matching ACL and a missing `Entries` property.
+- Exact PR-head checks: 14/14 successful (Python 3.12/3.13/3.14, quality/coverage, SQL isolation, TSIC conformance, R10 adversarial certification, CodeQL, secret scan and attestation).
+- Exact post-merge Agent Platform mainline check-runs: 14/14 successful on merge SHA `78ec89166bfc6c93983cd92276307cd053900cd1`.
+- No AWS resources, account settings, or existing Tinlyt/FusionOps/ThreatFade infrastructure were modified.
+
+**Disposition:** This closes a static NACL inventory fail-open only. It does not provide live Network Firewall/DNS Firewall packet and flow enforcement evidence. The current read-only account inventory still shows no Network Firewall deployment or Route 53 Resolver DNS Firewall association; the AWS API caller remains root and no dedicated FCP-03 identity exists. FCP-03 remains active/incomplete; FCP-04–FCP-10 remain gated.
