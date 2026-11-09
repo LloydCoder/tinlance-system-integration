@@ -661,3 +661,21 @@ A fresh read-only IAM inventory was performed after PR #262. The AWS API calls c
 - Full platform test suite: 950 passed, 36 warnings; coverage threshold met.
 
 **Disposition:** This closes a static inventory parser fail-open. It does not establish live AWS packet/flow enforcement or create a dedicated production identity. The live network inventory remains without Network Firewall deployments or Route 53 Resolver DNS Firewall associations; account caller remains root and no FCP-03-specific role exists. FCP-03 remains active/incomplete; FCP-04–FCP-10 remain gated.
+
+
+## 18. FCP-03 AWS collector normalization fail-closed hardening — 2026-11-09
+
+### Agent Platform PR #264
+- [PR #264](https://github.com/LloydCoder/tinlance-agent-platform/pull/264) merged as `ee866ba15c7e783f5cda0717059beafd461f2c4b`.
+- Forensic review found that the read-only AWS collector silently discarded malformed records before the topology preflight could validate them. A valid security record mixed with an invalid record could therefore be normalized into an apparently valid policy.
+- Fixed Route 53 resolved-IP validation range normalization: malformed or incomplete address-definition members are represented as invalid inventory, not silently omitted.
+- Fixed Network Firewall stateful domain targets and target types: mixed malformed collections are preserved as invalid so the preflight rejects them.
+- Fixed Route 53 Resolver DNS firewall collection: malformed associations, statuses, rules, domain-list metadata and domain values are no longer silently filtered; invalid data reaches the preflight as an invalid collection.
+- Fixed worker, firewall and NAT route-table association normalization so malformed association members cannot disappear from the dedicated-route-table check.
+- Fixed worker NACL normalization: malformed entries or unknown ingress/egress direction invalidate both rule inventories instead of being skipped.
+- Fixed VPC CIDR association normalization and worker security-group ID inventory so malformed extra records invalidate the corresponding security evidence.
+- Five adversarial regression tests cover malformed Route 53 validation ranges, stateful target types, DNS domain-list entries, route-table associations and NACL entries.
+- Exact PR-head workflows: 14/14 successful. Exact post-merge mainline workflows: 14/14 successful.
+- Full platform suite: 955 passed, 36 warnings; coverage gate passed. Python 3.12/3.13/3.14, Ruff, formatting, mypy, pip-audit, CycloneDX SBOM, SQL isolation, TSIC conformance, R10 adversarial certification, CodeQL, secret scan and attestation all green.
+
+**Disposition:** This hardens the read-only collector and normalized inventory path; it does not provision or verify production enforcement. FCP-03 remains active/incomplete because live AWS Network Firewall/DNS Firewall enforcement, a dedicated least-privilege identity, production host isolation/attestation, durable production services/DR, operational acceptance and independent security review remain outstanding. FCP-04–FCP-10 remain gated.
