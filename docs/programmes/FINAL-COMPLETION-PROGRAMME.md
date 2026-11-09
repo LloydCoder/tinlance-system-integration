@@ -556,3 +556,27 @@ Both changes are read-only inventory/preflight logic and regression tests. They 
 - Live Network Firewall/Route 53 DNS Firewall deployment, packet/flow bypass tests, production identity, KMS/S3, host qualification, operations, economics and independent security acceptance remain outstanding.
 
 **FCP-03 remains active and incomplete.** FCP-04–FCP-10 remain gated. No live cloud infrastructure was modified.
+
+## 12. FCP-03 duplicate-route and ingress-inventory preflight review — 2026-11-09
+
+Agent Platform PR [#253](https://github.com/LloydCoder/tinlance-agent-platform/pull/253) remains **open and not accepted for merge**. Its implementation adds duplicate-entry rejection to the firewall-subnet and NAT-return route sets, captures worker security-group ingress in the normalized AWS inventory, and fails closed when ingress inventory is missing, malformed or non-empty. The PR also includes regression coverage for these conditions.
+
+- Latest maintainer-reviewed PR head recorded in the PR discussion: `774f54c6bf35da1839d25d9007a9e1e4d98e085e`.
+- Code review found the duplicate-route cardinality/set invariants and ingress fail-closed checks correct for the stated static preflight contract.
+- Exact-head check-run summary recorded by the maintainer: 10/10 individual check runs successful. This is not sufficient to waive aggregate workflow failures.
+- Exact-head GitHub Actions workflow runs report CI and CodeQL successful, but Secret Scan, R10 Certification and Reference Agents report aggregate failure. The connected GitHub integration returned no job records for Secret Scan and only partial successful job records for R10/Reference Agents; therefore the aggregate state cannot be reconciled from the available job evidence.
+- Attempts to rerun the failed workflow runs returned HTTP 403 (`This workflow run cannot be retried`). No merge was attempted.
+- No AWS resources or account settings were modified.
+
+**Disposition:** PR #253 remains blocked pending a fresh, fully inspectable exact-head workflow attempt in which every required workflow concludes successfully. The PR is static inventory/preflight hardening only and does not establish live packet/flow enforcement. The AWS deployment gate remains closed under the strict US$0 new-spend constraint: the connected AWS principal is root, no budget actions are configured, and the disposable Network Firewall/DNS Firewall lab has not been deployed. A free, non-action monthly cost budget named `Tinlance-Strict-Zero-Spend` was subsequently created and read-after-write verified. AWS rejects a literal zero budget limit, so its nominal limit is USD 0.01 while actual-cost and forecast notifications are both configured at USD 0.00, excluding credits and discounts to monitor gross cost. The notification subscriber is `hello@tinlance.com`; AWS requires email-recipient verification, which is not confirmed by the available API response. This budget is an alerting mechanism, not a hard spending cap or authorization to spend. Preserve the existing Tinlyt test controller and all production product infrastructure. FCP-03 remains active and incomplete; FCP-04–FCP-10 remain gated.
+
+
+### Zero-spend budget configuration — 2026-11-09
+
+- AWS Budgets pricing documentation states that budget monitoring and notifications are free of charge. No action-enabled budget was created.
+- A monthly cost budget, `Tinlance-Strict-Zero-Spend`, was created and verified through `DescribeBudgets`, `DescribeNotificationsForBudget` and `DescribeSubscribersForNotification`.
+- AWS rejected a literal USD 0.00 `BudgetLimit` (`budget limit must be larger than 0`). The smallest accepted configured limit was USD 0.01. Both actual and forecast notifications use an absolute USD 0.00 threshold (`GREATER_THAN`), with credits and discounts excluded so promotional credits do not mask gross usage.
+- Subscriber address is `hello@tinlance.com`. Read-after-write verification reports both actual and forecast notifications in `ALARM` state because gross costs/forecast exceed the zero threshold. AWS documentation says newly added email subscribers must verify the address before receiving notifications; confirmation is not visible in the available API response and remains unverified.
+- No budget actions, SNS topics, AWS compute, networking, KMS, S3 or other billable resources were created. This budget does not enforce a hard spending ceiling and does not authorize any AWS spend.
+
+**Disposition unchanged:** FCP-03 remains active and incomplete. The zero-spend alert is a governance improvement only; it does not resolve root-principal access, missing alternate contacts, unverified email delivery, live packet/flow evidence or production qualification.
