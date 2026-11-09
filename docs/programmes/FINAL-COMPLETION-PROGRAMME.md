@@ -522,3 +522,37 @@ Account `381661387870`, region-specific reads as applicable, 2026-11-09:
 - FCP-04–FCP-10: gated; do not begin before FCP-03 formal acceptance.
 
 A green CI run is necessary but cannot substitute for live deployed evidence or independent acceptance.
+
+
+## 11. FCP-03 worker route-table isolation hardening — 2026-11-09
+
+### Exact worker route inventory — merged and post-merge green
+
+Agent Platform PR [#249](https://github.com/LloydCoder/tinlance-agent-platform/pull/249) merged as `4e9148c08891df7b9bf684e038e6741a70a7aba1`.
+
+- The test-only PR head `5da0a8c6ab73541eca4410005a223e826b7eac71` reproduced two failures (2 failed, 925 passed): an extra route with target `local` and a duplicate default route were accepted.
+- The implementation now requires the exact worker route set: one VPC-primary-CIDR local route and one IPv4 default route to the same-AZ firewall endpoint. Extra, missing and duplicate routes fail closed.
+- Final PR head `c9df400634608978c38d59ce3b3b3d0aac533a21`: 14/14 checks passed.
+- Exact merge SHA `4e9148c08891df7b9bf684e038e6741a70a7aba1`: 14/14 post-merge checks passed.
+
+### Dedicated worker route-table association — merged and post-merge green
+
+Agent Platform PR [#250](https://github.com/LloydCoder/tinlance-agent-platform/pull/250) merged as `5376812ef111060fbfa42d021c961bfa28e2ea40`.
+
+- Test-only head `392bd93c6a86898a7ad13c384678e781629ae890` reproduced two failures (2 failed, 927 passed): a shared route table and a missing/implicit main-table association were accepted.
+- The read-only AWS inventory now records all explicit subnet associations for the worker route table.
+- The evaluator requires the route table to be explicitly associated with exactly the worker subnet. Shared route tables and implicit main route tables fail closed.
+- A collector regression test proves that a second subnet association is surfaced and rejected.
+- Final PR head `9adfb58f4f6793548070c49016ca9513ae693147`: 14/14 checks passed.
+- Exact merge SHA `5376812ef111060fbfa42d021c961bfa28e2ea40`: 14/14 post-merge checks passed.
+
+Both changes are read-only inventory/preflight logic and regression tests. They do not change AWS networking, create resources, or prove live packet/flow enforcement. The route-table contract is deliberately scoped to the disposable worker subnet and does not authorize changes to existing Tinlyt, FusionOps or ThreatFade infrastructure.
+
+### Updated FCP-03 disposition
+
+- Repository-level worker egress preflight now checks exact security-group egress, exact worker route inventory and a dedicated worker route-table association.
+- These static checks reduce inventory ambiguity and prevent known unsafe topology snapshots from passing.
+- The live AWS provisioning gate remains blocked by root-principal access, absent AWS Budgets/actions, missing Billing/Operations/Security alternate contacts and unverified eligible credit balance/expiry.
+- Live Network Firewall/Route 53 DNS Firewall deployment, packet/flow bypass tests, production identity, KMS/S3, host qualification, operations, economics and independent security acceptance remain outstanding.
+
+**FCP-03 remains active and incomplete.** FCP-04–FCP-10 remain gated. No live cloud infrastructure was modified.
