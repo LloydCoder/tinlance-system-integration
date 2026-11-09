@@ -467,3 +467,56 @@ Read-only Billing/Cost Explorer checks found zero configured AWS Budgets. Cost E
 - FCP-02 W5 controlled-host functional soak and W6 repository implementation remain accepted within their stated scope; production qualification remains open.
 - FCP-03 remains active and blocked at the paid disposable-network-test gate pending verified credit coverage and cost controls. ADR-018 is an architecture decision, not deployment evidence.
 - FCP-04–FCP-10 remain strictly sequenced behind prior phase acceptance.
+
+
+## 10. FCP-03 live governance and preflight hardening refresh — 2026-11-09
+
+This addendum records the latest read-only AWS governance check and merged repository fixes. It supersedes prior point-in-time open-work and governance summaries where they conflict. No AWS resources or account settings were changed.
+
+### Merged Agent Platform hardening
+
+- PR [#247](https://github.com/LloydCoder/tinlance-agent-platform/pull/247) merged as `40ae96b452529aceec1aec1968652ae828dd1b0d`. It rejects malformed and repeated AWS pagination continuation tokens in the read-only inventory collector. Exact PR head `40990922bcd1c1c990825fd727c5802c2d0f4cc5` passed all 14 reported checks; all six post-merge push workflows succeeded.
+- PR [#248](https://github.com/LloydCoder/tinlance-agent-platform/pull/248) merged as `cf40caf4177ac75d9d24e7030677f054d88cfb6a`. It requires the exact worker security-group egress tuple set: TCP/443 plus UDP/53 and TCP/53 to the VPC resolver; additional, missing, duplicate, noncanonical and malformed entries fail closed. Exact PR head `732a151b839d9ab6125a0ca5d31b2bfa3ca4fce7` and post-merge SHA each passed 14/14 checks.
+- TSIC PR [#116](https://github.com/LloydCoder/tinlance-system-integration/pull/116) merged as `42c4e31b3d024dbbd05c16abf0922b40845c73f6`; its post-merge mainline passed 34/34 checks. It reconciles FCP phase status and acceptance boundaries.
+
+### New test-first finding — PR #249
+
+The worker route evaluator rejected routes whose targets bypassed the firewall, but accepted extra or duplicate route entries when their target was `local` or the expected firewall endpoint. A route inventory must match the complete intended route set, not merely have individually permitted targets.
+
+- Added regression tests for an extra local-target route and duplicate default route.
+- The first test-only CI run reproduced both failures: 2 failed, 925 passed.
+- Implementation now requires exactly the VPC primary CIDR local route plus the default IPv4 route to the same-AZ firewall endpoint, rejects duplicate entries and fails closed on extra/missing routes.
+- The inventory fixture was corrected to include the VPC local route returned by AWS.
+- The first implementation CI run exposed this fixture mismatch and then a Ruff formatting issue; both were corrected before final validation.
+- Current PR: [Agent Platform #249](https://github.com/LloydCoder/tinlance-agent-platform/pull/249), head `0a31978300e8ae65bbb4a79213630254606b1c04`. The latest workflow set is still running at the time of this addendum. Do not merge or count this change as accepted until all required exact-head checks are green and post-merge checks pass.
+
+### Read-only AWS governance recheck
+
+Account `381661387870`, region-specific reads as applicable, 2026-11-09:
+
+- STS caller identity returned the root principal ARN `arn:aws:iam::381661387870:root`. Root access is not an acceptable long-term deployment identity.
+- `budgets:DescribeBudgets` returned zero budgets; `DescribeBudgetActionsForAccount` returned zero actions.
+- Billing, Operations and Security alternate contacts each returned `ResourceNotFoundException`; none is configured.
+- The existing `tinlyt-test-runtime` instance `i-0bdb9c7cb13b1c9b8` remains running in eu-west-1a as a t4g.medium with public IP, the existing Tinlyt SSM profile, IMDS endpoint enabled (IMDSv2 required, hop limit 1), no ingress and unrestricted IPv4 egress.
+- This instance remains a Tinlyt test/controller host and is not an isolated untrusted worker. Do not alter its networking or repurpose it for the disposable worker lab. Existing FusionOps, ThreatFade and Tinlyt infrastructure remains out of scope for FCP experiments.
+
+### Current blockers and safe disposition
+
+1. Establish a least-privilege deployment identity and remove routine dependence on root.
+2. Configure and verify a hard spend ceiling, budget alerts/actions and accountable billing/operations/security contacts.
+3. Verify the remaining eligible promotional-credit balance, expiry and service coverage in the Billing console; Cost Explorer credit application records are not a remaining-credit balance.
+4. Only then authorize a bounded disposable VPC/firewall experiment with explicit teardown and rollback. Do not create Network Firewall, NAT Gateway, DNS Firewall, KMS, S3 or other billable resources before these controls are evidenced.
+5. Preserve the current test controller and production product infrastructure unchanged.
+6. Continue live packet/flow and DNS bypass tests only in the isolated disposable worker trust zone. Static inventory/preflight tests are not live enforcement proof.
+
+**FCP-03 remains active and blocked at the governance/provisioning gate.** The merged #247/#248 code improves read-only inventory and static policy validation; it does not prove deployed AWS packet/flow enforcement, workload identity, production storage, host qualification, operations, economics or independent security acceptance.
+
+### Updated phase disposition
+
+- FCP-00: accepted.
+- FCP-01: accepted for repository/reference-scope conformance.
+- FCP-02: W5 controlled-host functional soak and W6 repository implementation accepted within their documented scope; production enablement and security residuals remain.
+- FCP-03: active; governance and cost gate blocked; live enforcement and production qualification outstanding.
+- FCP-04–FCP-10: gated; do not begin before FCP-03 formal acceptance.
+
+A green CI run is necessary but cannot substitute for live deployed evidence or independent acceptance.
