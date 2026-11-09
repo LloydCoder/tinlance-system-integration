@@ -556,3 +556,16 @@ Both changes are read-only inventory/preflight logic and regression tests. They 
 - Live Network Firewall/Route 53 DNS Firewall deployment, packet/flow bypass tests, production identity, KMS/S3, host qualification, operations, economics and independent security acceptance remain outstanding.
 
 **FCP-03 remains active and incomplete.** FCP-04–FCP-10 remain gated. No live cloud infrastructure was modified.
+
+## 12. FCP-03 duplicate-route and ingress-inventory preflight review — 2026-11-09
+
+Agent Platform PR [#253](https://github.com/LloydCoder/tinlance-agent-platform/pull/253) remains **open and not accepted for merge**. Its implementation adds duplicate-entry rejection to the firewall-subnet and NAT-return route sets, captures worker security-group ingress in the normalized AWS inventory, and fails closed when ingress inventory is missing, malformed or non-empty. The PR also includes regression coverage for these conditions.
+
+- Latest maintainer-reviewed PR head recorded in the PR discussion: `774f54c6bf35da1839d25d9007a9e1e4d98e085e`.
+- Code review found the duplicate-route cardinality/set invariants and ingress fail-closed checks correct for the stated static preflight contract.
+- Exact-head check-run summary recorded by the maintainer: 10/10 individual check runs successful. This is not sufficient to waive aggregate workflow failures.
+- Exact-head GitHub Actions workflow runs report CI and CodeQL successful, but Secret Scan, R10 Certification and Reference Agents report aggregate failure. The connected GitHub integration returned no job records for Secret Scan and only partial successful job records for R10/Reference Agents; therefore the aggregate state cannot be reconciled from the available job evidence.
+- Attempts to rerun the failed workflow runs returned HTTP 403 (`This workflow run cannot be retried`). No merge was attempted.
+- No AWS resources or account settings were modified.
+
+**Disposition:** PR #253 remains blocked pending a fresh, fully inspectable exact-head workflow attempt in which every required workflow concludes successfully. The PR is static inventory/preflight hardening only and does not establish live packet/flow enforcement. The AWS deployment gate remains closed under the strict US$0 new-spend constraint: the connected AWS principal is root, no AWS Budgets/actions are configured, and the disposable Network Firewall/DNS Firewall lab has not been deployed. Preserve the existing Tinlyt test controller and all production product infrastructure. FCP-03 remains active and incomplete; FCP-04–FCP-10 remain gated.
