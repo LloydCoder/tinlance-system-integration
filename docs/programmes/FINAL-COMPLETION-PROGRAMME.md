@@ -618,3 +618,18 @@ Agent Platform PR [#257](https://github.com/LloydCoder/tinlance-agent-platform/p
 - No AWS resource, account setting, network route, security group or existing Tinlyt/FusionOps/ThreatFade infrastructure was modified.
 
 **Cost and acceptance boundary:** the governing constraint is USD 0 in new AWS charges; continue using existing infrastructure only and do not provision new billable AWS resources. The current read-only inventory records zero Network Firewall deployments and zero Route 53 Resolver DNS Firewall associations. Therefore the disposable AWS packet/flow lab cannot be truthfully marked deployed or accepted under the present infrastructure inventory. Static preflight and IaC checks remain useful but do not substitute for live packet/flow evidence. FCP-03 remains active and incomplete; FCP-04–FCP-10 remain gated.
+
+
+## 15. FCP-03 verified-identity control-character validation — merged 2026-11-09
+
+Agent Platform PR [#262](https://github.com/LloydCoder/tinlance-agent-platform/pull/262) was merged as `a76330c2662b315c357c1b5ebeb9c5a220709c11`.
+
+- Final PR head: `f1e070ed43d246c960ba20e30441aa1ac25bc457`.
+- Forensic review found that the shared `VerifiedAgentIdentity` contract checked trimming and non-empty identity values but did not reject embedded C0 control characters or DEL. The JWT verifier already rejected these in several claims, but tenant IDs, roles, scopes and nonces could cross the shared contract boundary with NUL characters; other identity adapters could also construct the contract directly.
+- The shared contract now rejects C0 controls, spaces and DEL in subject, tenant, token ID, principal type, client ID, scopes, roles and nonce. This keeps the rule provider-neutral and prevents identity data from crossing into tenant authorization, persistence, audit and telemetry in malformed form.
+- Regression tests use actual NUL characters in tenant, role, scope, nonce and client claims and assert rejection.
+- Exact PR-head workflows: CI, Reference Agents, R10 Certification, CodeQL and Secret Scan all completed successfully (5/5). CI passed Python 3.12, 3.13 and 3.14 quality/coverage, SQL isolation and TSIC conformance.
+- Exact post-merge Agent Platform mainline check-runs: 14/14 completed successfully on merge SHA `a76330c2662b315c357c1b5ebeb9c5a220709c11`.
+- No AWS resources, account settings or existing product infrastructure were modified.
+
+**Acceptance boundary:** this is shared identity-contract hardening, not live production identity acceptance. Production issuer/JWKS trust, workload identity, KMS/HSM key custody, rotation/revocation operations, dedicated least-privilege AWS identity and operational evidence remain production gates. FCP-03 remains active and incomplete; FCP-04–FCP-10 remain gated.
