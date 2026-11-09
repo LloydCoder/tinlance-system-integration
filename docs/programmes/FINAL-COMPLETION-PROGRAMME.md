@@ -718,3 +718,15 @@ A fresh read-only EC2/VPC inventory covered all 17 enabled regions. All API call
 **Cost and isolation disposition:** The user's constraint remains USD 0 in new AWS charges and use of existing infrastructure only. The current account has no spare isolated compute, NAT gateway, VPC endpoint, Network Firewall or DNS Firewall deployment from which to build and validate the required production egress chain. Repurposing the four running product instances would violate the product-isolation boundary. Provisioning the missing network/compute resources would violate the no-new-AWS-charge constraint. Consequently, live AWS packet/flow enforcement remains blocked; static CI and collector hardening do not substitute for production packet-level evidence.
 
 FCP-03 remains active/incomplete. FCP-04–FCP-10 remain gated.
+
+
+## 21. FCP-03 exact worker security-group egress allowlist regression — merged 2026-11-09
+
+### Agent Platform PR #267
+- [PR #267](https://github.com/LloydCoder/tinlance-agent-platform/pull/267) merged as `921eabfa8372b99c92c0a794d25e9f2d92758d81`.
+- Added an exact CloudFormation regression requiring the worker security group to have no ingress and exactly three egress rules: inspected TCP/443 to the firewall-routed path, and UDP/TCP DNS only to the VPC resolver.
+- Exact equality prevents later additions of UDP/443 (QUIC), TCP/853 (DoT), external DNS, IPv6, prefix-list or security-group-reference egress rules from being silently accepted by the template test suite.
+- Exact PR-head workflows: 14/14 successful. Exact post-merge Agent Platform mainline check-runs: 14/14 successful on merge SHA `921eabfa8372b99c92c0a794d25e9f2d92758d81`.
+- Test-only change; no AWS resources, account settings or product infrastructure were modified.
+
+**Disposition:** This strengthens the static infrastructure-as-code regression boundary. It does not prove live AWS packet/flow enforcement, DNS bypass resistance or production identity. FCP-03 remains active/incomplete; FCP-04–FCP-10 remain gated.
