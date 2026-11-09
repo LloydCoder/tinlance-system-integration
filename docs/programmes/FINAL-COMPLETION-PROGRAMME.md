@@ -603,3 +603,18 @@ Agent Platform PR [#254](https://github.com/LloydCoder/tinlance-agent-platform/p
 **Account governance confirmation (read-only, 2026-11-09):** the connected AWS caller remains the account root principal; no dedicated least-privilege FCP-03 deployment identity is established. Existing Tinlyt-specific identities are not reused or modified. AWS Account Management `GetAlternateContact` access is denied because trusted access is not enabled, so Billing/Operations/Security alternate contacts could not be verified. The required accountable contact details are not present in the project record; no contact values were invented or written.
 
 **Live AWS inventory confirmation (read-only, 2026-11-09):** `DescribeRegions` returned 17 enabled regions. Across all 17, `ListFirewalls` returned zero AWS Network Firewall deployments and `ListFirewallRuleGroupAssociations` returned zero Route 53 Resolver DNS Firewall associations. No disposable egress lab is deployed. **Acceptance boundary:** this is merged fail-closed inventory hardening. It does not prove live packet/flow enforcement, DNS Firewall behavior, bypass resistance, cross-tenant isolation or production qualification. FCP-03 remains active and incomplete; FCP-04–FCP-10 remain gated.
+
+
+## 14. FCP-03 incomplete security-group egress inventory correction — merged 2026-11-09
+
+Agent Platform PR [#257](https://github.com/LloydCoder/tinlance-agent-platform/pull/257) was merged as `ebda5c520875bef7fc5dd5c8a9ca9e9444b40ed2`.
+
+- Final PR head: `ca6f975faf63fb35c51390d8ec0e47523b99f2f0`.
+- Forensic review found that the egress collector normalized each attached security group independently but silently skipped a group when its `IpPermissionsEgress` collection was absent. If another attached group happened to supply the expected rules, the combined snapshot could look complete while omitting a potentially permissive group.
+- The collector now validates every attached group and every permission/source collection. Missing or malformed groups, permissions, nested CIDR/reference collections, and permissions with no recognized source return an incomplete inventory (`None`); the existing preflight rejects that snapshot. A valid explicit empty permission list remains distinguishable from missing inventory.
+- A regression test models two attached groups: one has the expected rules and the other lacks `IpPermissionsEgress`. The complete snapshot is rejected instead of silently accepting the partial inventory.
+- Exact PR-head workflows: CI, Reference Agents, R10 Certification, CodeQL and Secret Scan all completed successfully (5/5). CI passed Python 3.12, 3.13 and 3.14 quality/coverage, SQL isolation and TSIC conformance.
+- Exact post-merge Agent Platform mainline check-runs: 14/14 completed successfully on merge SHA `ebda5c520875bef7fc5dd5c8a9ca9e9444b40ed2`.
+- No AWS resource, account setting, network route, security group or existing Tinlyt/FusionOps/ThreatFade infrastructure was modified.
+
+**Cost and acceptance boundary:** the governing constraint is USD 0 in new AWS charges; continue using existing infrastructure only and do not provision new billable AWS resources. The current read-only inventory records zero Network Firewall deployments and zero Route 53 Resolver DNS Firewall associations. Therefore the disposable AWS packet/flow lab cannot be truthfully marked deployed or accepted under the present infrastructure inventory. Static preflight and IaC checks remain useful but do not substitute for live packet/flow evidence. FCP-03 remains active and incomplete; FCP-04–FCP-10 remain gated.
