@@ -600,4 +600,4 @@ Agent Platform PR [#254](https://github.com/LloydCoder/tinlance-agent-platform/p
 - Exact post-merge Agent Platform mainline checks: 14/14 completed successfully.
 - No AWS resources or account settings were modified by PR #254.
 
-**Acceptance boundary:** this is merged fail-closed inventory hardening. It does not prove live packet/flow enforcement, DNS Firewall behavior, bypass resistance, cross-tenant isolation or production qualification. FCP-03 remains active and incomplete; FCP-04–FCP-10 remain gated.
+**Live AWS inventory confirmation (read-only, 2026-11-09):** `DescribeRegions` returned 17 enabled regions. Across all 17, `ListFirewalls` returned zero AWS Network Firewall deployments and `ListFirewallRuleGroupAssociations` returned zero Route 53 Resolver DNS Firewall associations. No disposable egress lab is deployed. **Acceptance boundary:** this is merged fail-closed inventory hardening. It does not prove live packet/flow enforcement, DNS Firewall behavior, bypass resistance, cross-tenant isolation or production qualification. FCP-03 remains active and incomplete; FCP-04–FCP-10 remain gated.
