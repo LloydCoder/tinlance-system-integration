@@ -557,19 +557,25 @@ Both changes are read-only inventory/preflight logic and regression tests. They 
 
 **FCP-03 remains active and incomplete.** FCP-04–FCP-10 remain gated. No live cloud infrastructure was modified.
 
-## 12. FCP-03 duplicate-route and ingress-inventory preflight review — 2026-11-09
+## 12. FCP-03 duplicate-route and ingress-inventory preflight review — merged 2026-11-09
 
-Agent Platform PR [#253](https://github.com/LloydCoder/tinlance-agent-platform/pull/253) remains **open and not accepted for merge**. Its implementation adds duplicate-entry rejection to the firewall-subnet and NAT-return route sets, captures worker security-group ingress in the normalized AWS inventory, and fails closed when ingress inventory is missing, malformed or non-empty. The PR also includes regression coverage for these conditions.
+Agent Platform PR [#253](https://github.com/LloydCoder/tinlance-agent-platform/pull/253) was merged as `923eaede4fbb57b2fa02355c638d522256ee2465`.
 
-- Latest maintainer-reviewed PR head recorded in the PR discussion: `774f54c6bf35da1839d25d9007a9e1e4d98e085e`.
-- Code review found the duplicate-route cardinality/set invariants and ingress fail-closed checks correct for the stated static preflight contract.
-- Exact-head check-run summary recorded by the maintainer: 10/10 individual check runs successful. This is not sufficient to waive aggregate workflow failures.
-- Exact-head GitHub Actions workflow runs report CI and CodeQL successful, but Secret Scan, R10 Certification and Reference Agents report aggregate failure. The connected GitHub integration returned no job records for Secret Scan and only partial successful job records for R10/Reference Agents; therefore the aggregate state cannot be reconciled from the available job evidence.
-- Attempts to rerun the failed workflow runs returned HTTP 403 (`This workflow run cannot be retried`). No merge was attempted.
-- No AWS resources or account settings were modified.
+- Final PR head: `05c0e3fbe8e3b8c3a8d9afa663d9d479000f6268`.
+- The change rejects duplicate entries in firewall-subnet and NAT-return route inventories, requiring the exact expected route set with no duplicate route pairs.
+- The AWS inventory now captures worker security-group ingress across IPv4 CIDRs, IPv6 CIDRs, prefix-list references and security-group references. Preflight fails closed when ingress inventory is absent/malformed or when any ingress rule exists.
+- Regression tests cover duplicate firewall/NAT route entries, non-empty worker ingress, and missing/malformed ingress inventory.
+- The disposable egress-lab README now documents the ingress inventory requirement and the separately configured zero-threshold account budget.
+- Exact PR-head checks: 27/27 completed successfully. The required CI, CodeQL, Secret Scan, R10 Certification and Reference Agents workflows all concluded successfully.
+- Exact post-merge Agent Platform mainline checks: 14/14 completed successfully.
+- Earlier head `774f54c6bf35da1839d25d9007a9e1e4d98e085e` had aggregate workflow failures and incomplete job visibility. The final head was re-run through the complete workflow set; all required checks passed before merge.
+- No AWS resources or account settings were changed by PR #253 itself. The separate zero-threshold cost alert is documented below.
 
-**Disposition:** PR #253 remains blocked pending a fresh, fully inspectable exact-head workflow attempt in which every required workflow concludes successfully. The PR is static inventory/preflight hardening only and does not establish live packet/flow enforcement. The AWS deployment gate remains closed under the strict US$0 new-spend constraint: the connected AWS principal is root, no budget actions are configured, and the disposable Network Firewall/DNS Firewall lab has not been deployed. A free, non-action monthly cost budget named `Tinlance-Strict-Zero-Spend` was subsequently created and read-after-write verified. AWS rejects a literal zero budget limit, so its nominal limit is USD 0.01 while actual-cost and forecast notifications are both configured at USD 0.00, excluding credits and discounts to monitor gross cost. The notification subscriber is `hello@tinlance.com`; AWS requires email-recipient verification, which is not confirmed by the available API response. This budget is an alerting mechanism, not a hard spending cap or authorization to spend. Preserve the existing Tinlyt test controller and all production product infrastructure. FCP-03 remains active and incomplete; FCP-04–FCP-10 remain gated.
+**Acceptance boundary:** this is merged static inventory/preflight hardening. It does not prove deployed AWS packet/flow enforcement, DNS Firewall behavior, bypass resistance, cross-tenant isolation, production identity, host/storage qualification, operational readiness, economics or independent security acceptance. FCP-03 remains active and incomplete; FCP-04–FCP-10 remain gated.
 
+### Canonical documentation reconciliation
+
+TSIC documentation PR [#119](https://github.com/LloydCoder/tinlance-system-integration/pull/119) was merged as `81bcb0851b32538647d6214182446b723b549caf`. Its exact PR-head workflows and post-merge mainline check-runs each completed 34/34 successfully.
 
 ### Zero-spend budget configuration — 2026-11-09
 
