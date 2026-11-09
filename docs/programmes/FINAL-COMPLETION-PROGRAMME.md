@@ -633,3 +633,16 @@ Agent Platform PR [#262](https://github.com/LloydCoder/tinlance-agent-platform/p
 - No AWS resources, account settings or existing product infrastructure were modified.
 
 **Acceptance boundary:** this is shared identity-contract hardening, not live production identity acceptance. Production issuer/JWKS trust, workload identity, KMS/HSM key custody, rotation/revocation operations, dedicated least-privilege AWS identity and operational evidence remain production gates. FCP-03 remains active and incomplete; FCP-04–FCP-10 remain gated.
+
+
+## 16. FCP-03 read-only IAM identity separation inventory — 2026-11-09
+
+A fresh read-only IAM inventory was performed after PR #262. The AWS API calls completed successfully for STS caller identity, OIDC provider inventory, all eight IAM roles, the OIDC provider details, and attached/inline policies for every Tinlance/Tinlyt/Agent/Platform-matching role.
+
+- The active AWS API caller is the account root principal; the connector does not currently operate through a dedicated FCP-03 role.
+- Exactly one IAM OIDC provider is present: `token.actions.githubusercontent.com`. Its tags identify it as Tinlyt-owned and scoped to the Tinlyt web-intelligence repository.
+- The matching roles found are `TinlytFusionOpsSSMRole`, `TinlytGitHubActionsDeployRole`, `TinlytRuntimeSSMRole` and `TinlytTestRuntimeSSMRole`. No FCP-03 or Agent Platform deployment/auditor role was found.
+- `TinlytGitHubActionsDeployRole` is restricted to Tinlyt release tags and has no attached or inline resource permissions. The SSM roles are EC2 service-trusted and carry `AmazonSSMManagedInstanceCore`; they are not FCP-03 identities.
+- The existing Tinlyt OIDC provider and roles were not reused, modified or expanded. No IAM resource was created or changed during this inventory.
+
+**Disposition:** FCP-03 still lacks an independent workload/deployment identity. Creating a dedicated identity must preserve the Tinlyt boundary and use a separately approved trust design; do not broaden the Tinlyt trust policy, reuse its release role, or fall back to root credentials. IAM identity setup itself is not the same as live proof-of-possession, production key custody, or live AWS egress acceptance. FCP-03 remains active; FCP-04–FCP-10 remain gated.
