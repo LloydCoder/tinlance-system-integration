@@ -5,7 +5,7 @@
 **Baseline:** 2026-11-08  
 **Programme authority:** TSIC (system-of-systems programme governance and conformance evidence)  
 **Execution authority:** Tinlance Agent Platform  
-**Status:** FCP-00 and FCP-01 accepted; FCP-02 (persistent computers and durable execution) is active. Overall programme completion and production certification remain outstanding.
+**Status (reconciled 2026-11-09):** FCP-00 and FCP-01 accepted; FCP-02 repository/controlled-host W5 and W6 implementation acceptance recorded with production enablement residuals retained; FCP-03 is active and incomplete. FCP-04–FCP-10 remain gated. Overall programme completion and production certification remain outstanding.
 
 ## 1. Mission
 
