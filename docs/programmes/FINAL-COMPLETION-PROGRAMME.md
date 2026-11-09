@@ -356,3 +356,72 @@ This is the latest programme snapshot after Platform PRs #210 and #211 and TSIC 
 FCP-01 remains accepted. FCP-02 remains active and incomplete: W5 has merged durable lease, trusted-supervisor, parent-death containment and thread-safe exec-guard implementation slices, but the required uninterrupted eight-hour controlled-host soak has not been run or independently inspected. The infrastructure audit found no dedicated Agent Platform soak host; the existing FusionOps, ThreatFade and Tinlyt hosts remain out of scope. AWS budget configuration was empty and promotional-credit coverage could not be verified, so no compute was provisioned.
 
 W6 remains gated behind W5 acceptance. FCP-03 through FCP-10 remain unstarted in the serial sequence. Green CI and merged code are necessary but do not replace the controlled-host soak, production qualification, independent security review or formal go/no-go evidence.
+
+
+## 8. FCP-02 W5/W6 acceptance and FCP-03 infrastructure audit — 2026-11-09
+
+This addendum supersedes earlier W5/W6 statements in Sections 5, 8 and the prior live reconciliation snapshots. Earlier sections remain historical records of what was known at their timestamps.
+
+### W5 — accepted for controlled-host functional soak
+
+The isolated Tinlyt test host `tinlyt-test-runtime` (EC2 `i-0bdb9c7cb13b1c9b8`, `t4g.medium`, `eu-west-1`) completed the continuous eight-hour soak against Platform commit `fe2f31837b67fcb5332591e31289fe2f0f23f3bb`.
+
+- 28,800.03 seconds continuous elapsed; 96/96 browser/profile cycles.
+- Chromium 156.0.8078.4; maximum adjacent cycle gap 304.82 seconds.
+- 96 successful quota settlements; lease-event audit count 52→149 and quota ledger 14→206.
+- Lease expiry and revocation invalidated fence 1; replacement ownership advanced to fence 2.
+- Nine supervisor-death probes; every child started and no child produced a post-crash side effect.
+- cgroup-v2 memory.max 2 GiB, pids.max 128; memory peak 356,220,928 bytes; final pids.current 1.
+- Cleanup verified; no residual Chromium, worker or Bubblewrap processes.
+- Artifact: `/opt/tinlance-w5/artifacts/w5-soak.json`; SHA-256 `798579f881ec884594753bd65a519dffb4bf1f0927a6db2836688f66c3a342e7`.
+
+**Qualification:** Chromium's internal sandbox was disabled in this harness. Outer Bubblewrap user/PID/mount/network namespaces, dropped capabilities and the no-guest-network boundary were active. W5 is accepted for controlled-host functional soak only; it does not establish renderer-seccomp assurance or production certification.
+
+### W6 — accepted for repository implementation scope
+
+- Platform PR #223 merged as `9344315a9c867157f10bcfeb29369b86497f7f27`.
+- Platform PR #222 merged as `1bd86c24f0dd35baa8d5536d5c6f0197fe6ccf15`; recorded mainline gates passed: CI, CodeQL, Secret Scan, Supply Chain Attestation, Reference Agents and R10 Certification.
+- Platform documentation PR #224 merged as `ced90d12bc8cd7a2a61110399e56d4e7e2297d62`.
+- Implementation includes tenant/workspace-bound authenticated manifests, path/type/mode/size validation, credential exclusions, KMS envelope-encryption and separate HMAC-signing adapters, immutable conditional S3/SSE-KMS adapter, tenant-scoped PostgreSQL catalog and restore ledger, forced RLS, append-only events, one-shot restore claims, newer-fence restore, private staging/atomic publication and credential-reference refresh.
+- Validation recorded: 15 migrations and 13 PostgreSQL 17 SQL acceptance tests; focused snapshot/KMS/S3/catalog/ledger tests; a real PostgreSQL-backed clean-host restore drill under a newer fence; credential-reference refresh; successful completion; and revoke-before-publication failure with no destination and durable failure event.
+
+**Production enablement remains open:** production KMS encryption/HMAC keys, S3 bucket policy/versioning/Object Lock/retention, workload identity/IAM, durable lifecycle reconciliation, monitoring, replication and cross-AZ/region disaster-recovery drills have not been provisioned or qualified.
+
+### FCP-03 — production security and infrastructure qualification is now the active phase
+
+A read-only AWS inventory and network-policy inspection was performed on 2026-11-09. It found:
+
+1. The isolated W5 host remains running in `eu-west-1`, tagged as test-only. Its security group has no ingress but permits all outbound protocols to `0.0.0.0/0`; its subnet uses the default network ACL and a default route to an Internet Gateway. This is not an independent destination-level egress enforcement point.
+2. The W5 host's attached KMS key is the AWS-managed default EBS encryption key, not a dedicated snapshot encryption or HMAC-signing key.
+3. No S3 buckets were returned by the account-level bucket inventory. No production snapshot object store was identified.
+4. AWS Budgets returned zero configured budgets. This is a cost-governance gap; it does not prove promotional-credit coverage.
+5. Tinlyt API production's security group has no ingress but permits all outbound protocols to `0.0.0.0/0`.
+6. The ThreatFade instance's security group currently allows inbound TCP/22, TCP/80 and TCP/443 from `0.0.0.0/0`. This is an adjacent product security finding, not an Agent Platform authorization to modify ThreatFade. It must be triaged separately by its owner.
+7. FusionOps, ThreatFade and Tinlyt production hosts were not modified. The test host was not modified during this read-only audit.
+
+The current Platform repository already contains a DNS-resolving HTTPS CONNECT proxy and W4 namespace/firewall test harness. The documented residual remains: W4's network layer permits public unicast TCP/443, while hostname allowlisting is enforced by the proxy process; DNS query names are not independently allowlisted. A compromised proxy process therefore lacks an independent destination-level hostname enforcement boundary. Production FCP-03 must close this with a trusted enforcement point and explicit DNS policy, not merely rely on application proxy validation.
+
+### FCP-03 work sequence and gates
+
+1. Establish a production deployment architecture and threat model for destination-bound egress, DNS policy, workload identity, cgroups, encrypted profile storage, snapshot KMS/S3, audit, monitoring and operational ownership.
+2. Implement a trusted destination-level egress enforcement design that is independent of the browser proxy process; add explicit DNS query-name policy and adversarial tests for DNS rebinding, mixed answers, alternate resolvers, DNS tunnelling, IPv6, NAT64, metadata and proxy compromise.
+3. Define and test least-privilege production KMS encryption/HMAC keys, S3 bucket policy/versioning/retention/Object Lock, workload identity and PostgreSQL grants as infrastructure code. Do not provision production resources until the cost ceiling, credit coverage and rollback plan are verifiable.
+4. Qualify provider-attested host SKU, firmware, microcode, SMT and CPU mitigation state; implement production cgroup limits and encrypted persistent profile storage.
+5. Integrate live identity/revocation, telemetry/SLOs, alerting, incident response, restore reconciliation, backup and cross-AZ/region recovery drills.
+6. Obtain independent security review and accountable residual-risk acceptance. ADR-0004 go/no-go must be evidence-based.
+
+**FCP-03 is active, not accepted.** No production resources were created or changed by this audit. Existing production product instances remain out of scope for experiments.
+
+### Current core repository open-work inventory — 2026-11-09
+
+GitHub repository-scoped searches observed no open PRs in Agent Platform, Agent OS, Platform SDK, TADL or TSIC. No open issues were observed in Agent Platform, Agent OS, Platform SDK or TADL. TSIC issue #102 remains the single open umbrella acceptance tracker. This is a point-in-time inventory and must be refreshed before final certification.
+
+### Programme disposition
+
+- FCP-00: baseline/reconciliation accepted; this addendum records the W5/W6 evidence and current infrastructure snapshot.
+- FCP-01: accepted for repository/reference-scope contracts and ecosystem conformance.
+- FCP-02: W5 controlled-host functional soak and W6 repository implementation accepted; production enablement, security/economics residuals and final Phase 2 certification remain open.
+- FCP-03: active; production security and infrastructure qualification.
+- FCP-04–FCP-10: remain sequenced and unstarted until preceding gates are accepted.
+
+A green workflow or merged implementation is necessary but insufficient for production qualification or final completion.
