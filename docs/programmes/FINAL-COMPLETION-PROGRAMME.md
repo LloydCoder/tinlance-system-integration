@@ -730,3 +730,17 @@ FCP-03 remains active/incomplete. FCP-04–FCP-10 remain gated.
 - Test-only change; no AWS resources, account settings or product infrastructure were modified.
 
 **Disposition:** This strengthens the static infrastructure-as-code regression boundary. It does not prove live AWS packet/flow enforcement, DNS bypass resistance or production identity. FCP-03 remains active/incomplete; FCP-04–FCP-10 remain gated.
+
+
+## 22. FCP-03 DNS Firewall rule-contract and malformed-action hardening — merged 2026-11-10
+
+### Agent Platform PR #269
+- [PR #269](https://github.com/LloydCoder/tinlance-agent-platform/pull/269) merged as `b9d07340efab63afedbdb970cc491a3d2d41ffcd`.
+- The live-topology preflight now requires exactly two DNS Firewall rules: one `ALLOW` and one `BLOCK`. It preserves action and priority metadata and rejects extra rules, malformed/out-of-range/boolean priorities, and duplicate priorities.
+- Wildcards in the ALLOW domain list are rejected even if the Network Firewall stateful target list contains the same wildcard. The CloudFormation `ApprovedDomains` parameter now validates every `CommaDelimitedList` member as an exact DNS FQDN and rejects wildcard entries, IP literals, empty labels and malformed host labels.
+- A further adversarial test-first review added malformed action values (list and mapping). The tests failed on the old implementation with `TypeError: unhashable type`; the collector now type-checks the action before membership testing and records malformed values as incomplete inventory so the topology preflight fails closed.
+- Exact PR-head checks: 14/14 successful on `34ab3ec94ab9e9772c451acc35a2f1d703b3d2b6`. The final test-first commit `95cbf4c4dde6f1a200d294d961a49a14428014c7` reproduced the malformed-action failures (2 failed, 969 passed) before the implementation correction.
+- Exact post-merge Agent Platform mainline checks: 14/14 successful on merge SHA `b9d07340efab63afedbdb970cc491a3d2d41ffcd`, including Python 3.12/3.13/3.14, quality/coverage, SQL isolation, TSIC conformance, R10 adversarial certification, CodeQL, secret scanning and attestation.
+- AWS documentation confirms `AllowedPattern` applies to each member of a `CommaDelimitedList`: [CloudFormation parameter constraints](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html).
+
+**Acceptance boundary:** These are static inventory, policy and template guardrails. They do not establish that a live AWS Network Firewall or Route 53 Resolver DNS Firewall exists, nor do they prove packet/flow enforcement, DNS bypass resistance, or production workload identity. The read-only AWS census still records zero Network Firewall deployments and zero DNS Firewall associations; no dedicated FCP-03 identity exists; no new AWS resources or charges were introduced. FCP-03 remains active/incomplete; FCP-04–FCP-10 remain gated.
