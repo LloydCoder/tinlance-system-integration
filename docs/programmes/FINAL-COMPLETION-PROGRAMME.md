@@ -744,3 +744,27 @@ FCP-03 remains active/incomplete. FCP-04–FCP-10 remain gated.
 - AWS documentation confirms `AllowedPattern` applies to each member of a `CommaDelimitedList`: [CloudFormation parameter constraints](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html).
 
 **Acceptance boundary:** These are static inventory, policy and template guardrails. They do not establish that a live AWS Network Firewall or Route 53 Resolver DNS Firewall exists, nor do they prove packet/flow enforcement, DNS bypass resistance, or production workload identity. The read-only AWS census still records zero Network Firewall deployments and zero DNS Firewall associations; no dedicated FCP-03 identity exists; no new AWS resources or charges were introduced. FCP-03 remains active/incomplete; FCP-04–FCP-10 remain gated.
+
+
+## 23. FCP-03 duplicate/unknown topology inventory and ambiguous route-target hardening — merged 2026-11-10
+
+### Agent Platform PR #270 — duplicate and unknown topology inventory
+- [PR #270](https://github.com/LloydCoder/tinlance-agent-platform/pull/270) merged as `68f35cf0d112d05b61a03db801bb799ff34c559a` (head `1e1aef21e813e24cebf72e87b4186fa214928225`).
+- The collector now preserves missing subnet IPv6 metadata as unknown rather than coercing it to disabled. The topology preflight rejects unknown IPv6 state, duplicate route-table subnet associations, duplicate DNS Firewall VPC associations, duplicate association/rule/domain status records, duplicate or malformed stateful domain target collections, and malformed source-range inventories.
+- Regression coverage includes missing `AssignIpv6AddressOnCreation` and `Ipv6CidrBlockAssociationSet` metadata, duplicate route and association records, and unknown IPv6 route state.
+- Exact PR-head check-runs: 14/14 successful. Exact post-merge mainline check-runs: 14/14 successful.
+
+### Agent Platform PR #271 — ambiguous AWS route target rejection
+- [PR #271](https://github.com/LloydCoder/tinlance-agent-platform/pull/271) merged as `2ada51f3ccda853c84075203cf98a777d78028ee` (head `d9f218eae46a287e64f6eb04e59c443cb91a983d`).
+- The AWS route collector now enumerates all supported route-target fields and accepts a target only when exactly one non-null target field exists and its value is a non-empty string. Multiple, malformed, empty or unknown target values remain invalid rather than being hidden by first-match precedence.
+- Regression cases cover an extra local target, a mapping-valued target and an empty target value alongside a valid-looking route.
+- Exact PR-head check-runs: 14/14 successful. Exact post-merge mainline check-runs: 14/14 successful.
+
+### Existing-infrastructure and zero-charge boundary revalidation
+- The latest focused read-only `eu-west-1` inventory confirms the only EC2 instance there is `tinlyt-test-runtime` (`i-0bdb9c7cb13b1c9b8`), tagged as Tinlyt/FCP-02-W5 test infrastructure, with its existing Tinlyt SSM profile. It has a public IPv4 address, a default VPC route to an internet gateway, and unrestricted IPv4 security-group egress. It is not a suitable isolated FCP-03 worker or controller to repurpose.
+- The same regional inventory returned no NAT gateways, no VPC endpoints, no VPC flow logs, no RDS instances, no S3 buckets, no KMS customer keys, no SQS queues and no CloudWatch log groups in the account-level services queried. Existing KMS-managed EBS encryption is present on the Tinlyt test volume, but no customer-managed key was returned by the KMS key inventory.
+- The AWS API read-only caller remains the account root principal. Existing IAM/OIDC roles remain Tinlyt-specific. No account resources, product infrastructure, account settings or IAM trust policies were modified.
+- A broad 34-region fan-out exceeded the connector's 100-call execution limit; that incomplete run is not treated as a successful all-region census. The previously recorded 17-enabled-region census remains the last complete all-region evidence. This latest focused regional inventory is evidence for `eu-west-1` only.
+- No billable AWS resource was created, modified or started. The governing requirement remains USD 0 in new AWS charges.
+
+**Disposition:** PRs #270 and #271 close two additional static inventory fail-open classes and are fully green after merge. They do not establish live packet/flow enforcement, production workload identity, production host isolation, durable services/DR or independent security acceptance. FCP-03 remains active/incomplete; FCP-04–FCP-10 remain gated.
