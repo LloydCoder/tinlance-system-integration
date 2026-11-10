@@ -744,3 +744,25 @@ FCP-03 remains active/incomplete. FCP-04–FCP-10 remain gated.
 - AWS documentation confirms `AllowedPattern` applies to each member of a `CommaDelimitedList`: [CloudFormation parameter constraints](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html).
 
 **Acceptance boundary:** These are static inventory, policy and template guardrails. They do not establish that a live AWS Network Firewall or Route 53 Resolver DNS Firewall exists, nor do they prove packet/flow enforcement, DNS bypass resistance, or production workload identity. The read-only AWS census still records zero Network Firewall deployments and zero DNS Firewall associations; no dedicated FCP-03 identity exists; no new AWS resources or charges were introduced. FCP-03 remains active/incomplete; FCP-04–FCP-10 remain gated.
+
+
+## 23. FCP-03 topology inventory cardinality and route-target hardening — merged 2026-11-10
+
+### Agent Platform PR #270
+- [PR #270](https://github.com/LloydCoder/tinlance-agent-platform/pull/270) merged as `68f35cf0d112d05b61a03db801bb799ff34c559a`.
+- Added strict singleton cardinality checks for worker/firewall/NAT route-table associations, worker NACL subnet association and DNS Firewall VPC association. Duplicate association records no longer collapse into an apparently valid set.
+- DNS Firewall association state must contain exactly one `COMPLETE` item; the two-rule topology must contain exactly two complete rule statuses and exactly two complete domain-list statuses.
+- IPv6 inventory is now tri-state: missing/malformed `AssignIpv6AddressOnCreation` or `Ipv6CidrBlockAssociationSet` is unknown, not disabled. Preflight rejects unknown IPv6 flags, missing/malformed IPv6 address arrays and missing IPv6 default-route inventory.
+- Any non-null public IP value, including empty strings and falsey malformed values, is rejected.
+- Route53 resolved-IP validation now requires exactly the worker subnet CIDR as its source range and validates action values as strings before set membership checks, preventing unhashable malformed values from raising.
+- Duplicate stateful target types/targets and duplicate DNS allowlist entries are rejected.
+- Exact PR-head checks: 14/14 successful. Exact post-merge Agent Platform mainline checks: 14/14 successful.
+
+### Agent Platform PR #271
+- [PR #271](https://github.com/LloydCoder/tinlance-agent-platform/pull/271) merged as `2ada51f3ccda853c84075203cf98a777d78028ee`.
+- Route inventory now requires exactly one non-empty recognized target field. Conflicting, malformed or empty additional target fields are treated as incomplete inventory; the preflight rejects the route instead of silently selecting the first target.
+- Target-field coverage includes the EC2 route target forms documented by AWS, including carrier/core network, egress-only gateway, gateway, instance, IP address, local gateway, NAT gateway, network interface, ODB network, transit gateway, VPC endpoint and VPC peering connection.
+- AWS EC2 `CreateRoute` documentation specifies exactly one target resource per route: [CreateRoute API](https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CreateRoute.html).
+- Exact PR-head checks: 14/14 successful. Exact post-merge Agent Platform mainline checks: 14/14 successful.
+
+**Acceptance boundary:** These changes close code-level fail-open cases in static inventory normalization and preflight evaluation. They do not create or prove live AWS Network Firewall/DNS Firewall deployments, live packet/flow enforcement, production workload identity, host attestation, or durable production DR. No AWS resources or existing product infrastructure were changed; FCP-03 remains active/incomplete and FCP-04–FCP-10 remain gated.
