@@ -779,3 +779,39 @@ FCP-03 remains active/incomplete. FCP-04–FCP-10 remain gated.
 - No AWS resource, IAM policy, account setting or existing product infrastructure was changed.
 
 **Disposition:** This closes an additional shared AWS inventory normalization fail-open. It does not prove live AWS network enforcement or production identity/host/storage/DR readiness. FCP-03 remains active/incomplete; FCP-04–FCP-10 remain gated.
+
+
+## 25. FCP-03 existing W5 runtime reuse — controlled-host evidence, 2026-11-10
+
+### Selected existing infrastructure
+
+The existing W5 host `tinlyt-test-runtime` (EC2 `i-0bdb9c7cb13b1c9b8`, `eu-west-1a`, `t4g.medium`, Amazon Linux 2023, ARM64) is the only identified existing W5 runtime with an online SSM agent and the local tooling needed for controlled FCP-03 host tests. It is selected as a **controlled test runner and evidence host only**. It is not approved as an Agent Platform production worker, identity authority, or cloud egress enforcement boundary.
+
+The host is product-owned Tinlyt test infrastructure and runs the existing `tinlance-w5-postgres` container. Its public addressing, direct Internet Gateway subnet route and unrestricted outbound security-group policy remain unchanged. The existing Tinlyt SSM instance profile is not an Agent Platform workload identity and was not repurposed. No Tinlyt, FusionOps or ThreatFade service, IAM trust, security group, route table, firewall, database or persistent container configuration was changed.
+
+### Live controlled-host probes
+
+1. **Linux namespace egress mechanics:** the checked-in `scripts/fcp03_namespace_enforcement_probe.sh` was fetched from the Agent Platform main branch and its Git blob SHA verified as `87d915b96b5e2fbaf95c657ae6b0dcc6ade133b9`. The SSM command `a62720ae-5e6c-479f-9777-185f473f73a6` completed successfully:
+   - Approved TCP/53, UDP/53 and TCP/443 to the isolated test endpoint passed.
+   - Direct unapproved DNS, direct-IP HTTPS and unapproved UDP DNS were blocked; the isolated nftables drop counter recorded 9 packets / 591 bytes.
+   - Host nftables ruleset hash remained `999f5c8fb907822ef72a578d7c65399e5cab4ca994ffd0ac16fa2bdfc75c901d`.
+   - Existing Docker container state was unchanged; temporary namespace and veth were removed.
+   - **Scope:** Linux namespace/nftables policy mechanics only. The probe explicitly reports `CLOUD_FIREWALL_ACCEPTANCE=NOT_TESTED`; this is not AWS Network Firewall, DNS Firewall, VPC route-chain, DNS rebinding, DoH/DoT, QUIC, IPv6 or cloud metadata acceptance.
+
+2. **Constrained Docker W1 workload:** using the already-cached immutable Ubuntu image `sha256:1f1aeedbd16d617d1e09524c511cbbfb3b9748526f73ef36325366eee8347f8c`, an ephemeral container completed with UID/GID 65532, `--network none`, read-only root filesystem, bounded tmpfs, all capabilities dropped, no-new-privileges, Docker's built-in seccomp profile, cgroup v2 CPU/memory/PID limits, and successful tmpfs write/read. The runtime asserted loopback-only network interfaces, zero effective capabilities, `NoNewPrivs=1`, `Seccomp=2`, `memory.max=536870912`, `cpu.max=100000 100000`, and `pids.max=128`. All assertions passed. The existing W5 PostgreSQL container state was identical before and after. No image was pulled and no persistent container was changed.
+
+3. **Host capability and runtime inspection:** SSM command `a54a62ed-16c2-47d0-ba16-3f03d92eef28` ran the checked-in read-only host capability probe using the already-installed Python 3.12 interpreter. It found cgroup v2 and the required CPU, memory and PID controllers; user namespaces and seccomp filter support are available; Docker uses cgroup v2 and its built-in seccomp profile. The host does **not** expose KVM, does not have Firecracker/Jailer/gVisor/Kata installed, and does not provide a readable CPU microcode revision. The probe therefore reports microVM readiness false and CPU security mitigations not fully attested. The active SSM process itself had no seccomp filter; the isolated Docker W1 workload did have seccomp mode 2. The existing PostgreSQL container is non-privileged, read-only-rootfs and quota-limited, but uses host networking; it was not altered.
+
+### FCP-03 disposition after reuse
+
+The W5 host has proved useful for safe local-kernel and container-isolation tests without new compute or AWS charges. It cannot satisfy the production host, identity, network or durability gates:
+
+- Its public IP, direct IGW path and unrestricted security-group egress mean it cannot prove a private worker subnet or provider-enforced egress chain.
+- The account inventory still has no AWS Network Firewall deployment or Route 53 Resolver DNS Firewall association. Local nftables tests do not replace these controls.
+- The host has no KVM-backed microVM capability, provider/firmware attestation evidence or production workload identity. Its Tinlyt SSM profile remains product-scoped.
+- No dedicated production KMS/HSM key, S3 Object Lock snapshot store, managed queue/outbox, multi-AZ/region DR or shared production revocation service has been evidenced.
+- The W5 PostgreSQL container is a test dependency, not a production HA database, queue or durable Agent Platform control plane.
+
+**Cost and safety:** no AWS resources or account settings were created or modified; no new AWS charges were incurred. The probes used existing SSM access, cached images and temporary local resources with verified cleanup. Existing product infrastructure remains untouched.
+
+**Phase decision:** FCP-03 remains active and incomplete. The selected W5 host is the best existing controlled test runner, but it is not suitable for production worker placement. Do not waive provider-level identity, network enforcement, host assurance, durable storage/DR, operations or independent security acceptance, and do not start FCP-04–FCP-10.
