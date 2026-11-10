@@ -815,3 +815,27 @@ The W5 host has proved useful for safe local-kernel and container-isolation test
 **Cost and safety:** no AWS resources or account settings were created or modified; no new AWS charges were incurred. The probes used existing SSM access, cached images and temporary local resources with verified cleanup. Existing product infrastructure remains untouched.
 
 **Phase decision:** FCP-03 remains active and incomplete. The selected W5 host is the best existing controlled test runner, but it is not suitable for production worker placement. Do not waive provider-level identity, network enforcement, host assurance, durable storage/DR, operations or independent security acceptance, and do not start FCP-04–FCP-10.
+
+
+## 26. FCP-03 ARM host identity probe correction — merged 2026-11-10
+
+### Agent Platform PR #273
+
+- [PR #273](https://github.com/LloydCoder/tinlance-agent-platform/pull/273) merged as `81c2f4b4f436f4aad035884791f53cd088b64272` (final PR head `ed9ae9826f0286ef7f8f4433acb5bc0f61a89500`).
+- The existing W5 ARM64 host's `/proc/cpuinfo` exposes `processor: 0` as a logical processor index, with `CPU implementer: 0x41`, `CPU part: 0xd0c` and `CPU revision: 1`. It has no `model name` or `Hardware` field.
+- The host capability probe incorrectly used the `Processor` field as a fallback for human-readable CPU model name, causing the processor index `0` to be reported as the model. The fallback was removed; ARM implementer/part/revision remain separately captured, and the missing model name is now an explicit attestation warning.
+- Test-first evidence: the test-only commit `d1570c1e986e1c5c6993d3f37b5d16bb9c922252` produced the expected failing regression; after implementation and fixture correction, the final exact PR-head suite passed.
+- Exact final PR-head checks: 15/15 successful, including host-feasibility, Python 3.12/3.13/3.14, quality/coverage, SQL isolation, TSIC conformance, R10 adversarial certification, CodeQL and secret scanning.
+- Exact post-merge mainline checks: 14/14 successful on merge SHA `81c2f4b4f436f4aad035884791f53cd088b64272`.
+
+### Post-merge W5 runtime revalidation
+
+The checked-in read-only host probe was rerun against the existing W5 host after the merge (SSM command `1aac2477-0736-4946-a6cf-e6b8d7c34c3a`).
+
+- `cpu_model_name` is now correctly empty rather than the false value `"0"`; the probe emits `CPU model is unavailable` and `CPU microcode revision is unavailable` warnings.
+- ARM CPU identity remains recorded as implementer `0x41`, part `0xd0c`, revision `1`; cgroup v2 and CPU/memory/PID controllers, user namespaces and seccomp filter support are detected.
+- KVM and Firecracker/Jailer/gVisor/Kata are unavailable on this `t4g.medium`; microVM readiness remains false. CPU security attestation remains incomplete. This is an accurate negative finding, not a production qualification.
+
+No AWS resources, IAM trust, product infrastructure or persistent containers were modified; no new AWS charges were incurred.
+
+**Disposition:** this corrects host-evidence integrity and makes the W5 limitations explicit. It does not close production host attestation, provider-level egress enforcement, workload identity, durable production storage/DR, operations or independent assurance. FCP-03 remains active/incomplete; FCP-04–FCP-10 remain gated.
