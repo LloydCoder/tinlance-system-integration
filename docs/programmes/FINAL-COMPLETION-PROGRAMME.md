@@ -766,3 +766,16 @@ FCP-03 remains active/incomplete. FCP-04–FCP-10 remain gated.
 - Exact PR-head checks: 14/14 successful. Exact post-merge Agent Platform mainline checks: 14/14 successful.
 
 **Acceptance boundary:** These changes close code-level fail-open cases in static inventory normalization and preflight evaluation. They do not create or prove live AWS Network Firewall/DNS Firewall deployments, live packet/flow enforcement, production workload identity, host attestation, or durable production DR. No AWS resources or existing product infrastructure were changed; FCP-03 remains active/incomplete and FCP-04–FCP-10 remain gated.
+
+
+## 24. FCP-03 AWS inventory collector rejects omitted result collections — merged 2026-11-10
+
+### Agent Platform PR #272
+- [PR #272](https://github.com/LloydCoder/tinlance-agent-platform/pull/272) merged as `59ce522653acd8f96df9f49f1b338590ddda8709` (PR head `2a91cc1b6a2d8fe113efbd43800944e6cd54f22b`).
+- Forensic review found the shared paginated AWS inventory helper used `response.get(result_key, [])`. An omitted collection key was therefore normalized to an empty list, erasing the distinction between an explicitly empty AWS inventory and an incomplete/malformed API response.
+- The collector now requires the response to be a mapping, requires the requested result collection key to be present, and requires its value to be a list. Explicit empty lists remain valid empty inventory; omitted, null, mapping and string values fail closed with a clear validation error.
+- Test-first regression cases cover a missing collection key and malformed collection values (`None`, mapping and string).
+- Exact PR-head check-runs: 14/14 successful. Exact post-merge Agent Platform mainline check-runs: 14/14 successful.
+- No AWS resource, IAM policy, account setting or existing product infrastructure was changed.
+
+**Disposition:** This closes an additional shared AWS inventory normalization fail-open. It does not prove live AWS network enforcement or production identity/host/storage/DR readiness. FCP-03 remains active/incomplete; FCP-04–FCP-10 remain gated.
