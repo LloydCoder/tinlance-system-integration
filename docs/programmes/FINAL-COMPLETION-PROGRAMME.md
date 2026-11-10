@@ -839,3 +839,50 @@ The checked-in read-only host probe was rerun against the existing W5 host after
 No AWS resources, IAM trust, product infrastructure or persistent containers were modified; no new AWS charges were incurred.
 
 **Disposition:** this corrects host-evidence integrity and makes the W5 limitations explicit. It does not close production host attestation, provider-level egress enforcement, workload identity, durable production storage/DR, operations or independent assurance. FCP-03 remains active/incomplete; FCP-04–FCP-10 remain gated.
+
+
+## 27. FCP-03 AWS credit, deployment guardrail and 24-hour teardown update — 2026-11-10
+
+### AWS funding and budget verification
+
+A read-only AWS Billing API `GetCredits` call returned one promotional credit record:
+- Remaining amount reported: USD 28.32.
+- Estimated amount: USD 11.49.
+- Credit validity ended at 2026-11-09 11:07:33 UTC.
+- The record is still labelled `ENABLED`, but its end date is before the current audit date (2026-11-10). The reported remaining amount is therefore **not treated as spendable credit for new usage**. The estimated amount is not a new-usage allowance.
+
+The existing `Tinlance-Strict-Zero-Spend` budget remains unchanged:
+- Nominal monthly limit: USD 0.01.
+- Actual spend: USD 16.04.
+- Forecast: USD 29.746.
+- Actual and forecast notifications are both configured at GREATER_THAN USD 0.00 and currently ALARM.
+- Both notifications list `hello@tinlance.com` as the email subscriber. The AWS Budgets subscriber API does not expose confirmation/delivery state; receipt is not verified.
+
+No budget, alert, notification, credit, billing or account setting was changed.
+
+### Disposable lab template validation and cost
+
+- CloudFormation `ValidateTemplate` in `eu-west-1` succeeded for the checked-in template SHA `9a932b26fa3c560ba5ac3ffd54c126a224c9a46d`.
+- All nine parameters were recognised; the template requires `CAPABILITY_IAM`.
+- The current account inventory showed no FCP-03 stack, worker instance, Network Firewall resource or Route 53 Resolver firewall rule group.
+- No stack, change set or billable resource was created.
+
+The indicative fixed baseline remains USD 0.4368/hour; a 24-hour run is approximately USD 10.48 before variable Network Firewall processing, data transfer, logs, storage, taxes and other charges. Stopping only EC2 would not stop all charges; full stack teardown and `DELETE_COMPLETE` verification are required. EventBridge automatic teardown is a guardrail, not a hard spend cap.
+
+### 24-hour teardown capability merged
+
+Agent Platform PR [#274](https://github.com/LloydCoder/tinlance-agent-platform/pull/274) merged as `d49a85fc1519ced0df04ae801919927295c864c8`.
+- Extends the disposable lab teardown validator from a 2-hour maximum to a 24-hour maximum; the 15-minute minimum remains.
+- Adds regression coverage for exactly 24 hours and rejection at 24 hours plus one second.
+- Aligns the disposable lab README and 24-hour cost estimate.
+- All six post-merge workflows passed on the exact merge SHA: CI (Python 3.12/3.13/3.14, coverage, dependency audit, SQL and TSIC conformance), CodeQL, Secret Scan, R10 Certification, Reference Agents and Supply Chain Attestation.
+
+This is a code/documentation capability only; it does not authorize or perform deployment.
+
+### Repository governance finding
+
+The live GitHub branch metadata reported Agent Platform `main` as unprotected, with no required status checks. Platform issue [#275](https://github.com/LloydCoder/tinlance-agent-platform/issues/275) records the required ruleset hardening. The current connected GitHub integration exposes read-only ruleset access but not repository-administration writes; no branch protection setting was changed.
+
+### FCP-03 disposition
+
+**FCP-03 remains active and incomplete.** The financial deployment gate remains blocked because no unexpired promotional credit for new usage is confirmed, the strict zero-spend budget is already in ALARM, and notification delivery is unverified. Provider-level packet/flow tests, production workload identity, host attestation, durable production storage/DR, operational readiness and independent security assurance remain outstanding. Do not begin FCP-04–FCP-10 until FCP-03 exit evidence is complete and accepted.
