@@ -49,8 +49,8 @@ Validate Platform/OS/SDK/TADL/TSIC contracts, tenant and identity propagation, a
 ### FCP-02 — Persistent computers and durable execution
 Complete W2–W6 in sequence. W2–W4 are accepted only for ephemeral CI feasibility at the baseline. W5 requires a genuine continuous eight-hour soak, supervisor fencing at every consequential command boundary, restarts, lease expiry/revocation, quotas, audit continuity, crash recovery and cleanup. W6 requires consistent snapshots, integrity/provenance, clean-host restore, storage reattachment, identity preservation, fencing continuity, stale-worker revocation, credential refresh, replay prevention, interrupted-restore recovery, corrupt snapshot rejection and cross-tenant denial.
 
-### FCP-03 — Production security and infrastructure qualification
-Qualify deployed durable DB/outbox/queue, secret manager, trusted supervisor and sandbox runtime, telemetry, backup/restore, incident response and named operational ownership. Close production network egress, DNS, hardware/microcode, CPU/SMT, cgroups, encrypted profile storage, live identity/revocation and independent security-review blockers. Mocks and interfaces do not establish deployment.
+### FCP-03 — Provider-neutral production security and infrastructure qualification
+Close against the canonical [provider-neutral FCP-03 closure strategy](docs/programmes/FCP-03-PROVIDER-NEUTRAL-CLOSURE-STRATEGY.md). AWS provisioning is not mandatory and no new AWS spend is authorized. The security outcomes remain mandatory: deployed destination-level network/DNS enforcement; workload identity, proof-of-possession, key custody and revocation; isolated runtime and host assurance; durable persistence, independent backups and measured recovery; live observability, verified alerts and incident ownership; enforced repository governance; and independent security assessment. Evidence must be classified E0–E5; repository/ephemeral tests cannot substitute for production-equivalent or independent evidence. FCP-03 remains incomplete until every strategy exit criterion is evidenced and TSIC formally accepts it.
 
 ### FCP-04 — Agent workforce runtime and autonomous orchestration
 Deliver persistent agent identities, lifecycle, workspaces, model/provider selection and BYOM, durable task state, multi-step execution, agent teams, delegation, handoffs, retries, cancellation, interruption/resume, human escalation, budgets and recovery.
@@ -886,3 +886,36 @@ The live GitHub branch metadata reported Agent Platform `main` as unprotected, w
 ### FCP-03 disposition
 
 **FCP-03 remains active and incomplete.** The financial deployment gate remains blocked because no unexpired promotional credit for new usage is confirmed, the strict zero-spend budget is already in ALARM, and notification delivery is unverified. Provider-level packet/flow tests, production workload identity, host attestation, durable production storage/DR, operational readiness and independent security assurance remain outstanding. Do not begin FCP-04–FCP-10 until FCP-03 exit evidence is complete and accepted.
+
+
+## 28. FCP-03 provider-neutral closure strategy adopted — 2026-11-11
+
+The programme owner adopted the provider-neutral FCP-03 closure strategy in TSIC PR [#137](https://github.com/LloydCoder/tinlance-system-integration/pull/137), merged as `e9f86224b1c3e0284b2523dd0030b294e9392d17`.
+
+### Decision and scope
+
+- AWS provisioning is not a mandatory FCP-03 path. No new AWS spend, AWS resource creation, or consumption of expired/promotional credits is authorized.
+- The required security, production-operational, recovery and independent-assurance outcomes remain unchanged.
+- Candidate implementations are provider-neutral: SPIFFE/SPIRE or equivalent identity; OpenBao/Vault-compatible secret management; nftables plus controlled DNS/RPZ or equivalent egress enforcement; Firecracker/gVisor/Kata or independently assessed isolation; PostgreSQL/WAL/PITR plus independent encrypted backup; OpenTelemetry/Prometheus/Alertmanager or equivalent.
+- Existing Tinlyt/TWI, FusionOps, ThreatFade and shared product infrastructure remain outside the FCP-03 change boundary.
+- The existing `tinlyt-test-runtime` host remains a controlled test runner only; it is not approved as the production Agent Platform worker or a destination-level cloud egress boundary.
+- Evidence levels E0–E5 distinguish design, static/repository, ephemeral integration, controlled-host, production-equivalent deployed, and independent evidence. E0–E3 cannot satisfy an exit requirement that explicitly needs E4/E5.
+
+### Execution and phase gate
+
+The canonical strategy defines ordered workstreams: (A) evidence/governance, (B) network/DNS, (C) identity/secrets/revocation, (D) runtime/host assurance, (E) persistence/recovery, (F) observability/operations, and (G) independent assurance/final decision.
+
+PR #137 exact-head validation completed with 33/33 workflow runs successful before merge. The strategy is now on TSIC main at merge SHA `e9f86224b1c3e0284b2523dd0030b294e9392d17`. This validates the documentation change only; it does not establish deployment or operational acceptance of the listed controls.
+
+### Explicit unresolved dependencies
+
+1. Approved production-equivalent host/runtime and durable service environment at zero incremental AWS spend.
+2. Deployed and adversarially verified destination-level network/DNS enforcement.
+3. Dedicated workload identity issuer, external key custody, rotation and measured revocation.
+4. Runtime isolation, host trust limitations, resource ceilings and persistent-computer security evidence.
+5. Independent encrypted backup, clean restore and measured RPO/RTO.
+6. Live telemetry, verified alert delivery, incident exercises and named operational owners.
+7. Active branch rulesets on all five core repositories. Platform issue [#275](https://github.com/LloydCoder/tinlance-agent-platform/issues/275) remains open because connected tooling does not expose repository-administration writes.
+8. Independent assessor engagement, report, findings, retests and accountable residual-risk acceptance.
+
+**Disposition:** FCP-03 remains ACTIVE / INCOMPLETE. FCP-04–FCP-10 remain GATED. This addendum does not claim production deployment, independent assessment, or phase acceptance.
