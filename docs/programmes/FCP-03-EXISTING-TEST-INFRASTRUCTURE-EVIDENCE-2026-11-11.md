@@ -165,3 +165,7 @@ No AWS resource was created. No VPC, route table, security group, IAM role/profi
 ### Updated disposition
 
 The expanded test-infrastructure work strengthens E3 evidence for DNS/packet mechanics, host-safe execution and PostgreSQL 16 compatibility/recovery. It does **not** create E4/E5 evidence. FCP-03 remains ACTIVE / NOT ACCEPTED; FCP-04–FCP-10 remain serially gated.
+
+## Governance supersession — later on 2026-11-11
+
+Item 6 in the earlier "still required" list in this file is partially superseded. Active default-branch rulesets were created and read back on all five core repositories. Details and ruleset IDs are in [FCP-03-CONTROL-TRACEABILITY.md](FCP-03-CONTROL-TRACEABILITY.md). Independent approving review is still outstanding because each repository has a single collaborator. This note does not change the E3 ceiling of the host and PostgreSQL evidence above, and it does not accept FCP-03.

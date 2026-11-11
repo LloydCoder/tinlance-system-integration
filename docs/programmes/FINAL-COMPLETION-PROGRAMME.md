@@ -945,3 +945,17 @@ PR #137 exact-head validation completed with 33/33 workflow runs successful befo
 8. Independent assessor engagement, report, findings, retests and accountable residual-risk acceptance.
 
 **Disposition:** FCP-03 remains ACTIVE / INCOMPLETE. FCP-04–FCP-10 remain GATED. This addendum does not claim production deployment, independent assessment, or phase acceptance.
+
+## 29. Default-branch rulesets read back — 2026-11-11
+
+Section 27's repository-governance finding and dependency 7 above were true when written. They are superseded for ruleset administration only.
+
+Active ruleset `fcp03-default-branch` now targets `~DEFAULT_BRANCH` on Agent Platform (`27050541`), Agent OS (`27050544`), Platform SDK (`27050546`), TADL (`27050548`) and TSIC (`27050549`). Each ruleset is `enforcement: active`, has no bypass actors, blocks deletion and force-push, requires a pull request and conversation resolution, and requires strict status checks drawn from workflows that run on every pull request. `GET /rules/branches/main` returned those four rule types, and the classic `protected` flag read back `true`, on all five repositories.
+
+Required approving review count remains 0. The only collaborator on each repository is `LloydCoder`, so a count of 1 would make merge impossible without a self-bypass. Platform issue #275 stays open until an independent reviewer exists. CODEOWNERS review is not enabled.
+
+Dependabot alerts and Dependabot security updates were enabled. Secret scanning and push protection were already enabled. Secret-scanning validity checks and non-provider patterns remained disabled on read-back and are not claimed.
+
+No AWS resource was created. No production host, database, VPC, IAM role or application service was modified.
+
+**FCP-03 remains ACTIVE / NOT ACCEPTED.** Network, identity, runtime, recovery, observability and independent assessment exit criteria are unchanged. Do not begin FCP-04.
