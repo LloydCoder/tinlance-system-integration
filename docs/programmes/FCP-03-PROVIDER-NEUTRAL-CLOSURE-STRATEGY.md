@@ -160,7 +160,7 @@ E0–E3 can establish implementation feasibility and expose defects. They cannot
 4. Production-equivalent persistence, independent backups, and measured recovery.
 5. Live telemetry, verified alert routing, incident exercises, and named owners.
 6. Independent assessor availability, scope, report, and retest.
-7. Active branch rulesets across all five core repositories. Confirm Administration:write capability; if unavailable, an authorized repository administrator must apply and verify rulesets.
+7. Independent approving review on the five core repositories. Default-branch rulesets were activated and read back on 2026-11-11 (see the control traceability register). Required approving review count remains 0 until a second reviewer exists. Do not treat the ruleset read-back as independent assessment.
 8. Exact post-merge mainline validation and canonical tracker reconciliation.
 
 ## 9. Phase governance
