@@ -101,7 +101,7 @@ Following the initial run, the programme owner explicitly directed use of the ex
 | `tinlyt-api-production` | `i-0dc730ed647b24ab5` | x86_64 | `a22073a0-7e6e-43ab-ba93-ecea789c4960` | PASS |
 | FusionOps / ThreatFade host | `i-0bfd1525cdf71dd28` | x86_64 | `64890655-d98c-4da4-9d8b-e76f0cac4898` | PASS |
 
-The standalone EC2 instance named/tagged for ThreatFade is not SSM-managed and has no instance profile; no existing SSH management channel was available, so no command was run on that instance. The ThreatFade service running on the FusionOps host was included in the health and post-test checks.
+The standalone EC2 instance named/tagged for ThreatFade is not SSM-managed and has no instance profile. No SSH channel was used or provisioned, so no command was run on that instance. The ThreatFade service running on the FusionOps host was included in the health and post-test checks.
 
 **Asset metadata discrepancy:** the programme owner identified these systems as test instances, but AWS resource names/tags still describe the Tinlyt API host and FusionOps/ThreatFade host as production. The lab used only isolated temporary namespaces and temporary packages; no product service, data, VPC, security group, route table, instance profile or production application configuration was changed. The metadata should be reconciled in the asset register so that test designation and cloud labels agree.
 
