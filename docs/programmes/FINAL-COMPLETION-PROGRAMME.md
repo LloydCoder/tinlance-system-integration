@@ -22,7 +22,33 @@ The four primary product benchmarks are:
 1. **OpenMausBot** — local-first persistent agents, desktop agent roster, computer execution and agent handoffs.
 2. **Rakazo** — self-hosted AI teammates, per-agent memory/tools/prompts, BYOM and background routines.
 3. **ChatGPT Dots** — persistent personal agents, personalization, connected applications and proactive ongoing tasks.
-4. **Grok Bot** — conversational intelligence, research, tool use and agentic task execution.
+4. **Grok Bot** — conversational intelligence, research, tool use and agentic task execution. The concrete implementation reference is [nickvasilescu/grokbot-clone](https://github.com/nickvasilescu/grokbot-clone) (external capability benchmark; not a dependency or architectural authority).
+
+### 2.1 Grokbot Clone benchmark record
+
+**Reference:** [https://github.com/nickvasilescu/grokbot-clone](https://github.com/nickvasilescu/grokbot-clone)  
+**Classification:** external product/implementation benchmark only. Do not fork, import, deploy, or couple its code to the Agent Systems as part of this benchmark.  
+**Purpose:** assess the product capabilities and operational trade-offs of persistent AI teammates that combine conversational interaction, application/tool integrations, computer use, memory, delegation and proactive execution.
+
+**Capability dimensions to evaluate:**
+- Persistent teammate identity, workspace and conversation continuity.
+- Computer/browser/desktop execution, session isolation and lifecycle.
+- Application integrations, tool mediation, credential handling and OAuth/delegated authorization.
+- Multi-agent delegation, subagents, group collaboration, handoffs and task ownership.
+- Persistent memory, retrieval, compaction/consolidation, provenance, retention and deletion.
+- Scheduled routines, event-triggered work, background execution, retries, cancellation and recovery.
+- Voice and multimodal interaction, including handoff from conversation to durable tasks.
+- Human approvals, policy enforcement, auditability, evidence lineage and observability.
+- Tenant isolation, sandbox boundaries, secrets exposure, prompt-injection resistance, SSRF/DNS-rebinding controls, and failure containment.
+- Operational economics: concurrency, latency, resource consumption, provider dependence and cost per completed task.
+
+**FCP traceability:** use findings as acceptance-test inputs only when the corresponding phase is active: FCP-03 (security/governance threat-model comparison and evidence requirements); FCP-04 (agent identity, lifecycle, delegation and durable task execution); FCP-05 (application/tool integrations and computer-use mediation); FCP-06 (memory governance); FCP-07 (routines and event-driven execution); FCP-08 (workspace, collaboration, voice and user experience); FCP-09 (performance, reliability and unit economics); FCP-10 (independent security and end-to-end acceptance). Do not pull future-phase implementation forward.
+
+**Benchmark method:** record repository revision and inspection date; map each capability to observable behavior; distinguish documented claims from code-verified behavior and independently tested behavior; capture reproducible tests, evidence and limitations; compare against the existing Platform/OS/SDK/TADL/TSIC authority boundaries. Findings must not be represented as Tinlance conformance or production assurance.
+
+**Security observations to validate during the benchmark:** identify which actions are governed by centralized approvals versus direct computer/shell execution; determine isolation boundaries between bots and tenants; inspect desktop/VNC access controls, secrets handling, tool authorization and audit coverage. Treat any uncovered path as a benchmark finding, not as an acceptable Tinlance design.
+
+**Disposition:** queued for capability benchmarking after FCP-03 formal acceptance, in the existing serial FCP sequence. No new roadmap, phase transition, infrastructure provisioning, spend, or production dependency is authorized by this record.
 
 Additional engineering references include OpenHands, Orkas, Dify, Langflow, n8n, LangGraph, Microsoft Agent Framework and CrewAI. These are capability references, not architectural authorities or products to clone.
 
