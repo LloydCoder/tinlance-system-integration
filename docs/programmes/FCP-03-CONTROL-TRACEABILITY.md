@@ -49,7 +49,7 @@ Workflow success must be bound to exact commit SHA, workflow run, artifact diges
 | Exit criterion | Current disposition | Minimum next proof |
 |---|---|---|
 | All five core repos have enforced branch governance | **PARTIAL — rulesets active, review gate open** | Second independent reviewer before approving-review count can be raised above 0; issue #275 stays open for that residual |
-| Network/DNS destination enforcement | **PARTIAL — E2/E3 only** | Approved E4 deployment and adversarial packet/flow evidence |
+| Network/DNS destination enforcement | **PARTIAL — E2/E3 ephemeral only** | A non-shared host or path where default-deny DNS/egress survives reboot and fails closed. The existing shared SSM hosts cannot hold that boundary without disrupting co-resident services. See [FCP-03-NETWORK-PERSISTENCE-FEASIBILITY-2026-11-11.md](FCP-03-NETWORK-PERSISTENCE-FEASIBILITY-2026-11-11.md). No persistent policy was installed. |
 | Identity, proof, key custody and revocation | **PARTIAL — E1/E2** | Deployed issuer/secret service and measured rotation/revocation |
 | Runtime/host isolation | **PARTIAL — E1/E3** | Approved host, production-equivalent isolation and independent assessment |
 | Durable DB/outbox/backup/restore | **PARTIAL — E2** | Deployed topology, independent backup, clean restore, measured RPO/RTO |
@@ -60,7 +60,7 @@ Workflow success must be bound to exact commit SHA, workflow run, artifact diges
 ## Ordered execution queue
 
 1. A — rulesets are active and read back. Remaining governance work is an independent approving reviewer, not ruleset administration.
-2. B — provider-neutral network/DNS E4 environment and adversarial evidence.
+2. B — blocked on a non-shared persistent fail-closed path. Do not install host-wide policy on the current SSM hosts. Ephemeral namespace evidence stays E3.
 3. C — production workload identity, external secrets and revocation.
 4. D — approved runtime/host, isolation, sustained tests and attestation.
 5. E — durable services, independent backup and measured restore.
@@ -70,7 +70,8 @@ Workflow success must be bound to exact commit SHA, workflow run, artifact diges
 
 ## Explicit blockers
 
-- No approved production-equivalent zero-incremental-AWS-spend environment has been evidenced. The 2026-11-11 all-region read-only inventory found 0 AWS Network Firewall deployments, 0 Route 53 Resolver DNS Firewall rule groups and 0 associations across 17 enabled regions.
+- No approved production-equivalent zero-incremental-AWS-spend environment has been evidenced. The 2026-11-11 all-region read-only inventory found 0 AWS Network Firewall deployments, 0 Route 53 Resolver DNS Firewall rule groups and 0 associations across 17 enabled regions. That inventory was not repeated in the persistence feasibility pass: this execution had no AWS credentials.
+- A persistent fail-closed DNS/egress boundary was not installed. Host-wide firewall, security-group, or NACL changes on the three existing SSM hosts would affect co-resident services (including `tinlance-w5-postgres`, and the production-labelled Tinlyt API and FusionOps/ThreatFade hosts) and can strand SSM. The repository lab deletes its namespaces on exit by design. A namespace-only systemd unit would not govern other processes and was not deployed. Details: [FCP-03-NETWORK-PERSISTENCE-FEASIBILITY-2026-11-11.md](FCP-03-NETWORK-PERSISTENCE-FEASIBILITY-2026-11-11.md).
 - The three SSM-managed instances used for E3 tests are controlled test hosts, not approved Agent Platform production workloads. The programme owner designated them as test instances, but AWS names/tags still label the Tinlyt API and FusionOps/ThreatFade hosts as production; reconcile this asset metadata before using it as evidence of production-equivalent status.
 - Repository administration was available through the authenticated owner credential in this execution. Active rulesets were created and read back. See the governance read-back section below. This does not close independent review.
 - Independent assessor participation and signed assurance artifacts are not present. The implementing agent must not certify this work as independently assessed.
