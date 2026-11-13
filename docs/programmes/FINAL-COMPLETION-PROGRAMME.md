@@ -50,6 +50,33 @@ The four primary product benchmarks are:
 
 **Disposition:** queued for capability benchmarking after FCP-03 formal acceptance, in the existing serial FCP sequence. No new roadmap, phase transition, infrastructure provisioning, spend, or production dependency is authorized by this record.
 
+### 2.2 Bops benchmark record
+
+**Reference:** [https://github.com/OrgoAI/bops](https://github.com/OrgoAI/bops)  
+**Classification:** external product/implementation benchmark only. Do not fork, import, deploy, or couple its code to the Agent Systems as part of this benchmark.  
+**Purpose:** evaluate a multi-harness agent operations environment combining agent teams, cloud-computer execution, application integrations, persistent threads/memory, voice and messaging channels, scheduled work, and human intervention.
+
+**Capability dimensions to evaluate:**
+- Multiple agent harnesses and per-agent model profiles; distinguish underlying model, harness, provider gateway and Tinlance-owned model router.
+- Task-aware model/harness routing, reasoning tiers, fallback, shadow-mode routing and independent verification.
+- Persistent agent identity, threads, task steering, cancellation, interruption/resume and recovery.
+- Specialist agents, delegation, team coordination, task ownership and structured handback.
+- Cloud computer provisioning, browser/terminal execution, screen observation, human takeover and resource lifecycle.
+- Application integrations, account connections, OAuth/delegated authorization, tool mediation and credential isolation.
+- Memory/workspace integration, thread continuity, provenance, retention, deletion and cross-agent access controls.
+- Routines, reminders, screen watches, event-driven execution and notification channels.
+- Voice, email, phone and messaging interfaces, including durable task handoff.
+- Authentication, local-server exposure, webhook validation, executor boundaries, tenant isolation, prompt-injection resistance, SSRF/DNS-rebinding controls, audit coverage and failure containment.
+- Operational economics: model/harness costs, computer-hour consumption, concurrency, latency, reliability and cost per completed task.
+
+**FCP traceability:** use findings as acceptance-test inputs only when the corresponding phase is active: FCP-03 (security/governance threat-model comparison and evidence requirements); FCP-04 (agent identity, lifecycle, multi-harness execution, model selection, delegation and durable task execution); FCP-05 (application/tool integrations and computer-use mediation); FCP-06 (memory governance); FCP-07 (routines and event-driven execution); FCP-08 (workspace, collaboration, voice, messaging and human experience); FCP-09 (performance, reliability and unit economics); FCP-10 (independent security and end-to-end acceptance). Do not pull future-phase implementation forward.
+
+**Benchmark method:** record repository revision, license version and inspection date; map each capability to observable behavior; distinguish documented claims from code-verified behavior and independently tested behavior; capture reproducible tests, evidence and limitations; compare against the existing Platform/OS/SDK/TADL/TSIC authority boundaries. Specifically evaluate whether routing decisions are advisory or authoritative, and ensure model/harness selection never grants execution permissions.
+
+**Security and licensing observations:** treat the project’s documented local-server trust assumptions, executor credential boundaries, computer-use access and webhook/authentication controls as threat-model inputs requiring independent verification. Review the exact license governing each inspected revision before any reuse; benchmark inclusion does not grant permission to copy, fork, redistribute or commercially derive from its code.
+
+**Disposition:** queued for capability benchmarking after FCP-03 formal acceptance, in the existing serial FCP sequence. No new roadmap, phase transition, infrastructure provisioning, spend, code import, or production dependency is authorized by this record.
+
 Additional engineering references include OpenHands, Orkas, Dify, Langflow, n8n, LangGraph, Microsoft Agent Framework and CrewAI. These are capability references, not architectural authorities or products to clone.
 
 ## 3. Non-negotiable architecture and authority
